@@ -1,0 +1,121 @@
+﻿@{
+   Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <meta charset="utf-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1">
+   <title>AdminLTE 3 | Registration Page (v2)</title>
+
+   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+   <link rel="stylesheet" href="/AdminLTE-3.2.0/plugins/fontawesome-free/css/all.min.css">
+   <link rel="stylesheet" href="/AdminLTE-3.2.0/plugins/icheck-bootstrap/icheck-bootstrap.min.css">
+   <link rel="stylesheet" href="/AdminLTE-3.2.0/dist/css/adminlte.min.css">
+</head>
+<body class="hold-transition register-page">
+   <div class="register-box">
+      <div class="card card-outline card-warning">
+         <div class="card-header text-center">
+            <a href="/AdminLTE-3.2.0/index2.html" class="h1"><b>Çukurova Kargo</b> Kayıt Formu </a>
+         </div>
+         <div class="card-body">
+
+            <div class="input-group mb-3">
+               <input id="username" type="text" class="form-control" placeholder="username">
+               <div class="input-group-append">
+                  <div class="input-group-text">
+                     <span class="fas fa-user"></span>
+                  </div>
+               </div>
+            </div>
+
+            <div class="input-group mb-3">
+               <input type="text" id="nameSurname" class="form-control" placeholder="Full name">
+               <div class="input-group-append">
+                  <div class="input-group-text">
+                     <span class="fas fa-user"></span>
+                  </div>
+               </div>
+            </div>
+            <div class="input-group mb-3">
+               <input id="mail" type="email" class="form-control" placeholder="Email">
+               <div class="input-group-append">
+                  <div class="input-group-text">
+                     <span class="fas fa-envelope"></span>
+                  </div>
+               </div>
+            </div>
+            <div class="input-group mb-3">
+               <input id="password" type="password" class="form-control" placeholder="Password">
+               <div class="input-group-append">
+                  <div class="input-group-text">
+                     <span class="fas fa-lock"></span>
+                  </div>
+               </div>
+            </div>
+            <div class="input-group mb-3">
+               <input id="confirmPassword" type="password" class="form-control" placeholder="Retype password">
+               <div class="input-group-append">
+                  <div class="input-group-text">
+                     <span class="fas fa-lock"></span>
+                  </div>
+               </div>
+            </div>
+            <div class="row">
+               <div class="col-8">
+                  <div class="icheck-primary">
+                     <input type="checkbox" id="agreeTerms" name="terms" value="agree">
+                     <label for="agreeTerms">
+                        I agree to the <a href="#">terms</a>
+                     </label>
+                  </div>
+               </div>
+               <div class="col-4">
+                  <button id="btnReg" class="btn btn-warning btn-block">Register</button>
+               </div>
+            </div>
+
+            <a href="login.html" class="text-center">I already have a membership</a>
+         </div>
+
+      </div>
+   </div>
+
+   <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+   <script src="/AdminLTE-3.2.0/plugins/jquery/jquery.min.js"></script>
+   <script src="/AdminLTE-3.2.0/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+   <script src="/AdminLTE-3.2.0/dist/js/adminlte.min.js"></script>
+   <script type="text/javascript">
+
+
+      $("#btnReg").click(function () {
+         let p = {
+            //name: $("#name").val(),
+            nameSurname: $("#nameSurname").val(),
+            password: $("#password").val(),
+            confirmPassword: $("#confirmPassword").val(),
+            mail: $("#mail").val(),
+            username: $("#username").val(),
+         };
+         $.ajax({
+            type: "POST",
+            async: true,
+            url: "/User/Signup/",
+            data: p,
+            success: function (funk) {
+               if (funk != true) {
+                  swal("Üyelik İşlemi Tamamlanmadı", "Kontrol Edin", "warning");
+               }
+               else {
+                  window.location.href = "@Url.Action("Index", "User")";
+               }
+            }
+         });
+      });
+
+   </script>
+
+</body>
+</html>

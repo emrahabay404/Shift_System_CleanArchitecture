@@ -1,0 +1,49 @@
+﻿@using Kendo.Mvc.UI
+
+<center>
+   <h2>Takımlar</h2>
+   <br />
+</center>
+
+
+@(Html.Kendo().Grid<Shift_System.Application.Features.Teams.GetAllTeamsDto>()
+         .Name("gridTeams")
+         .Columns(columns =>
+         {
+            columns.Bound(p => p.TeamName);
+            columns.Command(command => { command.Edit(); command.Destroy(); }).Width(250);
+         })
+         .ToolBar(tools =>
+         {
+            tools.Create();
+         })
+         .Sortable()
+         .Pageable()
+         .Filterable()
+         .DataSource(dataSource =>
+            dataSource
+         .WebApi()
+         .Model(model =>
+         {
+            model.Id(p => p.Id);
+         })
+         .Events(events => events.Error("error_handler"))
+         .Read(read => read.Action("GetTeams", "Team"))
+         .Create(create => create.Action("Create", "Team"))
+         .Update(update => update.Action("Update", "Team", new { id = "{0}" }))
+         .Destroy(destroy => destroy.Action("Destroy", "Team", new { id = "{0}" }))
+         ))
+
+
+@*<script src="https://unpkg.com/jszip/dist/jszip.min.js"></script>*@
+
+<script>
+
+   function error_handler(e) {
+      var errors = $.parseJSON(e.xhr.responseText);
+
+      if (errors) {
+         kendo.alert("Errors:\n" + errors.join("\n"));
+      }
+   }
+</script>

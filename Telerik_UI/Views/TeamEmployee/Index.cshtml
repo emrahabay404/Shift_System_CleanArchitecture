@@ -1,0 +1,57 @@
+﻿@using Kendo.Mvc.UI
+
+<center>
+   <h2> Takımlara Ait Personeller </h2>
+   <br />
+</center>
+
+
+@(Html.Kendo().Grid<Shift_System.Application.Features.Teams_Employees.GetAllTeams_EmployeesDto>()
+         .Name("gridTeamEmployee")
+         .Columns(columns =>
+         {
+            columns.Bound(p => p.EmployeeId);
+            columns.Bound(p => p.TeamId);
+            columns.Bound(p => p.IsLeader);
+            columns.Command(command => { command.Edit(); command.Destroy(); }).Width(250);
+         })
+         .ToolBar(tools =>
+         {
+            tools.Create();
+         })
+         .Sortable()
+         .Pageable()
+         .Filterable()
+         .DataSource(dataSource =>
+            dataSource
+         .WebApi()
+         .Model(model =>
+         {
+            model.Id(p => p.Id);
+         })
+           .Events(events => events.Error("error_handler"))
+         .Read(read => read.Action("GetTeamEmployee", "TeamEmployee"))
+         .Create(create => create.Action("Create", "TeamEmployee"))
+         .Update(update => update.Action("Update", "TeamEmployee", new { id = "{0}" }))
+         .Destroy(destroy => destroy.Action("Destroy", "TeamEmployee", new { id = "{0}" }))
+         ))
+
+
+@*<script src="https://unpkg.com/jszip/dist/jszip.min.js"></script>*@
+
+<script>
+
+
+   function error_handler(e) {
+      var errors = $.parseJSON(e.xhr.responseText);
+
+      if (errors) {
+         kendo.alert("Errors:\n" + errors.join("\n"));
+      }
+   }
+</script>
+
+
+
+
+

@@ -1,0 +1,28 @@
+﻿@model List<Shift_System.Domain.Entities.AppUser>
+
+@{
+   ViewData["Title"] = "UserRoleList";
+   Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>User Role List</h1>
+
+<div class="col-md-4">
+   <table class="table table-bordered table-hover">
+      <tr>
+         <th>Kullanıcı</th>
+         <th>Rol Ata</th>
+      </tr>
+      <tbody>
+         @foreach (var item in Model)
+         {
+            <tr>
+               <td>@item.UserName</td>
+               <td><a class="btn btn-success" href="/Admin/AssignRole/@item.Id">Rol ata</a></td>
+            </tr>
+         }
+      </tbody>
+   </table>
+   <a href="/Admin/Index/" class="btn btn-primary">Rol Listesine Dön</a>
+</div>
+
