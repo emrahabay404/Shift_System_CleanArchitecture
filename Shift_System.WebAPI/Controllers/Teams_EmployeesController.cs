@@ -9,7 +9,6 @@ namespace Shift_System.WebAPI.Controllers
    [ApiController]
    public class Teams_EmployeesController : ApiControllerBase
    {
-
       private readonly IMediator _mediator;
 
       public Teams_EmployeesController(IMediator mediator)
@@ -23,14 +22,11 @@ namespace Shift_System.WebAPI.Controllers
          return await _mediator.Send(new GetAllTeams_EmployeesQuery());
       }
 
-
       [HttpPost]
       public async Task<ActionResult<Result<int>>> Create(CreateTeam_EmployeeCommand command)
       {
-
          return await _mediator.Send(command);
       }
-
 
       [HttpPut("{id}")]
       public async Task<ActionResult<Result<int>>> Update(int id, Update_Team_EmployeeCommand command)
@@ -42,13 +38,11 @@ namespace Shift_System.WebAPI.Controllers
          return await _mediator.Send(command);
       }
 
-
       [HttpDelete("{id}")]
       public async Task<ActionResult<Result<int>>> Delete(int id)
       {
          return await _mediator.Send(new Delete_Team_EmployeeCommand(id));
       }
-
 
    }
 }

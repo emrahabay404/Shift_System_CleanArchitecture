@@ -45,6 +45,5 @@ namespace Shift_System.WebAPI.Controllers
          return await _mediator.Send(new DeleteAssignmentCommand(id));
       }
 
-
    }
 }
