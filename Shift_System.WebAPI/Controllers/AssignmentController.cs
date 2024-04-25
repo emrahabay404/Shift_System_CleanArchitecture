@@ -2,11 +2,13 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Shift_System.Application.Features.Assignments;
+using Shift_System.Application.Features.Assignments.Commands;
+using Shift_System.Application.Features.Assignments.Queries;
 using Shift_System.Shared;
 
 namespace Shift_System.WebAPI.Controllers
 {
-   [Route("api/[controller]")]
+    [Route("api/[controller]")]
    [ApiController]
    [Authorize(Roles = "Admin")]
    public class AssignmentController : ApiControllerBase

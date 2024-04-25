@@ -1,10 +1,10 @@
-﻿using Shift_System.Application.Features.Teams_Employees;
+﻿using Shift_System.Application.Features.Teams_Employees.Commands;
 using Shift_System.Application.Interfaces.Repositories;
 using Shift_System.Domain.Entities;
 
 namespace Shift_System.Persistence.Repositories
 {
-   public class Team_EmployeeRepository : ITeam_EmployeeRepository
+    public class Team_EmployeeRepository : ITeam_EmployeeRepository
    {
       private readonly IGenericRepository<TeamEmployee> _repository;
 

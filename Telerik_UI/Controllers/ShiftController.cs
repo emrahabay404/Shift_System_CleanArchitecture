@@ -3,11 +3,12 @@ using Kendo.Mvc.UI;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Shift_System.Application.Features.Shift;
+using Shift_System.Application.Features.Shifts.Commands;
 
 namespace Telerik_UI.Controllers
 {
-   // [Authorize(Roles = "Shifts")]
-   public class ShiftController : Controller
+    // [Authorize(Roles = "Shifts")]
+    public class ShiftController : Controller
    {
 
       private readonly ILogger<ShiftController> _logger;

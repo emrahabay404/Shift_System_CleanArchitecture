@@ -1,8 +1,8 @@
-﻿using Shift_System.Application.Features.Teams_Employees;
+﻿using Shift_System.Application.Features.Teams_Employees.Commands;
 
 namespace Shift_System.Application.Interfaces.Repositories
 {
-   public interface ITeam_EmployeeRepository
+    public interface ITeam_EmployeeRepository
    {
 
       int Team_Leader_Check(CreateTeam_EmployeeCommand command);

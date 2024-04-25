@@ -2,12 +2,13 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Shift_System.Application.Features.Employees;
+using Shift_System.Application.Features.Employees.Commands;
+using Shift_System.Application.Features.Employees.Queries;
 using Shift_System.Shared;
-using System.Data;
 
 namespace Shift_System.WebAPI.Controllers
 {
-   [Route("api/[controller]")]
+    [Route("api/[controller]")]
    [ApiController]
    [Authorize(Roles = "Admin")]
    public class EmployeeController : ApiControllerBase
@@ -24,7 +25,7 @@ namespace Shift_System.WebAPI.Controllers
       {
          return await _mediator.Send(new GetAllEmployeesQuery());
       }
-
+         
       [HttpPost]
       public async Task<ActionResult<Result<int>>> Create(CreateEmployeeCommand command)
       {

@@ -1,4 +1,4 @@
-﻿@using Kendo.Mvc.UI
+﻿@    using Kendo.Mvc.UI
 
 <center>
    <h2> Takımlara Ait Personeller </h2>
@@ -6,7 +6,7 @@
 </center>
 
 
-@(Html.Kendo().Grid<Shift_System.Application.Features.Teams_Employees.GetAllTeams_EmployeesDto>()
+@(Html.Kendo().Grid<GetAllTeams_EmployeesDto>()
          .Name("gridTeamEmployee")
          .Columns(columns =>
          {

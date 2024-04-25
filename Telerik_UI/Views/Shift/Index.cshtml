@@ -1,4 +1,4 @@
-﻿@using Kendo.Mvc.UI
+﻿@    using Kendo.Mvc.UI
 
 <center>
    <h2>Vardiyalar</h2>
@@ -6,7 +6,7 @@
 </center>
 
 
-@(Html.Kendo().Grid<Shift_System.Application.Features.Shift.GetAllShiftsDto>()
+@(Html.Kendo().Grid<GetAllShiftsDto>()
          .Name("gridShifts")
          .Columns(columns =>
          {

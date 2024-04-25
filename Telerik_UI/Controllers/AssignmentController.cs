@@ -4,13 +4,14 @@ using Kendo.Mvc.UI;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Shift_System.Application.Features.Assignments;
+using Shift_System.Application.Features.Assignments.Commands;
 using Shift_System.Domain.Entities;
 
 namespace Telerik_UI.Controllers
 {
 
-   // [Authorize(Roles = "Assignment")]
-   public class AssignmentController : Controller
+    // [Authorize(Roles = "Assignment")]
+    public class AssignmentController : Controller
    {
       private readonly ILogger<AssignmentController> _logger;
       private readonly IMediator _mediator;
