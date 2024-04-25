@@ -10,7 +10,6 @@ namespace Shift_System.Application.Features.Shift
 {
    public record GetAllShiftsQuery : IRequest<Result<List<GetAllShiftsDto>>>;
 
-
    internal class GetAllShiftsQueryHandler : IRequestHandler<GetAllShiftsQuery, Result<List<GetAllShiftsDto>>>
    {
       private readonly IUnitOfWork _unitOfWork;
@@ -30,6 +29,7 @@ namespace Shift_System.Application.Features.Shift
 
          return await Result<List<GetAllShiftsDto>>.SuccessAsync(_shifts);
       }
+   
    }
 }
 

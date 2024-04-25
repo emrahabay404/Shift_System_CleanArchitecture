@@ -24,5 +24,6 @@ namespace Shift_System.Infrastructure.Extensions
          //
         .AddTransient<IAuthService, AuthService>();
       }
+
    }
 }

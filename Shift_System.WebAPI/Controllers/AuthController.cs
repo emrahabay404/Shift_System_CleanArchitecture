@@ -45,13 +45,12 @@ namespace Shift_System.WebAPI.Controllers
          {
             if (!ModelState.IsValid)
                return BadRequest("Invalid payload");
-            var (status, message) = await _authService.Registeration(model, UserRoles.Admin);
+            var (status, message) = await _authService.Registeration(model, UserRoles.User);
             if (status == 0)
             {
                return BadRequest(message);
             }
             return CreatedAtAction(nameof(Register), model);
-
          }
          catch (Exception ex)
          {

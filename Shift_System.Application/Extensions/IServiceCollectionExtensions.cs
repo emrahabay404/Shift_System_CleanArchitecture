@@ -2,7 +2,6 @@
 using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
 
-
 namespace Shift_System.Application.Extensions
 {
    public static class IServiceCollectionExtensions
