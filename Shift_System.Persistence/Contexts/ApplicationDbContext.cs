@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Shift_System.Domain.Common;
 using Shift_System.Domain.Common.Interfaces;
@@ -7,7 +8,7 @@ using System.Reflection;
 
 namespace Shift_System.Persistence.Contexts
 {
-   public class ApplicationDbContext : IdentityDbContext<AppUser, AppRole, int>
+   public class ApplicationDbContext : IdentityDbContext<AppUser>
    {
       private readonly IDomainEventDispatcher _dispatcher;
 

@@ -7,12 +7,5 @@ namespace Shift_System.WebAPI.Controllers
    public class ApiControllerBase : ControllerBase
    {
 
-  
-
-       
-
-
-
    }
-
 }

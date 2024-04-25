@@ -48,9 +48,6 @@ namespace Shift_System.Application.Features.Teams_Employees
          await _unitOfWork.Save(cancellationToken);
          return await Result<int>.SuccessAsync(_teamemp.Id, "Team_Employee Created.");
       }
+
    }
-
 }
-
-
-

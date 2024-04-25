@@ -20,6 +20,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Shift_System.Application\Shift_System.Application.csproj" />
     <ProjectReference Include="..\Shift_System.Domain\Shift_System.Domain.csproj" />
+    <ProjectReference Include="..\Shift_System.Infrastructure\Shift_System.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Shift_System.Application.Features.Assignments;
 using Shift_System.Shared;
@@ -7,6 +8,7 @@ namespace Shift_System.WebAPI.Controllers
 {
    [Route("api/[controller]")]
    [ApiController]
+   [Authorize(Roles = "Admin")]
    public class AssignmentController : ApiControllerBase
    {
       private readonly IMediator _mediator;
@@ -37,7 +39,6 @@ namespace Shift_System.WebAPI.Controllers
          }
          return await _mediator.Send(command);
       }
-
 
       [HttpDelete("{id}")]
       public async Task<ActionResult<Result<int>>> Delete(int id)

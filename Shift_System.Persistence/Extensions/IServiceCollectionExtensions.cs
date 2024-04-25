@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Shift_System.Application.Extensions;
 using Shift_System.Application.Interfaces.Repositories;
 using Shift_System.Persistence.Contexts;
 using Shift_System.Persistence.Repositories;
@@ -28,6 +29,8 @@ namespace Shift_System.Persistence.Extensions
          services.AddDbContext<ApplicationDbContext>(options =>
             options.UseSqlServer(connectionString,
                 builder => builder.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName)));
+
+         services.AddJwtAuthentication();
 
       }
 

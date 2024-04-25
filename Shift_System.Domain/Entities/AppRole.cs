@@ -2,8 +2,9 @@
 
 namespace Shift_System.Domain.Entities
 {
-   public class AppRole : IdentityRole<int>
+   public class AppRole : IdentityRole
    {
+    
 
    }
 }

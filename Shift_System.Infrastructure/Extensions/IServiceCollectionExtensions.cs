@@ -20,10 +20,9 @@ namespace Shift_System.Infrastructure.Extensions
              .AddTransient<IMediator, Mediator>()
              .AddTransient<IDomainEventDispatcher, DomainEventDispatcher>()
              .AddTransient<IDateTimeService, DateTimeService>()
-             .AddTransient<IEmailService, EmailService>();
-
-         //   .AddTransient<UserManager<AppUser>>()
-         //.AddTransient<SignInManager<AppUser>>();
+             .AddTransient<IEmailService, EmailService>()
+         //
+        .AddTransient<IAuthService, AuthService>();
       }
    }
 }
