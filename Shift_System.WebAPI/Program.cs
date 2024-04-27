@@ -22,7 +22,6 @@ if (app.Environment.IsDevelopment())
    app.UseSwaggerUI();
 }
 
-//for jwt
 app.UseAuthorization();
 app.MapControllers();
 app.Run();

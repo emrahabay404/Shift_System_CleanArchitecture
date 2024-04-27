@@ -19,16 +19,11 @@ namespace Shift_System.Persistence.Extensions
          services.AddRepositories();
       }
 
-      //private static void AddMappings(this IServiceCollection services)
-      //{
-      //    services.AddAutoMapper(Assembly.GetExecutingAssembly());
-      //}
-
       public static void AddDbContext(this IServiceCollection services, IConfiguration configuration)
       {
          var connectionString = configuration.GetConnectionString("Shift_Db_Conn");
          services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(connectionString,
-            builder => builder.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName)));
+   builder => builder.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName)));
 
          services.AddIdentity<AppUser, IdentityRole>()
                          .AddEntityFrameworkStores<ApplicationDbContext>()

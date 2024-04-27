@@ -85,7 +85,7 @@ namespace Shift_System.Infrastructure.Services
             Issuer = "https://localhost:7157",
             //Audience = _configuration["JWT:ValidAudience"],
             Audience = "https://localhost:7157",
-            Expires = DateTime.UtcNow.AddHours(3),
+            Expires = DateTime.UtcNow.AddMinutes(1000),
             SigningCredentials = new SigningCredentials(authSigningKey, SecurityAlgorithms.HmacSha256),
             Subject = new ClaimsIdentity(claims)
          };

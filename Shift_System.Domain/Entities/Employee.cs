@@ -8,7 +8,6 @@ namespace Shift_System.Domain.Entities
       {
          _TeamEmployees = new HashSet<TeamEmployee>();
       }
-
       public int EmployeeCode { get; set; }
       public string Name { get; set; }
       public string SurName { get; set; }
@@ -18,9 +17,6 @@ namespace Shift_System.Domain.Entities
       public string Address { get; set; }
       public string Title { get; set; }
       public bool Activity { get; set; }
-
-
       public virtual ICollection<TeamEmployee> _TeamEmployees { get; set; }
-
    }
 }

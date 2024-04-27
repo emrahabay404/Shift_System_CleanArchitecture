@@ -30,6 +30,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Telerik_UI", "Telerik_UI\Telerik_UI.csproj", "{1FE37142-7F6B-47CA-BBF2-5F46A4186B61}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MicroServices.WebAPI", "MicroServices.WebAPI\MicroServices.WebAPI.csproj", "{3336FC15-0A58-4141-AC33-922E3C85A011}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -64,6 +66,10 @@ Global
 		{1FE37142-7F6B-47CA-BBF2-5F46A4186B61}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1FE37142-7F6B-47CA-BBF2-5F46A4186B61}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1FE37142-7F6B-47CA-BBF2-5F46A4186B61}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3336FC15-0A58-4141-AC33-922E3C85A011}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3336FC15-0A58-4141-AC33-922E3C85A011}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3336FC15-0A58-4141-AC33-922E3C85A011}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3336FC15-0A58-4141-AC33-922E3C85A011}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -77,6 +83,7 @@ Global
 		{FA2C6C10-361C-4150-8946-4CDD14F27FD1} = {1405BEA4-520F-40CB-825E-09E04410FB5E}
 		{27C8CA46-0B8C-4858-A9BD-803266D4F4E1} = {DEC1307A-81F6-4E0D-912F-F38A733DD48E}
 		{1FE37142-7F6B-47CA-BBF2-5F46A4186B61} = {27C8CA46-0B8C-4858-A9BD-803266D4F4E1}
+		{3336FC15-0A58-4141-AC33-922E3C85A011} = {DEC1307A-81F6-4E0D-912F-F38A733DD48E}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {5C098573-28C1-41A3-A6FC-A16A8AFDF33A}

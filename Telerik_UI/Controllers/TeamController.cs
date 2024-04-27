@@ -2,13 +2,12 @@
 using Kendo.Mvc.UI;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Shift_System.Application.Features.Shift;
-using Shift_System.Application.Features.Teams;
 using Shift_System.Application.Features.Teams.Commands;
+using Shift_System.Application.Features.Teams.Queries;
 
 namespace Telerik_UI.Controllers
 {
-    public class TeamController : Controller
+   public class TeamController : Controller
    {
 
       private readonly ILogger<TeamController> _logger;

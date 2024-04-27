@@ -7,7 +7,7 @@ namespace Shift_System.Application.Extensions
 {
    public static class JwtExtensions
    {
-   
+
       public const string SecurityKey = "ByYM000OLlMQG6VVVp1OH7Xzyr7gHuw1qvUC5dcGt3SNM";
       public static void AddJwtAuthentication(this IServiceCollection services)
       {
@@ -33,6 +33,6 @@ namespace Shift_System.Application.Extensions
             };
          });
       }
-   
+
    }
 }

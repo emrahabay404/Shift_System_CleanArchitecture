@@ -2,13 +2,13 @@
 using Kendo.Mvc.UI;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Shift_System.Application.Features.Employees;
 using Shift_System.Application.Features.Employees.Commands;
+using Shift_System.Application.Features.Employees.Queries;
 
 namespace Telerik_UI.Controllers
 {
-    // [Authorize(Roles = "Employee")]
-    public class EmployeeController : Controller
+   // [Authorize(Roles = "Employee")]
+   public class EmployeeController : Controller
    {
 
       private readonly ILogger<EmployeeController> _logger;

@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Shift_System.Domain.Common;
 using Shift_System.Domain.Common.Interfaces;
@@ -19,13 +18,11 @@ namespace Shift_System.Persistence.Contexts
          _dispatcher = dispatcher;
       }
 
-
       public DbSet<Employee> Employees => Set<Employee>();
       public DbSet<Team> Teams => Set<Team>();
       public DbSet<ShiftList> ShiftLists => Set<ShiftList>();
       public DbSet<AssignList> AssignLists => Set<AssignList>();
       public DbSet<TeamEmployee> TeamEmployees => Set<TeamEmployee>();
-
 
       protected override void OnModelCreating(ModelBuilder modelBuilder)
       {
@@ -123,5 +120,6 @@ namespace Shift_System.Persistence.Contexts
       {
          return SaveChangesAsync().GetAwaiter().GetResult();
       }
+
    }
 }
