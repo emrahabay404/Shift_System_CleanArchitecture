@@ -42,11 +42,11 @@ namespace Shift_System.Application.Features.Assignments.Commands
 
                 await _unitOfWork.Save(cancellationToken);
 
-                return await Result<int>.SuccessAsync(_AssignList.Id, "AssignList Deleted");
+                return await Result<int>.SuccessAsync(_AssignList.Id, "AssignList_Deleted");
             }
             else
             {
-                return await Result<int>.FailureAsync("AssignList Not Found.");
+                return await Result<int>.FailureAsync("AssignList_Not_Found");
             }
         }
     }

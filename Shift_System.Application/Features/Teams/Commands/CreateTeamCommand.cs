@@ -37,7 +37,7 @@ namespace Shift_System.Application.Features.Teams.Commands
 
             await _unitOfWork.Save(cancellationToken);
 
-            return await Result<int>.SuccessAsync(_team.Id, "Team Created.");
+            return await Result<int>.SuccessAsync(_team.Id, "Team_Created");
         }
     }
 

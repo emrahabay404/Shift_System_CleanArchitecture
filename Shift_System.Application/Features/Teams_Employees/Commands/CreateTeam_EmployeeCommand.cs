@@ -47,7 +47,7 @@ namespace Shift_System.Application.Features.Teams_Employees.Commands
             await _unitOfWork.Repository<TeamEmployee>().AddAsync(_teamemp);
             _teamemp.AddDomainEvent(new Team_EmployeeCreatedEvent(_teamemp));
             await _unitOfWork.Save(cancellationToken);
-            return await Result<int>.SuccessAsync(_teamemp.Id, "Team_Employee Created.");
+            return await Result<int>.SuccessAsync(_teamemp.Id, "Team_Employee Created");
         }
 
     }

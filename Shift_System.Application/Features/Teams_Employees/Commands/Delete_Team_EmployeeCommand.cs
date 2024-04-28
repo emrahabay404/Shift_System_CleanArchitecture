@@ -42,11 +42,11 @@ namespace Shift_System.Application.Features.Teams_Employees.Commands
 
                 await _unitOfWork.Save(cancellationToken);
 
-                return await Result<int>.SuccessAsync(_Team_Employee.Id, "Team Employee Deleted");
+                return await Result<int>.SuccessAsync(_Team_Employee.Id, "Team_Employee_Deleted");
             }
             else
             {
-                return await Result<int>.FailureAsync("Team Employee Not Found.");
+                return await Result<int>.FailureAsync("Team_Employee_Not_Found");
             }
         }
     }

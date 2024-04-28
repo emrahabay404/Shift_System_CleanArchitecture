@@ -41,11 +41,11 @@ namespace Shift_System.Application.Features.Assignments.Commands
 
                 await _unitOfWork.Save(cancellationToken);
 
-                return await Result<int>.SuccessAsync(_assign.Id, "Assign Updated.");
+                return await Result<int>.SuccessAsync(_assign.Id, "Assign_Updated");
             }
             else
             {
-                return await Result<int>.FailureAsync("Assign Not Found.");
+                return await Result<int>.FailureAsync("Assign_Not_Found");
             }
         }
     }

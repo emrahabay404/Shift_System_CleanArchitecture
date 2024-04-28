@@ -9,35 +9,35 @@ using Shift_System.Shared;
 namespace Shift_System.Application.Features.Shifts.Commands
 {
    public record CreateShiftCommand : IRequest<Result<int>>, IMapFrom<ShiftList>
-    {
-        public string Shift_Name { get; set; }
-    }
+   {
+      public string Shift_Name { get; set; }
+   }
 
-    internal class CreateShiftCommandHandler : IRequestHandler<CreateShiftCommand, Result<int>>
-    {
-        private readonly IUnitOfWork _unitOfWork;
-        private readonly IMapper _mapper;
+   internal class CreateShiftCommandHandler : IRequestHandler<CreateShiftCommand, Result<int>>
+   {
+      private readonly IUnitOfWork _unitOfWork;
+      private readonly IMapper _mapper;
 
-        public CreateShiftCommandHandler(IUnitOfWork unitOfWork, IMapper mapper)
-        {
-            _unitOfWork = unitOfWork;
-            _mapper = mapper;
-        }
+      public CreateShiftCommandHandler(IUnitOfWork unitOfWork, IMapper mapper)
+      {
+         _unitOfWork = unitOfWork;
+         _mapper = mapper;
+      }
 
-        public async Task<Result<int>> Handle(CreateShiftCommand command, CancellationToken cancellationToken)
-        {
-            var _shift = new ShiftList()
-            {
-                Shift_Name = command.Shift_Name,
-                CreatedDate = DateTime.Now,
-            };
+      public async Task<Result<int>> Handle(CreateShiftCommand command, CancellationToken cancellationToken)
+      {
+         var _shift = new ShiftList()
+         {
+            Shift_Name = command.Shift_Name,
+            CreatedDate = DateTime.Now,
+         };
 
-            await _unitOfWork.Repository<ShiftList>().AddAsync(_shift);
-            _shift.AddDomainEvent(new ShiftCreatedEvent(_shift));
+         await _unitOfWork.Repository<ShiftList>().AddAsync(_shift);
+         _shift.AddDomainEvent(new ShiftCreatedEvent(_shift));
 
-            await _unitOfWork.Save(cancellationToken);
+         await _unitOfWork.Save(cancellationToken);
 
-            return await Result<int>.SuccessAsync(_shift.Id, "Shift Created.");
-        }
-    }
+         return await Result<int>.SuccessAsync(_shift.Id, "Shift_Created");
+      }
+   }
 }

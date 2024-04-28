@@ -35,11 +35,11 @@ namespace Shift_System.Application.Features.Teams.Commands
 
                 await _unitOfWork.Save(cancellationToken);
 
-                return await Result<int>.SuccessAsync(_team.Id, "Team Updated.");
+                return await Result<int>.SuccessAsync(_team.Id, "Team_Updated");
             }
             else
             {
-                return await Result<int>.FailureAsync("Team Not Found.");
+                return await Result<int>.FailureAsync("Team_Not_Found");
             }
         }
     }

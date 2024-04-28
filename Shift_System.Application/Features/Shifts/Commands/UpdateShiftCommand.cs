@@ -37,11 +37,11 @@ namespace Shift_System.Application.Features.Shifts.Commands
 
                 await _unitOfWork.Save(cancellationToken);
 
-                return await Result<int>.SuccessAsync(_shift.Id, "Shift Updated.");
+                return await Result<int>.SuccessAsync(_shift.Id, "Shift_Updated");
             }
             else
             {
-                return await Result<int>.FailureAsync("Shift Not Found.");
+                return await Result<int>.FailureAsync("Shift_Not_Found");
             }
         }
     }

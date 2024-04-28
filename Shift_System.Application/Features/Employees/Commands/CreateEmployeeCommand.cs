@@ -53,7 +53,7 @@ namespace Shift_System.Application.Features.Employees.Commands
 
             await _unitOfWork.Save(cancellationToken);
 
-            return await Result<int>.SuccessAsync(employee.Id, "Employee Created.");
+            return await Result<int>.SuccessAsync(employee.Id, "Employee_Created");
         }
     }
 

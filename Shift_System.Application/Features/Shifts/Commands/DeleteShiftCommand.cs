@@ -39,11 +39,11 @@ namespace Shift_System.Application.Features.Shifts.Commands
 
                 await _unitOfWork.Save(cancellationToken);
 
-                return await Result<int>.SuccessAsync(_shiftList.Id, "ShiftList Deleted");
+                return await Result<int>.SuccessAsync(_shiftList.Id, "ShiftList_Deleted");
             }
             else
             {
-                return await Result<int>.FailureAsync("ShiftList Not Found.");
+                return await Result<int>.FailureAsync("ShiftList_Not_Found");
             }
         }
     }

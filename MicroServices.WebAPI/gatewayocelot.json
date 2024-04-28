@@ -1,5 +1,7 @@
 {
    "Routes": [
+
+      //auth login & register
       {
          "UpstreamPathTemplate": "/api/auth/login",
          "UpstreamHttpMethod": [ "Post" ],
@@ -13,6 +15,35 @@
          ]
       },
       {
+         "UpstreamPathTemplate": "/api/auth/registeration",
+         "UpstreamHttpMethod": [ "Post" ],
+         "DownstreamScheme": "https",
+         "DownstreamPathTemplate": "/api/auth/registeration",
+         "DownstreamHostAndPorts": [
+            {
+               "Host": "localhost",
+               "Port": 7157
+            }
+         ]
+      },
+
+      //shifts
+      {
+         "UpstreamPathTemplate": "/api/shift",
+         "UpstreamHttpMethod": [ "Get", "Post", "Delete", "Update" ],
+         "DownstreamScheme": "https",
+         "DownstreamPathTemplate": "/api/shift",
+         "DownstreamHostAndPorts": [
+            {
+               "Host": "localhost",
+               "Port": 7157
+            }
+         ]
+      },
+
+
+      //eski örnekler
+      {
          "UpstreamPathTemplate": "/api/shoes",
          "UpstreamHttpMethod": [ "Get" ],
          "DownstreamPathTemplate": "/api/shoes",
@@ -22,11 +53,11 @@
                "Host": "localhost",
                "Port": 7116
             }
-         ]
-         //"AuthenticationOptions": {
-         //   "AuthenticationProviderKey": "Bearer",
-         //   "AllowedScopes": [ "shoe.read" ]
-         //}
+         ],
+         "AuthenticationOptions": {
+            "AuthenticationProviderKey": "Bearer",
+            "AllowedScopes": [ "shoe.read" ]
+         }
       },
       {
          "UpstreamPathTemplate": "/api/shoes/{id}",
@@ -38,14 +69,16 @@
                "Host": "localhost",
                "Port": 7116
             }
-         ]
-         //"AuthenticationOptions": {
-         //   "AuthenticationProviderKey": "Bearer"
-         //},
-         //"RouteClaimsRequirement": {
-         //   "Role": "Administrator"
-         //}
+         ],
+         "AuthenticationOptions": {
+            "AuthenticationProviderKey": "Bearer"
+         },
+         "RouteClaimsRequirement": {
+            "Role": "Administrator"
+         }
       }
+
+
    ],
    "GlobalConfiguration": {
       "BaseUrl": "https://localhost:7107"

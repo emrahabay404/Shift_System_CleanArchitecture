@@ -37,7 +37,7 @@ namespace Shift_System.Application.Features.Assignments.Commands
          await _unitOfWork.Repository<AssignList>().AddAsync(_assign);
          _assign.AddDomainEvent(new AssignCreatedEvent(_assign));
          await _unitOfWork.Save(cancellationToken);
-         return await Result<int>.SuccessAsync(_assign.Id, "Assign Created.");
+         return await Result<int>.SuccessAsync(_assign.Id, "Assign_Created");
       }
 
    }
