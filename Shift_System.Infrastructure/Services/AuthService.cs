@@ -69,7 +69,8 @@ namespace Shift_System.Infrastructure.Services
 
          foreach (var userRole in userRoles)
          {
-            authClaims.Add(new Claim(ClaimTypes.Role, userRole));
+            //authClaims.Add(new Claim(ClaimTypes.Role, userRole));
+            authClaims.Add(new Claim("Role", userRole));
          }
 
          string token = GenerateToken(authClaims);

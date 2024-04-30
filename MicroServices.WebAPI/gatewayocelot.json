@@ -30,7 +30,7 @@
       //shifts
       {
          "UpstreamPathTemplate": "/api/shift",
-         "UpstreamHttpMethod": [ "Get", "Post", "Delete", "Update" ],
+         "UpstreamHttpMethod": [ "Get", "Post", "Delete", "Put" ],
          "DownstreamScheme": "https",
          "DownstreamPathTemplate": "/api/shift",
          "DownstreamHostAndPorts": [
@@ -40,7 +40,8 @@
             }
          ],
          "AuthenticationOptions": {
-            "AuthenticationProviderKey": "Bearer"
+            "AuthenticationProviderKey": "Bearer",
+            "AllowedScopes": []
          },
          "RouteClaimsRequirement": {
             "Role": "User"
@@ -50,7 +51,7 @@
       //Products
       {
          "UpstreamPathTemplate": "/api/products",
-         "UpstreamHttpMethod": [ "Get", "Post", "Delete", "Update" ],
+         "UpstreamHttpMethod": [ "Get", "Post", "Delete", "Put" ],
          "DownstreamScheme": "https",
          "DownstreamPathTemplate": "/api/products",
          "DownstreamHostAndPorts": [
@@ -60,7 +61,8 @@
             }
          ],
          "AuthenticationOptions": {
-            "AuthenticationProviderKey": "Bearer"
+            "AuthenticationProviderKey": "Bearer",
+            "AllowedScopes": []
          },
          "RouteClaimsRequirement": {
             "Role": "Admin"
