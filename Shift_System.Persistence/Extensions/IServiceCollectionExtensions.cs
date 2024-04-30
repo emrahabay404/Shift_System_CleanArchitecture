@@ -2,7 +2,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Shift_System.Application.Extensions;
 using Shift_System.Application.Interfaces.Repositories;
 using Shift_System.Domain.Entities;
 using Shift_System.Persistence.Contexts;
@@ -14,14 +13,14 @@ namespace Shift_System.Persistence.Extensions
    {
       public static void AddPersistenceLayer(this IServiceCollection services, IConfiguration configuration)
       {
-         //services.AddMappings();
          services.AddDbContext(configuration);
          services.AddRepositories();
       }
 
       public static void AddDbContext(this IServiceCollection services, IConfiguration configuration)
       {
-         var connectionString = configuration.GetConnectionString("Shift_Db_Conn");
+         //var connectionString = configuration.GetConnectionString("Shift_Db_Conn");
+         var connectionString = "Server=MYPC\\SQLEXPRESS;Database=Shift_Db33;Trusted_Connection=true;TrustServerCertificate=True;";
          services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(connectionString,
    builder => builder.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName)));
 
@@ -29,7 +28,7 @@ namespace Shift_System.Persistence.Extensions
                          .AddEntityFrameworkStores<ApplicationDbContext>()
                          .AddDefaultTokenProviders();
 
-         services.AddJwtAuthentication();
+         //services.AddJwtAuthentication();
       }
 
       private static void AddRepositories(this IServiceCollection services)

@@ -12,6 +12,8 @@ builder.Services.AddApplicationLayer();
 builder.Services.AddInfrastructureLayer();
 builder.Services.AddPersistenceLayer(builder.Configuration);
 
+builder.Services.AddJwtAuthentication();
+
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
@@ -20,8 +22,9 @@ if (app.Environment.IsDevelopment())
    app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
+app.UseAuthentication();
 app.UseAuthorization();
+
 app.MapControllers();
 app.Run();
 public partial class Program { }

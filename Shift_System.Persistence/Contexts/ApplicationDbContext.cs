@@ -23,6 +23,7 @@ namespace Shift_System.Persistence.Contexts
       public DbSet<ShiftList> ShiftLists => Set<ShiftList>();
       public DbSet<AssignList> AssignLists => Set<AssignList>();
       public DbSet<TeamEmployee> TeamEmployees => Set<TeamEmployee>();
+      public DbSet<Product> Products => Set<Product>();
 
       protected override void OnModelCreating(ModelBuilder modelBuilder)
       {

@@ -4,7 +4,6 @@ using Microsoft.IdentityModel.Tokens;
 using Shift_System.Application.Interfaces;
 using Shift_System.Domain.Entities;
 using Shift_System.Domain.Entities.Models;
-using Shift_System.Shared;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
@@ -15,13 +14,13 @@ namespace Shift_System.Infrastructure.Services
    {
       private readonly UserManager<AppUser> userManager;
       private readonly RoleManager<IdentityRole> roleManager;
-      private readonly IConfiguration _configuration;
+      private readonly IConfiguration _Configuration;
 
       public AuthService(UserManager<AppUser> userManager, RoleManager<IdentityRole> roleManager, IConfiguration configuration)
       {
          this.userManager = userManager;
          this.roleManager = roleManager;
-         _configuration = configuration;
+         _Configuration = configuration;
       }
 
       public async Task<(int, string)> Registeration(RegistrationModel model, string role)
@@ -30,7 +29,7 @@ namespace Shift_System.Infrastructure.Services
          if (userExists != null)
             return (0, "User already exists");
 
-         AppUser user = new AppUser()
+         AppUser user = new()
          {
             Email = model.Email,
             SecurityStamp = Guid.NewGuid().ToString(),
@@ -83,9 +82,8 @@ namespace Shift_System.Infrastructure.Services
          var tokenDescriptor = new SecurityTokenDescriptor
          {
             Issuer = "https://localhost:7157",
-            //Audience = _configuration["JWT:ValidAudience"],
             Audience = "https://localhost:7157",
-            Expires = DateTime.UtcNow.AddMinutes(1000),
+            Expires = DateTime.UtcNow.AddMinutes(10000),
             SigningCredentials = new SigningCredentials(authSigningKey, SecurityAlgorithms.HmacSha256),
             Subject = new ClaimsIdentity(claims)
          };

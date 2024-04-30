@@ -21,4 +21,9 @@
     <ProjectReference Include="..\Shift_System.Shared\Shift_System.Shared.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Features\Products\Events\" />
+    <Folder Include="Features\Products\Commands\" />
+  </ItemGroup>
+
 </Project>

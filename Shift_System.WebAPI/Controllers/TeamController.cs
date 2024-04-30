@@ -1,7 +1,6 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Shift_System.Application.Features.Teams;
 using Shift_System.Application.Features.Teams.Commands;
 using Shift_System.Application.Features.Teams.Queries;
 using Shift_System.Shared;
@@ -9,9 +8,8 @@ using System.Data;
 
 namespace Shift_System.WebAPI.Controllers
 {
-    [Route("api/[controller]")]
-   [ApiController]
-   [Authorize(Roles = "Admin")]
+   [Route("api/[controller]")]
+   [ApiController] 
    public class TeamController : ApiControllerBase
    {
 

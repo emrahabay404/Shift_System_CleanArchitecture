@@ -38,49 +38,38 @@
                "Host": "localhost",
                "Port": 7157
             }
-         ]
-      },
-
-
-      //eski örnekler
-      {
-         "UpstreamPathTemplate": "/api/shoes",
-         "UpstreamHttpMethod": [ "Get" ],
-         "DownstreamPathTemplate": "/api/shoes",
-         "DownstreamScheme": "https",
-         "DownstreamHostAndPorts": [
-            {
-               "Host": "localhost",
-               "Port": 7116
-            }
          ],
          "AuthenticationOptions": {
-            "AuthenticationProviderKey": "Bearer",
-            "AllowedScopes": [ "shoe.read" ]
+            "AuthenticationProviderKey": "Bearer"
+         },
+         "RouteClaimsRequirement": {
+            "Role": "User"
          }
       },
+
+      //Products
       {
-         "UpstreamPathTemplate": "/api/shoes/{id}",
-         "UpstreamHttpMethod": [ "Delete" ],
-         "DownstreamPathTemplate": "/api/shoes/{id}",
+         "UpstreamPathTemplate": "/api/products",
+         "UpstreamHttpMethod": [ "Get", "Post", "Delete", "Update" ],
          "DownstreamScheme": "https",
+         "DownstreamPathTemplate": "/api/products",
          "DownstreamHostAndPorts": [
             {
                "Host": "localhost",
-               "Port": 7116
+               "Port": 7113
             }
          ],
          "AuthenticationOptions": {
             "AuthenticationProviderKey": "Bearer"
          },
          "RouteClaimsRequirement": {
-            "Role": "Administrator"
+            "Role": "Admin"
          }
       }
-
 
    ],
    "GlobalConfiguration": {
       "BaseUrl": "https://localhost:7107"
    }
+
 }

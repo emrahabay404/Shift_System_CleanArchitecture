@@ -32,5 +32,3 @@ namespace Shift_System.Application.Features.Shifts.Queries
 
     }
 }
-
-
