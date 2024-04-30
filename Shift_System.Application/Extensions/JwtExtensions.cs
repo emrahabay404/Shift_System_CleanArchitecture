@@ -22,7 +22,7 @@ namespace Shift_System.Application.Extensions
             options.TokenValidationParameters = new TokenValidationParameters
             {
                ValidateIssuer = true,
-               ValidIssuer = "https://localhost:7157", 
+               ValidIssuer = "https://localhost:7157",
                ValidateAudience = false,
                ValidateIssuerSigningKey = true,
                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(SecurityKey))
