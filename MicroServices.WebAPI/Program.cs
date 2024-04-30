@@ -13,6 +13,7 @@ var app = builder.Build();
 
 await app.UseOcelot();
 
+app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
 

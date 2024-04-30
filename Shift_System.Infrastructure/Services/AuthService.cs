@@ -84,7 +84,7 @@ namespace Shift_System.Infrastructure.Services
          {
             Issuer = "https://localhost:7157",
             Audience = "https://localhost:7157",
-            Expires = DateTime.UtcNow.AddMinutes(10000),
+            Expires = DateTime.UtcNow.AddMinutes(5),
             SigningCredentials = new SigningCredentials(authSigningKey, SecurityAlgorithms.HmacSha256),
             Subject = new ClaimsIdentity(claims)
          };

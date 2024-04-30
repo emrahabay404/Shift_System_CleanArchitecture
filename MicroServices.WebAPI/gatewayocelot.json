@@ -27,16 +27,16 @@
          ]
       },
 
-      //shifts
+      //team_employees
       {
-         "UpstreamPathTemplate": "/api/shift",
+         "UpstreamPathTemplate": "/api/teams_employees",
          "UpstreamHttpMethod": [ "Get", "Post", "Delete", "Put" ],
          "DownstreamScheme": "https",
-         "DownstreamPathTemplate": "/api/shift",
+         "DownstreamPathTemplate": "/api/teams_employees",
          "DownstreamHostAndPorts": [
             {
                "Host": "localhost",
-               "Port": 7157
+               "Port": 7054
             }
          ],
          "AuthenticationOptions": {
@@ -44,11 +44,55 @@
             "AllowedScopes": []
          },
          "RouteClaimsRequirement": {
-            "Role": "User"
+            "Role": "Team_Employees_Role"
          }
       },
 
-      //Products
+      //Employees
+      {
+         "UpstreamPathTemplate": "/api/employees",
+         "UpstreamHttpMethod": [ "Get", "Post", "Delete", "Put" ],
+         "DownstreamScheme": "https",
+         "DownstreamPathTemplate": "/api/employees",
+         "DownstreamHostAndPorts": [
+            {
+               "Host": "localhost",
+               "Port": 7205
+            }
+         ],
+         "AuthenticationOptions": {
+            "AuthenticationProviderKey": "Bearer",
+            "AllowedScopes": []
+         },
+         "RouteClaimsRequirement": {
+            "Role": "Employees_Role"
+         }
+      },
+
+
+      //assignments
+      {
+         "UpstreamPathTemplate": "/api/assignments",
+         "UpstreamHttpMethod": [ "Get", "Post", "Delete", "Put" ],
+         "DownstreamScheme": "https",
+         "DownstreamPathTemplate": "/api/assignments",
+         "DownstreamHostAndPorts": [
+            {
+               "Host": "localhost",
+               "Port": 7027
+            }
+         ],
+         "AuthenticationOptions": {
+            "AuthenticationProviderKey": "Bearer",
+            "AllowedScopes": []
+         },
+         "RouteClaimsRequirement": {
+            "Role": "Assignments_Role"
+         }
+      },
+
+
+      //products
       {
          "UpstreamPathTemplate": "/api/products",
          "UpstreamHttpMethod": [ "Get", "Post", "Delete", "Put" ],
@@ -65,9 +109,52 @@
             "AllowedScopes": []
          },
          "RouteClaimsRequirement": {
-            "Role": "Admin"
+            "Role": "Products_Role"
+         }
+      },
+
+      //shifts
+      {
+         "UpstreamPathTemplate": "/api/shifts",
+         "UpstreamHttpMethod": [ "Get", "Post", "Delete", "Put" ],
+         "DownstreamScheme": "https",
+         "DownstreamPathTemplate": "/api/shifts",
+         "DownstreamHostAndPorts": [
+            {
+               "Host": "localhost",
+               "Port": 7150
+            }
+         ],
+         "AuthenticationOptions": {
+            "AuthenticationProviderKey": "Bearer",
+            "AllowedScopes": []
+         },
+         "RouteClaimsRequirement": {
+            "Role": "Shifts_Role"
+         }
+      },
+
+      //Teams
+      {
+         "UpstreamPathTemplate": "/api/teams",
+         "UpstreamHttpMethod": [ "Get", "Post", "Delete", "Put" ],
+         "DownstreamScheme": "https",
+         "DownstreamPathTemplate": "/api/teams",
+         "DownstreamHostAndPorts": [
+            {
+               "Host": "localhost",
+               "Port": 7161
+            }
+         ],
+         "AuthenticationOptions": {
+            "AuthenticationProviderKey": "Bearer",
+            "AllowedScopes": []
+         },
+         "RouteClaimsRequirement": {
+            "Role": "Teams_Role"
          }
       }
+
 
    ],
    "GlobalConfiguration": {

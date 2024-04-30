@@ -1,20 +1,18 @@
 ﻿using MediatR;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Shift_System.Application.Features.Assignments.Commands;
 using Shift_System.Application.Features.Assignments.Queries;
 using Shift_System.Shared;
-using System.Data;
 
-namespace Shift_System.WebAPI.Controllers
+namespace Micro.Assignments.API.Controllers
 {
    [Route("api/[controller]")]
-   [ApiController] 
-   public class AssignmentController : ApiControllerBase
+   [ApiController]
+   public class AssignmentsController : ControllerBase
    {
       private readonly IMediator _mediator;
 
-      public AssignmentController(IMediator mediator)
+      public AssignmentsController(IMediator mediator)
       {
          _mediator = mediator;
       }

@@ -1,15 +1,14 @@
 ﻿using MediatR;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Shift_System.Application.Features.Teams_Employees.Commands;
 using Shift_System.Application.Features.Teams_Employees.Queries;
 using Shift_System.Shared;
 
-namespace Shift_System.WebAPI.Controllers
+namespace Micro.Teams_Employees.API.Controllers
 {
    [Route("api/[controller]")]
-   [ApiController] 
-   public class Teams_EmployeesController : ApiControllerBase
+   [ApiController]
+   public class Teams_EmployeesController : ControllerBase
    {
       private readonly IMediator _mediator;
 

@@ -1,20 +1,18 @@
 ﻿using MediatR;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Shift_System.Application.Features.Shifts.Commands;
 using Shift_System.Application.Features.Shifts.Queries;
 using Shift_System.Shared;
-using System.Data;
 
-namespace Shift_System.WebAPI.Controllers
+namespace Micro.Shifts.API.Controllers
 {
    [Route("api/[controller]")]
-   [ApiController] 
-   public class ShiftController : ApiControllerBase
+   [ApiController]
+   public class ShiftsController : ControllerBase
    {
       private readonly IMediator _mediator;
 
-      public ShiftController(IMediator mediator)
+      public ShiftsController(IMediator mediator)
       {
          _mediator = mediator;
       }

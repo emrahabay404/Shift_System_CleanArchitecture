@@ -4,8 +4,7 @@ using Shift_System.Persistence.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddControllers();
-builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddControllers(); 
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddApplicationLayer();
@@ -20,7 +19,7 @@ if (app.Environment.IsDevelopment())
    app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
+
 app.UseAuthorization();
 app.MapControllers();
 app.Run();

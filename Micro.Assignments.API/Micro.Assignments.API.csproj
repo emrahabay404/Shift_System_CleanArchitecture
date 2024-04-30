@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MediatR" Version="12.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="7.0.7" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Shift_System.Application\Shift_System.Application.csproj" />
+    <ProjectReference Include="..\Shift_System.Infrastructure\Shift_System.Infrastructure.csproj" />
+    <ProjectReference Include="..\Shift_System.Persistence\Shift_System.Persistence.csproj" />
+    <ProjectReference Include="..\Shift_System.Shared\Shift_System.Shared.csproj" />
+  </ItemGroup>
+
+</Project>
