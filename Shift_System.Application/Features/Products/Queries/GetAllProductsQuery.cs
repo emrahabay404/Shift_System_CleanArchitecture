@@ -27,7 +27,7 @@ namespace Shift_System.Application.Features.Products.Queries
                 .ProjectTo<GetAllProductsDto>(_mapper.ConfigurationProvider)
                 .ToListAsync(cancellationToken);
 
-         return await Result<List<GetAllProductsDto>>.SuccessAsync(_Products);
+         return await Result<List<GetAllProductsDto>>.SuccessAsync(_Products, "Products_Listed");
       }
 
    }

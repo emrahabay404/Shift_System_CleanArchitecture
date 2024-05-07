@@ -27,8 +27,8 @@ namespace Shift_System.Application.Features.Shifts.Queries
                    .ProjectTo<GetAllShiftsDto>(_mapper.ConfigurationProvider)
                    .ToListAsync(cancellationToken);
 
-            return await Result<List<GetAllShiftsDto>>.SuccessAsync(_shifts);
-        }
+            return await Result<List<GetAllShiftsDto>>.SuccessAsync(_shifts, "ShiftList_Listed");
+      }
 
     }
 }

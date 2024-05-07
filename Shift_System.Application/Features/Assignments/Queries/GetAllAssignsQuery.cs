@@ -28,8 +28,8 @@ namespace Shift_System.Application.Features.Assignments.Queries
                    .ProjectTo<GetAllAssignsDto>(_mapper.ConfigurationProvider)
                    .ToListAsync(cancellationToken);
 
-            return await Result<List<GetAllAssignsDto>>.SuccessAsync(_Assigns);
-        }
+            return await Result<List<GetAllAssignsDto>>.SuccessAsync(_Assigns, "AssignList_Listed");
+      }
     }
 }
 

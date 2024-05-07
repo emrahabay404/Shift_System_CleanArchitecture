@@ -27,7 +27,7 @@ namespace Shift_System.Application.Features.Employees.Queries
                    .ProjectTo<GetAllEmployeesDto>(_mapper.ConfigurationProvider)
                    .ToListAsync(cancellationToken);
 
-            return await Result<List<GetAllEmployeesDto>>.SuccessAsync(employees);
-        }
+            return await Result<List<GetAllEmployeesDto>>.SuccessAsync(employees, "Employees_Listed");
+      }
     }
 }
