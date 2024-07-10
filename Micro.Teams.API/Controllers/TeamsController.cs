@@ -6,7 +6,7 @@ using Shift_System.Shared;
 
 namespace Micro.Teams.API.Controllers
 {
-   [Route("api/[controller]")]
+    [Route("api/[controller]")]
    [ApiController]
    public class TeamsController : ControllerBase
    {

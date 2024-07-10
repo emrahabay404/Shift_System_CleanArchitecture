@@ -12,8 +12,8 @@ using Shift_System.Persistence.Contexts;
 namespace Shift_System.Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240425134236_Mig14114")]
-    partial class Mig14114
+    [Migration("20240529113424_Mig1")]
+    partial class Mig1
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -327,6 +327,45 @@ namespace Shift_System.Persistence.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Employees");
+                });
+
+            modelBuilder.Entity("Shift_System.Domain.Entities.Product", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Category")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("CreatedBy")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<float>("Price")
+                        .HasColumnType("real");
+
+                    b.Property<int>("Stock")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("UpdatedBy")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("UpdatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Products");
                 });
 
             modelBuilder.Entity("Shift_System.Domain.Entities.ShiftList", b =>

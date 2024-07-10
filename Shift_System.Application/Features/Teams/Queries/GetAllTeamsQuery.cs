@@ -5,11 +5,10 @@ using Microsoft.EntityFrameworkCore;
 using Shift_System.Application.Interfaces.Repositories;
 using Shift_System.Domain.Entities;
 using Shift_System.Shared;
-using System.IO;
 
 namespace Shift_System.Application.Features.Teams.Queries
 {
-   public record GetAllTeamsQuery : IRequest<Result<List<GetAllTeamsDto>>>;
+    public record GetAllTeamsQuery : IRequest<Result<List<GetAllTeamsDto>>>;
 
    internal class GetAllTeamsQueryHandler : IRequestHandler<GetAllTeamsQuery, Result<List<GetAllTeamsDto>>>
    {
