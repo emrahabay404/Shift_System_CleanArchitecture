@@ -1,9 +1,7 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Shift_System.Application.Extensions;
-using Shift_System.Domain.Entities;
 using Shift_System.Infrastructure.Extensions;
 using Shift_System.Persistence.Extensions;
 
@@ -17,28 +15,6 @@ builder.Services.AddSession();
 builder.Services.AddApplicationLayer();
 builder.Services.AddInfrastructureLayer();
 builder.Services.AddPersistenceLayer(builder.Configuration);
-
-//builder.Services.AddAuthentication(options =>
-//{
-//    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-//    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-//})
-//.AddJwtBearer("Bearer", options =>
-//{
-//    options.TokenValidationParameters = new TokenValidationParameters
-//    {
-//        ValidateIssuer = true,
-//        ValidateAudience = true,
-//        ValidateLifetime = true,
-//        ValidateIssuerSigningKey = true,
-//        //IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("")),
-//        //ValidIssuer = "https://localhost:7157",
-//        //ValidAudience = "https://localhost:7157"
-//        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["TokenOptions:SecurityKey"])),
-//        ValidIssuer = builder.Configuration["TokenOptions:Issuer"],
-//        ValidAudience = builder.Configuration["TokenOptions:Audience"],
-//    };
-//});
 
 builder.Services.AddMvc(config =>
 {
