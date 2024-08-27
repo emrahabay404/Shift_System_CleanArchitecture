@@ -4,7 +4,7 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Shift_System.Application.Interfaces.Repositories;
 using Shift_System.Domain.Entities;
-using Shift_System.Shared;
+using Shift_System.Shared.Helpers;
 
 namespace Shift_System.Application.Features.Teams.Queries
 {

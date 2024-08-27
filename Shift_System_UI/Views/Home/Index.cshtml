@@ -10,6 +10,7 @@
     <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
 </div>
 
+<button id="logoutbtn">çıkış yappppppp</button>
 
 @foreach (var item in Model)
 {
@@ -17,3 +18,28 @@
     <p>@item.TeamName</p>
 }
 
+
+@section Scripts {
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+
+            document.getElementById("logoutbtn").addEventListener("click", function () {
+                 
+                $.ajax({
+                    type: "GET",
+                    url: "/Auth/Logout", // assuming the Logout action is in the same controller as the button
+                    // async: true,
+                    success: function (data) {
+                        if (data == true) {
+                            window.location.href = "/Account/Login";
+                        }
+
+                    }
+                });
+            });
+
+
+        });
+    </script>
+}

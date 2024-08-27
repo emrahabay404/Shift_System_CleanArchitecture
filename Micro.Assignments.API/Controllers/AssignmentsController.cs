@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Shift_System.Application.Features.Assignments.Commands;
 using Shift_System.Application.Features.Assignments.Queries;
-using Shift_System.Shared;
+using Shift_System.Shared.Helpers;
 
 namespace Micro.Assignments.API.Controllers
 {

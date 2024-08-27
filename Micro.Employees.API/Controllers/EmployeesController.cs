@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Shift_System.Application.Features.Employees.Commands;
 using Shift_System.Application.Features.Employees.Queries;
-using Shift_System.Shared;
+using Shift_System.Shared.Helpers;
 
 namespace Micro.Employees.API.Controllers
 {

@@ -16,18 +16,18 @@ builder.Services.AddApplicationLayer();
 builder.Services.AddInfrastructureLayer();
 builder.Services.AddPersistenceLayer(builder.Configuration);
 
+//tokendaki deðere göre minute veriyor. API de kullanýyor burayý
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(x =>
+{
+    x.ExpireTimeSpan = TimeSpan.FromSeconds(10);
+    x.AccessDeniedPath = new PathString("/Login/PageDenied/");
+    x.LoginPath = "/Home/Index/";
+});
+
 builder.Services.AddMvc(config =>
 {
     var policy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
     config.Filters.Add(new AuthorizeFilter(policy));
-});
-
-builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(x =>
-{
-    //sistemdeki otantikyeyi 100 dk olarak ayarlar.
-    x.ExpireTimeSpan = TimeSpan.FromMinutes(5);
-    x.AccessDeniedPath = new PathString("/Login/PageDenied/");
-    x.LoginPath = "/Home/Index/";
 });
 
 builder.Services.AddMvc();

@@ -1,7 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Shift_System.Application.Features.Products.Queries;
-using Shift_System.Shared;
+using Shift_System.Shared.Helpers;
 
 namespace Micro.Products.API.Controllers
 {

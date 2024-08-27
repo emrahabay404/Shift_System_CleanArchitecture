@@ -3,7 +3,7 @@ using MediatR;
 using Shift_System.Application.Features.Assignments.Events;
 using Shift_System.Application.Interfaces.Repositories;
 using Shift_System.Domain.Entities;
-using Shift_System.Shared;
+using Shift_System.Shared.Helpers;
 
 namespace Shift_System.Application.Features.Assignments.Commands
 {

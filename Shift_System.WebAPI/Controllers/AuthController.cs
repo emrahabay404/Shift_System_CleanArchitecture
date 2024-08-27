@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Shift_System.Application.Features.Teams.Queries;
 using Shift_System.Application.Interfaces;
 using Shift_System.Domain.Entities.Models;
-using Shift_System.Shared;
+using Shift_System.Shared.Helpers;
 
 namespace Shift_System.WebAPI.Controllers
 {

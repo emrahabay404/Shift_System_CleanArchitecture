@@ -1,8 +1,10 @@
 ﻿using Shift_System.Shared.Interfaces;
 
-namespace Shift_System.Shared
+ 
+
+namespace Shift_System.Shared.Helpers
 {
-   public class Result<T> : IResult<T>
+    public class Result<T> : IResult<T>
    {
       public List<string> Messages { get; set; } = new List<string>();
 

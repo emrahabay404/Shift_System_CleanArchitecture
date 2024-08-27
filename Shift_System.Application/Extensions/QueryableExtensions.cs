@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Shift_System.Shared;
+using Shift_System.Shared.Helpers;
 
 namespace Shift_System.Application.Extensions
 {

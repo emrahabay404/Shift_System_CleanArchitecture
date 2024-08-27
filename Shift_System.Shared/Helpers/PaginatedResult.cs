@@ -1,4 +1,4 @@
-﻿namespace Shift_System.Shared
+﻿namespace Shift_System.Shared.Helpers
 {
    public class PaginatedResult<T> : Result<T>
    {

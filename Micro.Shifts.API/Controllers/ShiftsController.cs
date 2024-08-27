@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Shift_System.Application.Features.Shifts.Commands;
 using Shift_System.Application.Features.Shifts.Queries;
-using Shift_System.Shared;
+using Shift_System.Shared.Helpers;
 
 namespace Micro.Shifts.API.Controllers
 {

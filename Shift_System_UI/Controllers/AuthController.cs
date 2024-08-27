@@ -33,18 +33,25 @@ namespace Shift_System_UI.Controllers
                 return Json(true);
                 //var user = await _userManager.FindByNameAsync(username);
                 //if (user.EmailConfirmed == true)
-                //{
-                //    return Json(true);
-                //}
-                //else
-                //{
-                //    return Json(false);
-                //}
             }
             else
             {
                 return Json(false);
             }
         }
+
+
+        [HttpGet]
+        [AllowAnonymous]
+        public async Task<IActionResult> Logout()
+        {
+            var result = _signInManager.SignOutAsync();
+            if (result.IsCompleted)
+            {
+                return Json(true);
+            }
+            return Json(false);
+        }
+
     }
 }

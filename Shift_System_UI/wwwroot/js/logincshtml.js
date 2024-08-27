@@ -22,7 +22,7 @@ $("#loginBtn").on("click", function () {
         //},
         success: function (funk) {
             if (funk == false) {
-                Swal.fire("Invalid credentials");
+                Swal.fire("Geçersiz kimlik bilgileri");
                 document.getElementById("spinnerlogin").style.display = "none";
             } else {
                 Swal.fire("Başarılı!");

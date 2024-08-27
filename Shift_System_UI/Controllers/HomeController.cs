@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Shift_System.Application.Features.Teams.Queries;
-using Shift_System.Shared;
+using Shift_System.Shared.Helpers;
 using Shift_System_UI.Models;
 using System.Diagnostics;
 
