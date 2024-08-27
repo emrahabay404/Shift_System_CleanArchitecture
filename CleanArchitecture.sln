@@ -37,6 +37,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Micro.Employees.API", "Micr
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Micro.Teams_Employees.API", "Micro.Teams_Employees.API\Micro.Teams_Employees.API.csproj", "{F4A5C110-9FEA-4525-A941-B70A257E9A03}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shift_System_UI", "Shift_System_UI\Shift_System_UI.csproj", "{BAA2A626-F3E4-45D9-8724-65D66884DC8F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -95,6 +97,10 @@ Global
 		{F4A5C110-9FEA-4525-A941-B70A257E9A03}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F4A5C110-9FEA-4525-A941-B70A257E9A03}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F4A5C110-9FEA-4525-A941-B70A257E9A03}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BAA2A626-F3E4-45D9-8724-65D66884DC8F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BAA2A626-F3E4-45D9-8724-65D66884DC8F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BAA2A626-F3E4-45D9-8724-65D66884DC8F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BAA2A626-F3E4-45D9-8724-65D66884DC8F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -113,6 +119,7 @@ Global
 		{FDF35726-D6E9-448D-B7A7-EBDE4DC60357} = {DEC1307A-81F6-4E0D-912F-F38A733DD48E}
 		{16BB9151-EF4E-4D13-A84A-123D5483F560} = {DEC1307A-81F6-4E0D-912F-F38A733DD48E}
 		{F4A5C110-9FEA-4525-A941-B70A257E9A03} = {DEC1307A-81F6-4E0D-912F-F38A733DD48E}
+		{BAA2A626-F3E4-45D9-8724-65D66884DC8F} = {DEC1307A-81F6-4E0D-912F-F38A733DD48E}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {5C098573-28C1-41A3-A6FC-A16A8AFDF33A}

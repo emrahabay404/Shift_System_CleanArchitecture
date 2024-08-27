@@ -1,0 +1,31 @@
+﻿@{
+    ViewData["Title"] = "Login";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    // Layout = null;
+}
+
+<link href="~/css/logincshtml.css" rel="stylesheet" />
+
+
+<div class="login">
+    <div class="login-triangle"></div>
+    <h2 class="login-header">MOST İDEA YAZILIM </h2>
+    <form id="loginForm" class="login-container">
+        <input value="string" type="text" id="username" name="username"><br><br>
+        <input value="Ea123123.*" type="password" id="password" name="password"><br><br>
+        <center>
+            <div style="display:none;width: 5rem; height: 5rem;" id="spinnerlogin" class="spinner-border  text-primary" role="status">
+                <span class="sr-only"></span>
+            </div>
+        </center>
+        <p><input type="button" id="loginBtn" value="Giriş Yap"></p>
+    </form>
+</div>
+
+
+@section Scripts {
+    <script src="~/js/logincshtml.js"></script>
+    @*    <script type="text/javascript">
+
+    </script> *@
+}
