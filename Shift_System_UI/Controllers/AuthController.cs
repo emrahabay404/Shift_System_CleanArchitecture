@@ -42,7 +42,7 @@ namespace Shift_System_UI.Controllers
 
 
         [HttpGet]
-        [AllowAnonymous]
+        [Authorize]
         public async Task<IActionResult> Logout()
         {
             var result = _signInManager.SignOutAsync();

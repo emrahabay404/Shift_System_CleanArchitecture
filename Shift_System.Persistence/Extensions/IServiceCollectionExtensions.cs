@@ -26,22 +26,15 @@ namespace Shift_System.Persistence.Extensions
             services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(connectionString,
       builder => builder.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName)));
 
-            //tokendaki değere göre minute veriyor. API de kullanıyor burayı
-            //services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(x =>
-            //{
-            //    x.ExpireTimeSpan = TimeSpan.FromSeconds(10);
-            //    x.AccessDeniedPath = new PathString("/Login/PageDenied/");
-            //    x.LoginPath = "/Home/Index/";
-            //});
             services.AddIdentity<AppUser, IdentityRole>(options =>
-            {
-                options.SignIn.RequireConfirmedAccount = false;
-                options.SignIn.RequireConfirmedEmail = false;
-                options.SignIn.RequireConfirmedPhoneNumber = false;
+ {
+     options.SignIn.RequireConfirmedAccount = false;
+     options.SignIn.RequireConfirmedEmail = false;
+     options.SignIn.RequireConfirmedPhoneNumber = false;
 
-            })
-                            .AddEntityFrameworkStores<ApplicationDbContext>()
-                            .AddDefaultTokenProviders();
+ })
+                 .AddEntityFrameworkStores<ApplicationDbContext>()
+                 .AddDefaultTokenProviders();
         }
 
         private static void AddRepositories(this IServiceCollection services)

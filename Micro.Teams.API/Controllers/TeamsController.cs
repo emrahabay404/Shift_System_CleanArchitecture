@@ -7,43 +7,43 @@ using Shift_System.Shared.Helpers;
 namespace Micro.Teams.API.Controllers
 {
     [Route("api/[controller]")]
-   [ApiController]
-   public class TeamsController : ControllerBase
-   {
-      private readonly IMediator _mediator;
+    [ApiController]
+    public class TeamsController : ControllerBase
+    {
+        private readonly IMediator _mediator;
 
-      public TeamsController(IMediator mediator)
-      {
-         _mediator = mediator;
-      }
+        public TeamsController(IMediator mediator)
+        {
+            _mediator = mediator;
+        }
 
-      [HttpGet]
-      public async Task<ActionResult<Result<List<GetAllTeamsDto>>>> Get()
-      {
-         return await _mediator.Send(new GetAllTeamsQuery());
-      }
+        [HttpGet]
+        public async Task<ActionResult<Result<List<GetAllTeamsDto>>>> Get()
+        {
+            return await _mediator.Send(new GetAllTeamsQuery());
+        }
 
-      [HttpPost]
-      public async Task<ActionResult<Result<int>>> Create(CreateTeamCommand command)
-      {
-         return await _mediator.Send(command);
-      }
+        [HttpPost]
+        public async Task<ActionResult<Result<int>>> Create(CreateTeamCommand command)
+        {
+            return await _mediator.Send(command);
+        }
 
-      [HttpPut("{id}")]
-      public async Task<ActionResult<Result<int>>> Update(int id, UpdateTeamsCommand command)
-      {
-         if (id != command.Id)
-         {
-            return BadRequest();
-         }
-         return await _mediator.Send(command);
-      }
+        [HttpPut("{id}")]
+        public async Task<ActionResult<Result<int>>> Update(int id, UpdateTeamsCommand command)
+        {
+            if (id != command.Id)
+            {
+                return BadRequest();
+            }
+            return await _mediator.Send(command);
+        }
 
-      [HttpDelete("{id}")]
-      public async Task<ActionResult<Result<int>>> Delete(int id)
-      {
-         return await _mediator.Send(new DeleteTeamsCommand(id));
-      }
+        [HttpDelete("{id}")]
+        public async Task<ActionResult<Result<int>>> Delete(int id)
+        {
+            return await _mediator.Send(new DeleteTeamsCommand(id));
+        }
 
-   }
+    }
 }
