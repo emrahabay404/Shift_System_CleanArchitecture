@@ -1,0 +1,6 @@
+﻿@model List<Shift_System_UI.Models.TeamResponse> // Doğrudan model olarak kullanmak daha iyi olur
+
+@foreach (var item in ViewBag.Teams as List<Shift_System_UI.Models.TeamResponse>)
+{
+    <p>@item.PersonelKodu</p>
+}

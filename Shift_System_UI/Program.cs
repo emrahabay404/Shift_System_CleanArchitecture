@@ -1,12 +1,56 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Authorization;
+using Microsoft.IdentityModel.Tokens;
 using Shift_System.Application.Extensions;
 using Shift_System.Infrastructure.Extensions;
 using Shift_System.Persistence.Extensions;
+using Shift_System_UI.Models;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddHttpClient(); // HttpClient servisini ekle
+// HttpClient servisini ekleyin
+// HttpClient servisini ekleyin
+builder.Services.AddHttpClient("ApiClient", client =>
+{
+    client.BaseAddress = new Uri(builder.Configuration["TokenOptions:BaseApiUrl"]); // API'nin temel adresini buraya yazýn
+    client.DefaultRequestHeaders.Add("Accept", "application/json");
+
+    // Örneðin, burada Bearer token'ý da ekleyebilirsiniz, ancak token dinamik olarak deðiþeceði için
+    // her bir istek öncesinde token'ý eklemek daha doðru olur
+});
+
+
+// JWT Authentication için gerekli olan servisleri ekleyin
+//builder.Services.AddAuthentication(options =>
+//{
+//    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+//    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+//})
+//.AddJwtBearer(options =>
+//{
+//    options.TokenValidationParameters = new TokenValidationParameters
+//    {
+//        ValidateIssuer = true,
+//        ValidateAudience = true,
+//        ValidateLifetime = true,
+//        ValidateIssuerSigningKey = true,
+//        ValidIssuer = builder.Configuration["TokenOptions:Issuer"],
+//        ValidAudience = builder.Configuration["TokenOptions:Audience"],
+//        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["TokenOptions:SecurityKey"]))
+//    };
+//});
+
+// HttpContextAccessor ve Session servisini ekleyin
+builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromMinutes(10); // Session süresi
+    options.Cookie.HttpOnly = true; // Cookie güvenlik ayarlarý
+    options.Cookie.IsEssential = true; // GDPR uyumluluðu için
+});
+builder.Services.AddScoped<ApiService>();
 
 // Add services to the container with authentication and authorization settings.
 builder.Services.AddControllersWithViews(config =>
@@ -27,8 +71,8 @@ builder.Services.ConfigureApplicationCookie(options =>
 {
     options.Cookie.HttpOnly = true;
     options.ExpireTimeSpan = TimeSpan.FromMinutes(10); // Oturum süresi: 10 dakika
-    options.LoginPath = "/Account/Login"; // Giriþ yolu
-    options.AccessDeniedPath = "/Auth/AccessDenied"; // Eriþim engellendi yolu
+    options.LoginPath = "/Account/Login/"; // Giriþ yolu
+    options.AccessDeniedPath = "/Auth/AccessDenied/"; // Eriþim engellendi yolu
     options.SlidingExpiration = true; // Her istekle birlikte süre uzatýlýr
 });
 
@@ -41,6 +85,8 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
+app.UseStatusCodePagesWithReExecute("/Auth/Page404", "?code={0}");
+app.UseSession(); // Session middleware'i kullanýma alýn
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
@@ -50,61 +96,3 @@ app.UseAuthorization(); // Authorization middleware should come after authentica
 app.MapDefaultControllerRoute();
 
 app.Run();
-
-
-
-
-
-
-
-
-
-//using Microsoft.AspNetCore.Authentication;
-//using Microsoft.AspNetCore.Authentication.Cookies;
-//using Microsoft.AspNetCore.Authorization;
-//using Microsoft.AspNetCore.Mvc.Authorization;
-//using Shift_System.Application.Extensions;
-//using Shift_System.Infrastructure.Extensions;
-//using Shift_System.Persistence.Extensions;
-//var builder = WebApplication.CreateBuilder(args);
-//// Add services to the container.
-//builder.Services.AddControllersWithViews();
-//builder.Services.AddSession();
-//builder.Services.AddApplicationLayer();
-//builder.Services.AddInfrastructureLayer();
-//builder.Services.AddPersistenceLayer(builder.Configuration);
-//// Kimlik doðrulama için cookie ayarlarýný yapýlandýrýn
-//builder.Services.ConfigureApplicationCookie(options =>
-//{
-//    options.Cookie.HttpOnly = true;
-//    options.ExpireTimeSpan = TimeSpan.FromMinutes(10); // Oturum süresi: 60 dakika
-//    options.LoginPath = "/Account/Login"; // Giriþ yolu
-//    options.AccessDeniedPath = "/Account/AccessDenied"; // Eriþim engellendi yolu
-//    options.SlidingExpiration = true; // Her istekle birlikte süre uzatýlýr
-//});
-//builder.Services.AddMvc(config =>
-//{
-//    var policy = new AuthorizationPolicyBuilder()
-//        .RequireAuthenticatedUser()
-//        .Build();
-//    config.Filters.Add(new AuthorizeFilter(policy));
-//});
-//var app = builder.Build();
-//// Configure the HTTP request pipeline.
-//if (!app.Environment.IsDevelopment())
-//{
-//    app.UseExceptionHandler("/Home/Error");
-//    app.UseHsts();
-//}
-//app.UseStatusCodePagesWithReExecute("/Login/Page404", "?code={0}");
-//app.UseHttpsRedirection();
-//app.UseStaticFiles();
-//app.MapDefaultControllerRoute();
-//app.UseSession();  // Ensure session is used before authentication
-//app.UseRouting();
-//app.UseAuthentication(); // Ensure authentication middleware is in the correct order
-//app.UseAuthorization(); // Authorization middleware should come after authentication
-//app.MapControllerRoute(
-//    name: "default",
-//    pattern: "{controller=Home}/{action=Index}/{id?}");
-//app.Run();

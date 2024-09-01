@@ -1,10 +1,8 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Shift_System.Application.Features.Teams.Queries;
 using Shift_System.Application.Interfaces;
 using Shift_System.Domain.Entities.Models;
-using Shift_System.Shared.Helpers;
 
 namespace Shift_System.WebAPI.Controllers
 {
@@ -25,6 +23,7 @@ namespace Shift_System.WebAPI.Controllers
 
         [HttpPost]
         [Route("login")]
+        [AllowAnonymous]
         public async Task<IActionResult> Login(LoginModel model)
         {
             try
@@ -45,6 +44,7 @@ namespace Shift_System.WebAPI.Controllers
 
         [HttpPost]
         [Route("registeration")]
+        [Authorize(Roles = "Yönetici")]
         public async Task<IActionResult> Register(RegistrationModel model)
         {
             try

@@ -1,4 +1,6 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Shift_System.Application.Extensions;
@@ -8,18 +10,28 @@ using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddControllers();
+// CORS yapýlandýrmasý
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowSpecificOrigins", builder =>
+    {
+        builder.WithOrigins("https://localhost:7280", "http://localhost:7280") // Web uygulamanýzýn URL'sini buraya yazýn
+               .AllowAnyHeader()
+               .AllowAnyMethod()
+               .AllowCredentials(); // Kimlik bilgileri gönderimine izin ver
+    });
+});
 
+// Uygulama servislerini ekleyin
 builder.Services.AddApplicationLayer();
 builder.Services.AddInfrastructureLayer();
 builder.Services.AddPersistenceLayer(builder.Configuration);
 
-//builder.Services.AddSwaggerGen();
+// Swagger için Bearer Token Yapýlandýrmasý
 builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new OpenApiInfo { Title = "MyCleanProject", Version = "v1" });
 
-    // "Authorize" butonu için Bearer token yapýlandýrmasý ekleyin
     c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
         Name = "Authorization",
@@ -46,14 +58,13 @@ builder.Services.AddSwaggerGen(c =>
     });
 });
 
-
-//builder.Services.AddJwtAuthentication();
+// JWT Authentication yapýlandýrmasý
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
     options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
 })
-.AddJwtBearer("Bearer", options =>
+.AddJwtBearer(options =>
 {
     options.TokenValidationParameters = new TokenValidationParameters
     {
@@ -61,17 +72,37 @@ builder.Services.AddAuthentication(options =>
         ValidateAudience = true,
         ValidateLifetime = true,
         ValidateIssuerSigningKey = true,
-        //IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("")),
-        //ValidIssuer = "https://localhost:7157",
-        //ValidAudience = "https://localhost:7157"
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["TokenOptions:SecurityKey"])),
         ValidIssuer = builder.Configuration["TokenOptions:Issuer"],
         ValidAudience = builder.Configuration["TokenOptions:Audience"],
+        ClockSkew = TimeSpan.Zero // Clock skew varsayýlanýný sýfýra ayarlayarak token geçerliliðini tam olarak kontrol eder
     };
+
+    // JWT doðrulama olaylarýný yönetmek ve loglamak için ekleyin
+    //options.Events = new JwtBearerEvents
+    //{
+    //    OnAuthenticationFailed = context =>
+    //    {
+    //        Console.WriteLine($"Authentication failed: {context.Exception.Message}");
+    //        return Task.CompletedTask;
+    //    },
+    //    OnTokenValidated = context =>
+    //    {
+    //        var userName = context.Principal.Identity?.Name ?? "Unknown";
+    //        Console.WriteLine($"Token validated for user: {userName}");
+    //        return Task.CompletedTask;
+    //    }
+    //};
 });
 
-//_configuration["JWT:ValidIssuer"],
-
+// Global Authorization Filter ekleyin
+builder.Services.AddControllers(config =>
+{
+    var policy = new AuthorizationPolicyBuilder()
+        .RequireAuthenticatedUser()
+        .Build();
+    config.Filters.Add(new AuthorizeFilter(policy));
+});
 
 var app = builder.Build();
 
@@ -80,13 +111,18 @@ if (app.Environment.IsDevelopment())
     app.UseDeveloperExceptionPage();
     app.UseSwagger();
     app.UseSwaggerUI();
-    //app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1"));
 }
 
-//app.UseRouting();
+// Middleware sýralamasý
+app.UseCors("AllowSpecificOrigins");
+
+app.UseRouting();
+
 app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+
 app.Run();
+
 public partial class Program { }

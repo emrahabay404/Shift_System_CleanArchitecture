@@ -1,26 +1,21 @@
 ﻿using Dapper;
 using MediatR;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Shift_System.Persistence.Contexts;
 
 namespace Shift_System.WebAPI.Controllers
 {
-    [Authorize(Roles = "Admin")]
     [Route("api/[controller]")]
     [ApiController]
     public class TeamsController : ApiControllerBase
     {
-
         private readonly IMediator _mediator;
         private readonly ILogger<AuthController> _logger;
-
-        public TeamsController(IMediator mediator, ILogger<AuthController> logger)
+        public TeamsController(ILogger<AuthController> logger, IMediator mediator)
         {
-            _mediator = mediator;
             _logger = logger;
+            _mediator = mediator;
         }
-
 
         [HttpGet]
         public ActionResult Index()

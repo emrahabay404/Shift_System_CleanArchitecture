@@ -30,7 +30,7 @@ namespace Shift_System.Persistence.Extensions
 
             services.AddIdentity<AppUser, IdentityRole>(options =>
  {
-     options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5); // 30 dakika
+     options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(10); // 30 dakika
      options.Lockout.MaxFailedAccessAttempts = 3;
      options.Lockout.AllowedForNewUsers = true;
 
