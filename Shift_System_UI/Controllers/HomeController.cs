@@ -1,6 +1,8 @@
 ﻿using Dapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Shift_System.Domain.Entities.Models;
+using Shift_System.Infrastructure.Services;
 using Shift_System.Persistence.Contexts;
 using Shift_System_UI.Models;
 using System.Diagnostics;
@@ -106,9 +108,21 @@ namespace Shift_System_UI.Controllers
         [HttpGet]
         public async Task<IActionResult> Deneme()
         {
-            var teams = await _apiService.GetTeamsAsync();
-            ViewBag.Teams = teams; // ViewBag'e doğrudan listeyi atayın
-            return View();
+            try
+            {
+                var teams = await _apiService.GetAsync<List<TeamResponse>>("/api/teams");
+                return View(teams); // Doğrudan View'e model olarak gönder
+            }
+            catch (Exception ex)
+            {
+                // Hata yönetimi
+                var errorViewModel = new ErrorViewModel
+                {
+                    RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier,
+                    Message = ex.Message // Hata mesajını modelde saklayın
+                };
+                return View("Error", errorViewModel);
+            }
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

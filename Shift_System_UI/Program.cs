@@ -1,12 +1,10 @@
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Authorization;
-using Microsoft.IdentityModel.Tokens;
 using Shift_System.Application.Extensions;
 using Shift_System.Infrastructure.Extensions;
+using Shift_System.Infrastructure.Services;
 using Shift_System.Persistence.Extensions;
 using Shift_System_UI.Models;
-using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -46,10 +44,12 @@ builder.Services.AddHttpClient("ApiClient", client =>
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 builder.Services.AddSession(options =>
 {
-    options.IdleTimeout = TimeSpan.FromMinutes(10); // Session süresi
-    options.Cookie.HttpOnly = true; // Cookie güvenlik ayarlarý
-    options.Cookie.IsEssential = true; // GDPR uyumluluðu için
+    options.IdleTimeout = TimeSpan.FromMinutes(15); // Oturum süresi, 15 dakika
+    options.Cookie.HttpOnly = true; // Sadece HTTP istekleriyle eriþim
+    options.Cookie.IsEssential = true; // GDPR uyumluluðu için gerekli
+    options.Cookie.SecurePolicy = CookieSecurePolicy.Always; // Sadece HTTPS üzerinden gönder
 });
+
 builder.Services.AddScoped<ApiService>();
 
 // Add services to the container with authentication and authorization settings.
@@ -69,12 +69,15 @@ builder.Services.AddPersistenceLayer(builder.Configuration);
 // Configure cookie settings for authentication
 builder.Services.ConfigureApplicationCookie(options =>
 {
-    options.Cookie.HttpOnly = true;
-    options.ExpireTimeSpan = TimeSpan.FromMinutes(10); // Oturum süresi: 10 dakika
+    options.Cookie.SameSite = SameSiteMode.Strict; // CSRF saldýrýlarýna karþý koruma
+    options.Cookie.HttpOnly = true; // XSS saldýrýlarýna karþý koruma
+    options.Cookie.SecurePolicy = CookieSecurePolicy.Always; // Sadece HTTPS üzerinden gönder
+    options.ExpireTimeSpan = TimeSpan.FromMinutes(15); // Kýsa tutmak test amaçlýdýr
     options.LoginPath = "/Account/Login/"; // Giriþ yolu
-    options.AccessDeniedPath = "/Auth/AccessDenied/"; // Eriþim engellendi yolu
-    options.SlidingExpiration = true; // Her istekle birlikte süre uzatýlýr
+    options.AccessDeniedPath = "/Auth/AccessDenied/"; // Eriþim engellendiði durumda yönlendirilecek yol
+    options.SlidingExpiration = true; // Her istekle birlikte süresini uzat
 });
+
 
 var app = builder.Build();
 

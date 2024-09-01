@@ -28,71 +28,92 @@ namespace Shift_System_UI.Controllers
             return View();
         }
 
+
         [HttpPost]
         public async Task<JsonResult> Login(string username, string password)
         {
+            // Kullanıcı adı ve şifre ile kimlik doğrulama yap
             var result = await _signInManager.PasswordSignInAsync(username, password, true, true);
-            if (result.Succeeded)
-            {
-                var _model = new LoginModel(username, password);
 
-                var content = new StringContent(JsonConvert.SerializeObject(_model), Encoding.UTF8, "application/json");
+            if (!result.Succeeded)
+            {
+                return Json(false);
+                //return Json(new { success = false, message = "Kullanıcı adı veya şifre hatalı." });
+            }
+
+            // Kimlik doğrulama başarılıysa, API'ye login isteği yap
+            var loginModel = new LoginModel(username, password);
+            var content = new StringContent(JsonConvert.SerializeObject(loginModel), Encoding.UTF8, "application/json");
+
+            try
+            {
                 var response = await _httpClient.PostAsync("/api/auth/login", content);
 
-                if (response.IsSuccessStatusCode)
+                if (!response.IsSuccessStatusCode)
                 {
-                    // Yanıtın düz metin JWT token olduğunu varsayarak doğrudan oku
-                    var token = await response.Content.ReadAsStringAsync();
-
-                    // Token'ın başında veya sonunda fazladan karakterler olup olmadığını kontrol edin ve temizleyin
-                    token = token.Trim(new char[] { '\"' }); // Eğer token çift tırnak içinde dönerse tırnakları temizler
-
-                    // Token'ı session'a kaydet
-                    _httpContextAccessor.HttpContext.Session.SetString("JWTToken", token);
-
-                    // Token'ı cookie'ye raw formatta kaydet
-                    _httpContextAccessor.HttpContext.Response.Cookies.Append("JWTToken", token, new CookieOptions
-                    {
-                        HttpOnly = true,
-                        Secure = true,
-                        SameSite = SameSiteMode.Strict
-                    });
-
-                    // Token'ın başarıyla kaydedilip kaydedilmediğini kontrol et
-                    var testToken = _httpContextAccessor.HttpContext.Session.GetString("JWTToken");
-                    if (string.IsNullOrEmpty(testToken))
-                    {
-                        throw new Exception("JWT Token saklama başarısız!");
-                    }
-
-                    return Json(true);
+                    return Json(false);
+                    //return Json(new { success = false, message = "Login API çağrısı başarısız." });
                 }
-                else
+
+                // Yanıtın düz metin JWT token olduğunu varsayarak doğrudan oku
+                var token = await response.Content.ReadAsStringAsync();
+
+                // Token'ı temizle (eğer çift tırnak içinde dönüyorsa)
+                token = token.Trim(new char[] { '\"' });
+
+                // Token'ı session'a kaydet
+                _httpContextAccessor.HttpContext.Session.SetString("JWTToken", token);
+
+                // Token'ı cookie'ye kaydet
+                _httpContextAccessor.HttpContext.Response.Cookies.Append("JWTToken", token, new CookieOptions
                 {
-                    return Json(new { success = false, message = "Login API çağrısı başarısız." });
+                    HttpOnly = true,
+                    Secure = true,
+                    SameSite = SameSiteMode.Strict
+                });
+
+                // Token'ın başarıyla kaydedilip kaydedilmediğini kontrol et
+                var testToken = _httpContextAccessor.HttpContext.Session.GetString("JWTToken");
+                if (string.IsNullOrEmpty(testToken))
+                {
+                    return Json(false);
+                    //throw new Exception("JWT Token saklama başarısız!");
                 }
+                return Json(true);
             }
-            else
+            catch (Exception ex)
             {
-                return Json(new { success = false, message = "Kullanıcı adı veya şifre hatalı." });
+                return Json(false);
+                //return Json(new { success = false, message = $"Bir hata oluştu: {ex.Message}" });
             }
         }
+
 
         [HttpGet]
         [Authorize]
-        public async Task<IActionResult> Logout()
+        public IActionResult Logout()
         {
-            // Kullanıcının kimlik doğrulamasını sonlandır
-            await _signInManager.SignOutAsync();
-            // Tüm çerezleri temizle
-            foreach (var cookie in Request.Cookies.Keys)
+            // Kullanıcıyı sistemden çıkart
+            var result = _signInManager.SignOutAsync();
+            if (result.IsCompleted)
             {
-                Response.Cookies.Delete(cookie);
+                // Oturumu temizle
+                _httpContextAccessor.HttpContext.Session.Clear();
+                // Tüm çerezleri temizle
+                if (_httpContextAccessor.HttpContext.Request.Cookies.Count > 0)
+                {
+                    var cookies = _httpContextAccessor.HttpContext.Request.Cookies.Keys;
+                    foreach (var cookie in cookies)
+                    {
+                        _httpContextAccessor.HttpContext.Response.Cookies.Delete(cookie);
+                    }
+                }
+                return Json(true);
             }
-            // Oturumu (session) temizle
-            HttpContext.Session.Clear();
-            return Json(true);
+            return Json(false);
         }
+
+
 
         [AllowAnonymous]
         [Route("/Auth/AccessDenied")]

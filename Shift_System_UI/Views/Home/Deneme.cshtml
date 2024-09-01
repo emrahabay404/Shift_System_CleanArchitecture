@@ -1,6 +1,13 @@
-﻿@model List<Shift_System_UI.Models.TeamResponse> // Doğrudan model olarak kullanmak daha iyi olur
+﻿@model List<Shift_System.Domain.Entities.Models.TeamResponse>
 
-@foreach (var item in ViewBag.Teams as List<Shift_System_UI.Models.TeamResponse>)
+@if (Model != null && Model.Any())
 {
-    <p>@item.PersonelKodu</p>
+    @foreach (var item in Model)
+    {
+        <p>@item.PersonelKodu</p>
+    }
+}
+else
+{
+    <p>No data available.</p>
 }
