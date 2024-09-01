@@ -23,11 +23,17 @@ namespace Shift_System.Persistence.Extensions
             //var connectionString = configuration.GetConnectionString("Ms_Sql_Conn");
             //var connectionString = "Server=MYPC\\SQLEXPRESS;Database=Shift_Db33;Trusted_Connection=true;TrustServerCertificate=True;";
             var connectionString = configuration["ConnectionStrings:Ms_Sql_Conn"];
+            //DapperContext.MyConnect = configuration.GetConnectionString(connectionString);
+            DapperContext.MyConnect = connectionString;
             services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(connectionString,
       builder => builder.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName)));
 
             services.AddIdentity<AppUser, IdentityRole>(options =>
  {
+     options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5); // 30 dakika
+     options.Lockout.MaxFailedAccessAttempts = 3;
+     options.Lockout.AllowedForNewUsers = true;
+
      options.SignIn.RequireConfirmedAccount = false;
      options.SignIn.RequireConfirmedEmail = false;
      options.SignIn.RequireConfirmedPhoneNumber = false;

@@ -1,44 +1,65 @@
-﻿@using Shift_System.Application.Features.Teams.Queries
-@model List<GetAllTeamsDto>
+﻿@model Shift_System_UI.Models.TeamsModel
 
-@{
-    ViewData["Title"] = "Home Page";
-}
+@* style="text-align: center;" *@
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="card">
+    <div class="card-header">
+        <h4 class="card-title">Home Index</h4>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table id="multi-filter-select" class="display table table-striped table-hover">
+                <thead>
+                    <tr>
+                        <th>Personel Kodu</th>
+                        <th>Adı</th>
+                        <th>Soyadı</th>
+                        <th>Takım</th>
+                        <th>Vardiya</th>
+                        <th>Başlangıç Tarihi</th>
+                        <th>Bitiş Tarihi</th>
+                        <th>İşlemler</th>
+                    </tr>
+                </thead>
+                <tfoot>
+                    <tr>
+                        <th>Personel Kodu</th>
+                        <th>Adı</th>
+                        <th>Soyadı</th>
+                        <th>Takım</th>
+                        <th>Vardiya</th>
+                        <th>Başlangıç Tarihi</th>
+                        <th>Bitiş Tarihi</th>
+                        <th>İşlemler</th>
+                    </tr>
+                </tfoot>
+                <tbody id="teamTableBody">
+                    @foreach (var item in Model.Teams)
+                    {
+                        <tr>
+                            <td>@item.PersonelKodu</td>
+                            <td>@item.PersonelAdi</td>
+                            <td>@item.PersonelSoyadi</td>
+                            <td>@item.TakimAdi</td>
+                            <td>@item.VardiyaAdi</td>
+                            <td>@item.BaslangicTarihi</td>
+                            <td>@item.BitisTarihi</td>
+                            <td>
+                                <div class="d-flex gap-2">
+                                    <button class="btn btn-primary">  <i class="fas fas-lg fa-edit"></i></button>
+                                    <button class="btn   btn-danger">  <i class="fas fas-lg fa-trash"></i></button>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
 </div>
 
-<button id="logoutbtn">çıkış yappppppp</button>
-
-@foreach (var item in Model)
-{
-
-    <p>@item.TeamName</p>
-}
 
 
 @section Scripts {
-    <script type="text/javascript">
-
-        $(document).ready(function () {
-
-            document.getElementById("logoutbtn").addEventListener("click", function () {
-
-                $.ajax({
-                    type: "GET",
-                    url: "/Auth/Logout", // assuming the Logout action is in the same controller as the button
-                    // async: true,
-                    success: function (data) {
-                        if (data == true) {
-                            window.location.href = "/Account/Login";
-                        }
-                    }
-                });
-            });
-
-
-        });
-    </script>
+    <script src="~/js/homeindexcshtml.js"></script>
 }

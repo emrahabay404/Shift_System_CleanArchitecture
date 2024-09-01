@@ -1,7 +1,8 @@
 ﻿
-//$(document).ready(function () {
-//    Swal.fire("SweetAlert2 is working!");
-//});
+$(document).ready(function () {
+    //Swal.fire("SweetAlert2 is working!");
+    //alert("ssaddsa");
+});
 
 
 $("#loginBtn").on("click", function () {
@@ -13,19 +14,20 @@ $("#loginBtn").on("click", function () {
     $.ajax({
         type: "POST",
         url: "/Auth/Login/",
-        //contentType: 'application/json',
-        //data: JSON.stringify(_data),
         data: _data,
-        //crossDomain: true,
-        //xhrFields: {
-        //    withCredentials: true
-        //},
         success: function (funk) {
             if (funk == false) {
-                Swal.fire("Geçersiz kimlik bilgileri");
+                swal("Kullanıcı | Şifre Hatalı", "Kalan giriş denemesi: 5", {
+                    icon: "warning",
+                    buttons: {
+                        confirm: {
+                            className: "btn btn-warning",
+                        },
+                    },
+                });
                 document.getElementById("spinnerlogin").style.display = "none";
             } else {
-                Swal.fire("Başarılı!");
+                //Swal.fire("Başarılı!");
                 //Swal.fire(funk);
                 //localStorage.setItem('token', funk);
                 window.location.href = "/Home/Index";

@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Shift_System.Application.Interfaces;
 using Shift_System.Domain.Entities;
 
 namespace Shift_System_UI.Controllers
@@ -10,11 +11,12 @@ namespace Shift_System_UI.Controllers
     {
         private readonly SignInManager<AppUser> _signInManager;
         private readonly UserManager<AppUser> _userManager;
-
-        public AuthController(SignInManager<AppUser> signInManager, UserManager<AppUser> userManager)
+        private readonly IAuthService _authService;
+        public AuthController(SignInManager<AppUser> signInManager, UserManager<AppUser> userManager, IAuthService authService)
         {
             _signInManager = signInManager;
             _userManager = userManager;
+            _authService = authService;
         }
 
         [HttpGet]
@@ -32,7 +34,7 @@ namespace Shift_System_UI.Controllers
             {
                 return Json(true);
                 //var user = await _userManager.FindByNameAsync(username);
-                //if (user.EmailConfirmed == true)
+                //if (user.EmailConfirmed == true){}
             }
             else
             {
@@ -43,7 +45,7 @@ namespace Shift_System_UI.Controllers
 
         [HttpGet]
         [Authorize]
-        public async Task<IActionResult> Logout()
+        public IActionResult Logout()
         {
             var result = _signInManager.SignOutAsync();
             if (result.IsCompleted)
