@@ -1,5 +1,4 @@
 ﻿using Dapper;
-using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Shift_System.Persistence.Contexts;
 
@@ -9,13 +8,6 @@ namespace Shift_System.WebAPI.Controllers
     [ApiController]
     public class TeamsController : ApiControllerBase
     {
-        private readonly IMediator _mediator;
-        private readonly ILogger<AuthController> _logger;
-        public TeamsController(ILogger<AuthController> logger, IMediator mediator)
-        {
-            _logger = logger;
-            _mediator = mediator;
-        }
 
         [HttpGet]
         public ActionResult Index()

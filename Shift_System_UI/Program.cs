@@ -4,11 +4,9 @@ using Shift_System.Application.Extensions;
 using Shift_System.Infrastructure.Extensions;
 using Shift_System.Infrastructure.Services;
 using Shift_System.Persistence.Extensions;
-using Shift_System_UI.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// HttpClient servisini ekleyin
 // HttpClient servisini ekleyin
 builder.Services.AddHttpClient("ApiClient", client =>
 {

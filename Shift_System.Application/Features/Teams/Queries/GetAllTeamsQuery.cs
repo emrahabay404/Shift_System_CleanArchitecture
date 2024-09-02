@@ -28,7 +28,7 @@ namespace Shift_System.Application.Features.Teams.Queries
                    .ToListAsync(cancellationToken);
 
             //return await Result<List<GetAllTeamsDto>>.SuccessAsync(_teams, "Teams_Listed");
-            return await Result<List<GetAllTeamsDto>>.SuccessAsync(_teams, Messages.Teams_Listed);
+            return await Result<List<GetAllTeamsDto>>.SuccessAsync(_teams, Messages.Teams_Listed_TR);
         }
 
     }

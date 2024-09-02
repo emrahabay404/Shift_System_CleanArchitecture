@@ -10,15 +10,11 @@ namespace Shift_System.WebAPI.Controllers
     [ApiController]
     public class AuthController : ApiControllerBase
     {
-        private readonly IAuthService _authService;
-        private readonly IMediator _mediator;
-        private readonly ILogger<AuthController> _logger;
+        private readonly IAuthService _authService; 
 
-        public AuthController(IAuthService authService, ILogger<AuthController> logger, IMediator mediator)
+        public AuthController(IAuthService authService)
         {
             _authService = authService;
-            _logger = logger;
-            _mediator = mediator;
         }
 
         [HttpPost]
@@ -37,7 +33,7 @@ namespace Shift_System.WebAPI.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex.Message);
+                //_logger.LogError(ex.Message);
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
         }
@@ -60,7 +56,7 @@ namespace Shift_System.WebAPI.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex.Message);
+                //_logger.LogError(ex.Message);
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
         }

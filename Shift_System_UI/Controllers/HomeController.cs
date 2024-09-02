@@ -14,10 +14,8 @@ namespace Shift_System_UI.Controllers
     {
         private readonly ApiService _apiService;
         private readonly IHttpClientFactory _httpClientFactory;
-        private readonly ILogger<HomeController> _logger;
-        public HomeController(ILogger<HomeController> logger, IHttpClientFactory httpClientFactory, ApiService apiService)
+        public HomeController(IHttpClientFactory httpClientFactory, ApiService apiService)
         {
-            _logger = logger;
             _httpClientFactory = httpClientFactory;
             _apiService = apiService;
         }

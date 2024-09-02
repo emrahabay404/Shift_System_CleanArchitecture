@@ -37,7 +37,7 @@ namespace Shift_System_UI.Controllers
 
             if (!result.Succeeded)
             {
-                return Json(false);
+                return Json("Kullanıcı adı veya şifre hatalı.");
                 //return Json(new { success = false, message = "Kullanıcı adı veya şifre hatalı." });
             }
 
@@ -47,11 +47,12 @@ namespace Shift_System_UI.Controllers
 
             try
             {
+
                 var response = await _httpClient.PostAsync("/api/auth/login", content);
 
                 if (!response.IsSuccessStatusCode)
                 {
-                    return Json(false);
+                    return Json("Login API çağrısı başarısız.");
                     //return Json(new { success = false, message = "Login API çağrısı başarısız." });
                 }
 
@@ -76,14 +77,14 @@ namespace Shift_System_UI.Controllers
                 var testToken = _httpContextAccessor.HttpContext.Session.GetString("JWTToken");
                 if (string.IsNullOrEmpty(testToken))
                 {
-                    return Json(false);
+                    return Json("JWT Token saklama başarısız!");
                     //throw new Exception("JWT Token saklama başarısız!");
                 }
                 return Json(true);
             }
             catch (Exception ex)
             {
-                return Json(false);
+                return Json($"Bir hata oluştu: {ex.Message}");
                 //return Json(new { success = false, message = $"Bir hata oluştu: {ex.Message}" });
             }
         }
@@ -112,8 +113,6 @@ namespace Shift_System_UI.Controllers
             }
             return Json(false);
         }
-
-
 
         [AllowAnonymous]
         [Route("/Auth/AccessDenied")]

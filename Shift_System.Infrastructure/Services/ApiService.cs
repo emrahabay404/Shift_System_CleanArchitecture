@@ -49,6 +49,26 @@ namespace Shift_System.Infrastructure.Services
             return JsonConvert.DeserializeObject<T>(jsonResult);
         }
 
+        public async Task<T> PutAsync<T>(string endpoint, object data)
+        {
+            AddAuthorizationHeader();
+
+            var content = new StringContent(JsonConvert.SerializeObject(data), Encoding.UTF8, "application/json");
+            var response = await _httpClient.PutAsync(endpoint, content);
+            await EnsureSuccessStatusCode(response);
+
+            var jsonResult = await response.Content.ReadAsStringAsync();
+            return JsonConvert.DeserializeObject<T>(jsonResult);
+        }
+
+        public async Task DeleteAsync(string endpoint)
+        {
+            AddAuthorizationHeader();
+
+            var response = await _httpClient.DeleteAsync(endpoint);
+            await EnsureSuccessStatusCode(response);
+        }
+
         private async Task EnsureSuccessStatusCode(HttpResponseMessage response)
         {
             if (!response.IsSuccessStatusCode)
@@ -57,6 +77,5 @@ namespace Shift_System.Infrastructure.Services
                 throw new Exception($"API hatası: {response.StatusCode} - {response.ReasonPhrase}. Detay: {errorMessage}");
             }
         }
-
     }
 }
