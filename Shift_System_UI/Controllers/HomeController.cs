@@ -14,6 +14,8 @@ namespace Shift_System_UI.Controllers
     {
         private readonly ApiService _apiService;
         private readonly IHttpClientFactory _httpClientFactory;
+        private static string apiTeamsEndpoint = "/api/teams"; // Statik değişken tanımı
+
         public HomeController(IHttpClientFactory httpClientFactory, ApiService apiService)
         {
             _httpClientFactory = httpClientFactory;
@@ -108,7 +110,7 @@ namespace Shift_System_UI.Controllers
         {
             try
             {
-                var teams = await _apiService.GetAsync<List<TeamResponse>>("/api/teams");
+                var teams = await _apiService.GetAsync<List<TeamResponse>>(apiTeamsEndpoint);
                 return View(teams); // Doğrudan View'e model olarak gönder
             }
             catch (Exception ex)
@@ -116,6 +118,7 @@ namespace Shift_System_UI.Controllers
                 // Hata yönetimi
                 var errorViewModel = new ErrorViewModel
                 {
+                    Url = apiTeamsEndpoint,
                     RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier,
                     Message = ex.Message // Hata mesajını modelde saklayın
                 };
@@ -124,9 +127,10 @@ namespace Shift_System_UI.Controllers
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
+        public IActionResult Error(ErrorViewModel model)
         {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            return View(new ErrorViewModel { Message = model.Message, RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            //return View(new ErrorViewModel { Message = h,RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
     }
 }

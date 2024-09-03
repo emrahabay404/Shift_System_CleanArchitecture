@@ -11,3 +11,72 @@ else
 {
     <p>No data available.</p>
 }
+
+@*
+@using Shift_System.Domain.Entities.Models
+@model TeamsModel
+
+
+<div class="card">
+    <div class="card-header">
+        <h4 class="card-title">Home Index</h4>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table id="multi-filter-select" class="display table table-striped table-hover">
+                <thead>
+                    <tr>
+                        <th>Personel Kodu</th>
+                        <th>Adı</th>
+                        <th>Soyadı</th>
+                        <th>Takım</th>
+                        <th>Vardiya</th>
+                        <th>Başlangıç Tarihi</th>
+                        <th>Bitiş Tarihi</th>
+                        <th>İşlemler</th>
+                    </tr>
+                </thead>
+                <tfoot>
+                    <tr>
+                        <th>Personel Kodu</th>
+                        <th>Adı</th>
+                        <th>Soyadı</th>
+                        <th>Takım</th>
+                        <th>Vardiya</th>
+                        <th>Başlangıç Tarihi</th>
+                        <th>Bitiş Tarihi</th>
+                        <th>İşlemler</th>
+                    </tr>
+                </tfoot>
+                <tbody id="teamTableBody">
+                    @foreach (var item in Model.Teams)
+                    {
+                        <tr>
+                            <td>@item.PersonelKodu</td>
+                            <td>@item.PersonelAdi</td>
+                            <td>@item.PersonelSoyadi</td>
+                            <td>@item.TakimAdi</td>
+                            <td>@item.VardiyaAdi</td>
+                            <td>@item.BaslangicTarihi</td>
+                            <td>@item.BitisTarihi</td>
+                            <td>
+                                <div class="d-flex gap-2">
+                                    <button class="btn btn-primary">  <i class="fas fas-lg fa-edit"></i></button>
+                                    <button class="btn   btn-danger">  <i class="fas fas-lg fa-trash"></i></button>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+
+@section Scripts {
+    <script src="~/js/homeindexcshtml.js"></script>
+}
+
+ *@
