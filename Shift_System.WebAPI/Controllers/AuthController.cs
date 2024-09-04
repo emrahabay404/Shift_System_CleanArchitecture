@@ -1,5 +1,4 @@
-﻿using MediatR;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Shift_System.Application.Interfaces;
 using Shift_System.Domain.Entities.Models;
@@ -10,7 +9,7 @@ namespace Shift_System.WebAPI.Controllers
     [ApiController]
     public class AuthController : ApiControllerBase
     {
-        private readonly IAuthService _authService; 
+        private readonly IAuthService _authService;
 
         public AuthController(IAuthService authService)
         {

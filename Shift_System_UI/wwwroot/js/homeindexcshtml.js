@@ -1,7 +1,5 @@
 ﻿$(document).ready(function () {
-    // $("#basic-datatables").DataTable({});
 
-    //alert("sdsad");
 
     $("#multi-filter-select").DataTable({
         pageLength: 5,
@@ -34,5 +32,6 @@
                 });
         },
     });
+
 
 });

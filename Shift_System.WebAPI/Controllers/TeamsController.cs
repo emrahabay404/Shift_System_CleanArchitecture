@@ -1,14 +1,23 @@
 ﻿using Dapper;
+using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Shift_System.Application.Features.Shifts.Queries;
 using Shift_System.Persistence.Contexts;
+using Shift_System.Shared.Helpers;
 
 namespace Shift_System.WebAPI.Controllers
 {
     [Route("api/[controller]")]
+    [AllowAnonymous]
     [ApiController]
     public class TeamsController : ApiControllerBase
     {
-
+        private readonly IMediator _mediator;
+        public TeamsController(IMediator mediator)
+        {
+            _mediator = mediator;
+        }
         [HttpGet]
         public ActionResult Index()
         {
@@ -40,6 +49,20 @@ namespace Shift_System.WebAPI.Controllers
 
                 return Ok(teamResponses);
             }
+        }
+
+
+        [HttpGet("paged")]
+        public async Task<ActionResult<PaginatedResult<GetAllShiftsDto>>> GetShiftsWithPagination([FromQuery] GetShiftsWithPaginationQuery query)
+        {
+            var validator = new GetShiftsWithPaginationValidator();
+            var result = validator.Validate(query);
+            if (result.IsValid)
+            {
+                return await _mediator.Send(query);
+            }
+            var errorMessages = result.Errors.Select(x => x.ErrorMessage).ToList();
+            return BadRequest(errorMessages);
         }
 
     }

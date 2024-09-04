@@ -1,9 +1,12 @@
 ﻿using Dapper;
+using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Shift_System.Application.Features.Shifts.Queries;
 using Shift_System.Domain.Entities.Models;
 using Shift_System.Infrastructure.Services;
 using Shift_System.Persistence.Contexts;
+using Shift_System.Shared.Helpers;
 using Shift_System_UI.Models;
 using System.Diagnostics;
 
@@ -14,12 +17,15 @@ namespace Shift_System_UI.Controllers
     {
         private readonly ApiService _apiService;
         private readonly IHttpClientFactory _httpClientFactory;
-        private static string apiTeamsEndpoint = "/api/teams"; // Statik değişken tanımı
+        private static string apiTeamsEndpoint = "/api/teams";
+        private readonly IMediator _mediator;
 
-        public HomeController(IHttpClientFactory httpClientFactory, ApiService apiService)
+
+        public HomeController(IHttpClientFactory httpClientFactory, ApiService apiService, IMediator mediator)
         {
             _httpClientFactory = httpClientFactory;
             _apiService = apiService;
+            _mediator = mediator;
         }
 
         [HttpGet]
@@ -56,74 +62,44 @@ namespace Shift_System_UI.Controllers
             return View(viewModel);
         }
 
+
         [HttpGet]
-        public JsonResult IndexMethod(int? pageNumber = 1, int? pageSize = 2)
+        public async Task<JsonResult> GetShiftsWithPagination([FromQuery] GetShiftsWithPaginationQuery query)
         {
-            using var _cnn = DapperContext.CreateConnection();
-            string query = @"
-    SELECT 
-        p.PersonelKodu,
-        p.Adi AS PersonelAdi,
-        p.Soyadi AS PersonelSoyadi,
-        t.TakimAdi,
-        v.VardiyaAdi,
-        v.BaslangicTarihi,
-        v.BitisTarihi
-    FROM 
-        Personel p
-    JOIN 
-        TakimPersonel tp ON p.PersonelID = tp.PersonelID
-    JOIN 
-        Takim t ON tp.TakimID = t.TakimID
-    JOIN 
-        VardiyaTakim vt ON t.TakimID = vt.TakimID
-    JOIN 
-        Vardiya v ON vt.VardiyaID = v.VardiyaID
-    ORDER BY 
-        p.PersonelKodu
-    OFFSET @Offset ROWS 
-    FETCH NEXT @PageSize ROWS ONLY;
-";
+            var validator = new GetShiftsWithPaginationValidator();
+            var result = validator.Validate(query);
 
-            // Varsayılan değerleri kullanarak null kontrolü yapalım
-            var currentPageNumber = pageNumber ?? 1;
-            var currentPageSize = pageSize ?? 250;
-
-            var offset = (currentPageNumber - 1) * currentPageSize;
-
-            var teamResponses = _cnn.Query<TeamResponse>(query, new { Offset = offset, PageSize = currentPageSize }).ToList();
-
-            var totalCountQuery = "SELECT COUNT(*) FROM Personel"; // Toplam kayıt sayısını almak için basit bir sorgu
-            var totalCount = _cnn.ExecuteScalar<int>(totalCountQuery);
-
-            var viewModel = new
+            if (result.IsValid)
             {
-                Teams = teamResponses,
-                TotalCount = totalCount
-            };
+                var data = await _mediator.Send(query);
+                return new JsonResult(data);
+            }
 
-            return Json(viewModel);
+            var errorMessages = result.Errors.Select(x => x.ErrorMessage).ToList();
+            return new JsonResult(new { errors = errorMessages }) { StatusCode = 400 };
         }
+
 
         [HttpGet]
         public async Task<IActionResult> Deneme()
         {
-            try
-            {
-                var teams = await _apiService.GetAsync<List<TeamResponse>>(apiTeamsEndpoint);
-                return View(teams); // Doğrudan View'e model olarak gönder
-            }
-            catch (Exception ex)
-            {
-                // Hata yönetimi
-                var errorViewModel = new ErrorViewModel
-                {
-                    Url = apiTeamsEndpoint,
-                    RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier,
-                    Message = ex.Message // Hata mesajını modelde saklayın
-                };
-                return View("Error", errorViewModel);
-            }
+            return View();
+            //try
+            //{
+            //    var teams = await _apiService.GetAsync<List<TeamResponse>>(apiTeamsEndpoint);
+            //    return View(teams); // Doğrudan View'e model olarak gönder
+            //}
+            //catch (Exception ex)
+            //{
+            //    // Hata yönetimi
+            //    var errorViewModel = new ErrorViewModel
+            //    {
+            //        Url = apiTeamsEndpoint,
+            //        RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier,
+            //        Message = ex.Message // Hata mesajını modelde saklayın
+            //    };
+            //    return View("Error", errorViewModel);
+            //}
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
