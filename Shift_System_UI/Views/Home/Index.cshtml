@@ -2,6 +2,30 @@
 @model TeamsModel
 
 
+<h2>Dosya Yükle</h2>
+
+<!-- Dosya Önizleme Alanı -->
+<div id="filePreview" class="mb-3">
+    <p>Dosya seçildiğinde burada önizleme gözükecek.</p>
+</div>
+
+<form id="uploadForm" enctype="multipart/form-data">
+    <div class="form-group">
+        <input type="file" style="width:20%" name="file" class="form-control" id="fileInput" accept="image/*,application/pdf" />
+        <button type="button" class="btn btn-primary" onclick="uploadFile()">Yükle</button>
+    </div>
+</form>
+
+<div id="message" class="mt-3"></div>
+
+
+<form id="deleteFileForm">
+    <input class="form-control" name="fileName" id="fileName" placeholder="Dosya adı ve uzantısı" />
+    <button type="submit" class="btn btn-danger">Sil</button>
+</form>
+
+
+
 <div class="card">
     <div class="card-header">
         <h4 class="card-title">Home Index</h4>
@@ -59,7 +83,35 @@
 </div>
 
 
-
 @section Scripts {
     <script src="~/js/homeindexcshtml.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#deleteFileForm').on('submit', function (e) {
+                e.preventDefault(); // Sayfanın yeniden yüklenmesini engelle
+
+                // Form verisini al
+                var fileName = $('#fileName').val();
+
+                // AJAX isteği
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("DeleteFile", "Home")', // Sunucuya istek yapılacak URL
+                    data: { fileName: fileName }, // Form verisi
+                    success: function (response) {
+                        // Başarılı olduğunda kullanıcıya mesaj göster
+                        if (response.success) {
+                            alert("Dosya başarıyla silindi!");
+                        } else {
+                            alert("Hata: " + response.message);
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        alert("Bir hata oluştu: " + error);
+                    }
+                });
+            });
+        });
+    </script>
+
 }

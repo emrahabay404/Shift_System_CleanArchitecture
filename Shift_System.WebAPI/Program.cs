@@ -4,11 +4,15 @@ using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Shift_System.Application.Extensions;
+using Shift_System.Application.Interfaces;
 using Shift_System.Infrastructure.Extensions;
+using Shift_System.Infrastructure.Services;
 using Shift_System.Persistence.Extensions;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
+
+
 
 // CORS yapýlandýrmasý
 builder.Services.AddCors(options =>
@@ -78,21 +82,21 @@ builder.Services.AddAuthentication(options =>
         ClockSkew = TimeSpan.Zero // Clock skew varsayýlanýný sýfýra ayarlayarak token geçerliliðini tam olarak kontrol eder
     };
 
-    // JWT doðrulama olaylarýný yönetmek ve loglamak için ekleyin
-    //options.Events = new JwtBearerEvents
-    //{
-    //    OnAuthenticationFailed = context =>
-    //    {
-    //        Console.WriteLine($"Authentication failed: {context.Exception.Message}");
-    //        return Task.CompletedTask;
-    //    },
-    //    OnTokenValidated = context =>
-    //    {
-    //        var userName = context.Principal.Identity?.Name ?? "Unknown";
-    //        Console.WriteLine($"Token validated for user: {userName}");
-    //        return Task.CompletedTask;
-    //    }
-    //};
+    //JWT doðrulama olaylarýný yönetmek ve loglamak için ekleyin
+    options.Events = new JwtBearerEvents
+    {
+        OnAuthenticationFailed = context =>
+        {
+            Console.WriteLine($"Authentication failed: {context.Exception.Message}");
+            return Task.CompletedTask;
+        },
+        OnTokenValidated = context =>
+        {
+            var userName = context.Principal.Identity?.Name ?? "Unknown";
+            Console.WriteLine($"Token validated for user: {userName}");
+            return Task.CompletedTask;
+        }
+    };
 });
 
 // Global Authorization Filter ekleyin
@@ -103,6 +107,7 @@ builder.Services.AddControllers(config =>
         .Build();
     config.Filters.Add(new AuthorizeFilter(policy));
 });
+
 
 var app = builder.Build();
 

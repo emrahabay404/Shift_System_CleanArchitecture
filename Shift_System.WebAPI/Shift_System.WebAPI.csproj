@@ -33,4 +33,8 @@
     <ProjectReference Include="..\Shift_System.Shared\Shift_System.Shared.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Uploads\" />
+  </ItemGroup>
+
 </Project>

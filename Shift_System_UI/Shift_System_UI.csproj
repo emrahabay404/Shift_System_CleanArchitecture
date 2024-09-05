@@ -44,4 +44,8 @@
     <ProjectReference Include="..\Shift_System.Persistence\Shift_System.Persistence.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\uploads\" />
+  </ItemGroup>
+
 </Project>

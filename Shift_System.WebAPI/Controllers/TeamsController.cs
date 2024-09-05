@@ -9,7 +9,7 @@ using Shift_System.Shared.Helpers;
 namespace Shift_System.WebAPI.Controllers
 {
     [Route("api/[controller]")]
-    [AllowAnonymous]
+    //[AllowAnonymous]
     [ApiController]
     public class TeamsController : ApiControllerBase
     {

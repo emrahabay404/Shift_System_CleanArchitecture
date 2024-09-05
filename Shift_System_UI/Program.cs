@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Shift_System.Application.Extensions;
+using Shift_System.Application.Interfaces;
 using Shift_System.Infrastructure.Extensions;
 using Shift_System.Infrastructure.Services;
 using Shift_System.Persistence.Extensions;
@@ -16,27 +17,6 @@ builder.Services.AddHttpClient("ApiClient", client =>
     // Örneðin, burada Bearer token'ý da ekleyebilirsiniz, ancak token dinamik olarak deðiþeceði için
     // her bir istek öncesinde token'ý eklemek daha doðru olur
 });
-
-
-// JWT Authentication için gerekli olan servisleri ekleyin
-//builder.Services.AddAuthentication(options =>
-//{
-//    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-//    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-//})
-//.AddJwtBearer(options =>
-//{
-//    options.TokenValidationParameters = new TokenValidationParameters
-//    {
-//        ValidateIssuer = true,
-//        ValidateAudience = true,
-//        ValidateLifetime = true,
-//        ValidateIssuerSigningKey = true,
-//        ValidIssuer = builder.Configuration["TokenOptions:Issuer"],
-//        ValidAudience = builder.Configuration["TokenOptions:Audience"],
-//        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["TokenOptions:SecurityKey"]))
-//    };
-//});
 
 // HttpContextAccessor ve Session servisini ekleyin
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
@@ -76,6 +56,8 @@ builder.Services.ConfigureApplicationCookie(options =>
     options.SlidingExpiration = true; // Her istekle birlikte süresini uzat
 });
 
+
+builder.Services.AddScoped<IFileUploadService, FileUploadService>();
 
 var app = builder.Build();
 
