@@ -86,12 +86,14 @@ function uploadFile() {
     // Dosya kontrolü
     if (!fileInput) {
         $('#message').html('<div class="alert alert-danger">Lütfen bir dosya seçin.</div>');
+        scrollToTop();
         return;
     }
 
     // Dosya boyut kontrolü
     if (fileInput.size > maxFileSize) {
         $('#message').html('<div class="alert alert-danger">Dosya boyutu 5 MB\'ı aşıyor.</div>');
+        scrollToTop();
         resetForm(); // Form ve önizlemeyi sıfırlama işlemi
         return;
     }
@@ -99,6 +101,7 @@ function uploadFile() {
     // Dosya türü kontrolü
     if (!allowedFileTypes.includes(fileInput.type)) {
         $('#message').html('<div class="alert alert-danger">Sadece JPEG, PNG ve PDF dosya türlerine izin veriliyor.</div>');
+        scrollToTop();
         return;
     }
 
@@ -117,12 +120,15 @@ function uploadFile() {
                 scrollToTop(); // Sayfanın en üstüne kaydır
             } else {
                 $('#message').html('<div class="alert alert-danger">' + response.message + '</div>');
+                scrollToTop();
             }
         },
         error: function (jqXHR, textStatus, errorThrown) {
             $('#message').html('<div class="alert alert-danger">Bir hata oluştu: ' + textStatus + '</div>');
+            scrollToTop();
         }
     });
+  
 }
 
 // Form ve Önizleme Alanını Sıfırlama İşlemi

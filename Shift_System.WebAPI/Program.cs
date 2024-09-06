@@ -4,15 +4,11 @@ using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Shift_System.Application.Extensions;
-using Shift_System.Application.Interfaces;
 using Shift_System.Infrastructure.Extensions;
-using Shift_System.Infrastructure.Services;
 using Shift_System.Persistence.Extensions;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
-
-
 
 // CORS yapýlandýrmasý
 builder.Services.AddCors(options =>

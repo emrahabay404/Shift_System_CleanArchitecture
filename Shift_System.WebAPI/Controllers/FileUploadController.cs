@@ -6,7 +6,6 @@ namespace Shift_System.WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [AllowAnonymous]
     public class FileUploadController : ControllerBase
     {
         private readonly IFileUploadService _fileUploadService;

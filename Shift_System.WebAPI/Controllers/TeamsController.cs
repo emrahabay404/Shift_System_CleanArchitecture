@@ -9,7 +9,6 @@ using Shift_System.Shared.Helpers;
 namespace Shift_System.WebAPI.Controllers
 {
     [Route("api/[controller]")]
-    //[AllowAnonymous]
     [ApiController]
     public class TeamsController : ApiControllerBase
     {
@@ -50,7 +49,6 @@ namespace Shift_System.WebAPI.Controllers
                 return Ok(teamResponses);
             }
         }
-
 
         [HttpGet("paged")]
         public async Task<ActionResult<PaginatedResult<GetAllShiftsDto>>> GetShiftsWithPagination([FromQuery] GetShiftsWithPaginationQuery query)
