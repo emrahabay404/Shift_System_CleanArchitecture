@@ -113,5 +113,43 @@ namespace Shift_System.WebAPI.Controllers
 
 
 
+        [HttpPost("upload-single1")]
+
+        public async Task<IActionResult> UploadSingleFile1(IFormFile file)
+        {
+            if (file == null || file.Length == 0)
+            {
+                return BadRequest("Dosya seçilmedi.");
+            }
+
+            try
+            {
+                // API projesindeki dosya yolunu alıyoruz
+                var currentDirectory = Directory.GetCurrentDirectory(); // Temsa_Api'nin bulunduğu dizin
+                var folderPathAfterWwwroot = "Uploads"; // wwwroot sonrasındaki dizin
+
+                // Dosya kaydedilecek dizini UI projesindeki wwwroot yoluna çeviriyoruz
+                var uiProjectDirectory = currentDirectory.Replace(
+                    "Shift_System.WebAPI",
+                    $@"Shift_System_UI\wwwroot\{folderPathAfterWwwroot}\"
+                );
+
+                // Dosyanın kaydedileceği tam yol
+                var filePath = Path.Combine(uiProjectDirectory, file.FileName);
+
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    await file.CopyToAsync(stream);
+                }
+
+                return Ok(new { success = true, message = "Dosya UI projesine yüklendi.", filePath });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+
     }
 }
