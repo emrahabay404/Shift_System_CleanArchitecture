@@ -35,7 +35,6 @@
 
 });
 
-
 // Dosya Seçildiğinde Önizleme Gösterme
 $('#fileInput').on('change', function () {
     var file = this.files[0];
@@ -79,6 +78,30 @@ $('#fileInput').on('change', function () {
 function uploadFile() {
     var formData = new FormData();
     var fileInput = $('#fileInput')[0].files[0];
+
+    // Maksimum dosya boyutu (5 MB) ve izin verilen dosya türleri
+    var maxFileSize = 5 * 1024 * 1024; // 5 MB
+    var allowedFileTypes = ['image/jpeg', 'image/png', 'application/pdf']; // İzin verilen dosya türleri
+
+    // Dosya kontrolü
+    if (!fileInput) {
+        $('#message').html('<div class="alert alert-danger">Lütfen bir dosya seçin.</div>');
+        return;
+    }
+
+    // Dosya boyut kontrolü
+    if (fileInput.size > maxFileSize) {
+        $('#message').html('<div class="alert alert-danger">Dosya boyutu 5 MB\'ı aşıyor.</div>');
+        resetForm(); // Form ve önizlemeyi sıfırlama işlemi
+        return;
+    }
+
+    // Dosya türü kontrolü
+    if (!allowedFileTypes.includes(fileInput.type)) {
+        $('#message').html('<div class="alert alert-danger">Sadece JPEG, PNG ve PDF dosya türlerine izin veriliyor.</div>');
+        return;
+    }
+
     formData.append('file', fileInput);
 
     $.ajax({
