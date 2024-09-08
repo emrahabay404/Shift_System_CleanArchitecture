@@ -1,69 +1,70 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Shift_System.Application.Features.Teams.Commands;
 using Shift_System.Application.Interfaces;
+using Shift_System.Shared.Helpers;
 
 namespace Shift_System.WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [AllowAnonymous]
     public class FileUploadController : ControllerBase
     {
         private readonly IFileUploadService _fileUploadService;
+        private readonly IMediator _mediator;
 
-        public FileUploadController(IFileUploadService fileUploadService)
+        public FileUploadController(IFileUploadService fileUploadService, IMediator mediator)
         {
             _fileUploadService = fileUploadService;
+            _mediator = mediator;
         }
 
         // Tek dosya yükleme işlemi
         [HttpPost("upload-single")]
         public async Task<IActionResult> UploadSingleFile(IFormFile file)
         {
-            // Maksimum izin verilen dosya boyutu (örneğin, 5 MB)
             const long maxFileSize = 5 * 1024 * 1024; // 5 MB
 
             if (file == null || file.Length == 0)
             {
-                return BadRequest("Dosya seçilmedi.");
+                return Ok(new { success = false, message = "Dosya seçilmedi." });
             }
 
-            // Dosya boyutu kontrolü
             if (file.Length > maxFileSize)
             {
-                return BadRequest($"Dosya boyutu {maxFileSize / (1024 * 1024)} MB'ı aşıyor.");
+                return Ok(new { success = false, message = $"Dosya boyutu {maxFileSize / (1024 * 1024)} MB'ı aşıyor." });
             }
 
             try
             {
-                // API projesindeki dosya yolunu alıyoruz
-                var currentDirectory = Directory.GetCurrentDirectory(); // API'nin bulunduğu dizin
-                var folderPathAfterWwwroot = "Uploads"; // wwwroot sonrasındaki dizin
+                var currentDirectory = Directory.GetCurrentDirectory();
+                var folderPathAfterWwwroot = "Uploads";
 
-                // Dosya kaydedilecek dizini UI projesindeki wwwroot yoluna çeviriyoruz
                 var uiProjectDirectory = currentDirectory.Replace(
                     "Shift_System.WebAPI",
                     $@"Shift_System_UI\wwwroot\{folderPathAfterWwwroot}\"
                 );
 
-                // Eğer dizin mevcut değilse oluştur
                 if (!Directory.Exists(uiProjectDirectory))
                 {
                     Directory.CreateDirectory(uiProjectDirectory);
                 }
 
-                // Dosyanın kaydedileceği tam yol
-                var filePath = Path.Combine(uiProjectDirectory, file.FileName);
+                var newFileName = $"{Guid.NewGuid()}_{file.FileName}";
+                var filePath = Path.Combine(uiProjectDirectory, newFileName);
 
                 using (var stream = new FileStream(filePath, FileMode.Create))
                 {
                     await file.CopyToAsync(stream);
                 }
 
-                return Ok(new { success = true, message = "Dosya UI projesine yüklendi.", filePath });
+                return Ok(new { success = true, message = "Dosya başarıyla yüklendi.", filePath });
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                return Ok(new { success = false, message = $"Dosya yüklenirken hata oluştu: {ex.Message}" });
             }
         }
 
@@ -71,74 +72,112 @@ namespace Shift_System.WebAPI.Controllers
         [HttpPost("upload-multiple")]
         public async Task<IActionResult> UploadMultipleFiles(List<IFormFile> files)
         {
-            // Maksimum izin verilen dosya boyutu (örneğin, 5 MB)
             const long maxFileSize = 5 * 1024 * 1024; // 5 MB
+
+            var successfullyUploaded = new List<object>(); // Detaylı bilgi için object kullanıyoruz
+            var failedUploads = new List<object>(); // Detaylı hata bilgisi için object kullanıyoruz
 
             try
             {
                 if (files == null || files.Count == 0)
-                    return BadRequest("Dosya seçilmedi.");
-
-                // Boyut sınırını aşan dosyalar için bir liste oluştur
-                var oversizedFiles = new List<string>();
-
-                // Dosya boyutu kontrolleri
-                foreach (var file in files)
                 {
-                    if (file.Length > maxFileSize)
-                    {
-                        // Eğer dosya boyutu sınırı aşarsa listeye ekle
-                        oversizedFiles.Add(file.FileName);
-                    }
+                    return Ok(new { success = false, message = "Dosya seçilmedi." });
                 }
 
-                // Eğer boyut sınırını aşan dosya/dosyalar varsa hata mesajı döndür
-                if (oversizedFiles.Any())
-                {
-                    return BadRequest($"Aşağıdaki dosyalar {maxFileSize / (1024 * 1024)} MB sınırını aşıyor: {string.Join(", ", oversizedFiles)}");
-                }
+                var currentDirectory = Directory.GetCurrentDirectory();
+                var folderPathAfterWwwroot = "Uploads";
 
-                // API projesindeki dosya yolunu alıyoruz
-                var currentDirectory = Directory.GetCurrentDirectory(); // Temsa_Api'nin bulunduğu dizin
-                var folderPathAfterWwwroot = "Uploads"; // wwwroot sonrasındaki dizin
-
-                // Dosya kaydedilecek dizini UI projesindeki wwwroot yoluna çeviriyoruz
                 var uiProjectDirectory = currentDirectory.Replace(
                     "Shift_System.WebAPI",
                     $@"Shift_System_UI\wwwroot\{folderPathAfterWwwroot}\"
                 );
 
-                // Eğer dizin mevcut değilse oluştur
                 if (!Directory.Exists(uiProjectDirectory))
                 {
                     Directory.CreateDirectory(uiProjectDirectory);
                 }
 
-                var filePaths = new List<string>();
-
                 foreach (var file in files)
                 {
-                    var filePath = Path.Combine(uiProjectDirectory, Path.GetFileName(file.FileName));
-
-                    using (var stream = new FileStream(filePath, FileMode.Create))
+                    try
                     {
-                        await file.CopyToAsync(stream);
+                        if (file.Length > maxFileSize)
+                        {
+                            failedUploads.Add(new
+                            {
+                                FileName = file.FileName,
+                                Status = false, // Başarısız durumu false olarak döndürülüyor
+                                Description = $"Dosya boyutu {maxFileSize / (1024 * 1024)} MB'ı aşıyor."
+                            });
+                            continue;
+                        }
+
+                        var newFileName = $"{Guid.NewGuid()}_{file.FileName}";
+                        var filePath = Path.Combine(uiProjectDirectory, newFileName);
+
+                        using (var stream = new FileStream(filePath, FileMode.Create))
+                        {
+                            await file.CopyToAsync(stream);
+                        }
+
+                        successfullyUploaded.Add(new
+                        {
+                            FileName = newFileName,
+                            Status = true, // Başarılı durumu true olarak döndürülüyor
+                            Description = "Dosya başarıyla yüklendi."
+                        });
                     }
-
-                    if (!string.IsNullOrEmpty(filePath))
+                    catch (Exception ex)
                     {
-                        filePaths.Add(filePath);
+                        failedUploads.Add(new
+                        {
+                            FileName = file.FileName,
+                            Status = false, // Hata durumunda false döndürülüyor
+                            Description = $"Yükleme hatası: {ex.Message}"
+                        });
                     }
                 }
 
-                if (filePaths.Count == 0)
-                    return BadRequest("Dosyalar yüklenemedi.");
+                var totalUploaded = successfullyUploaded.Count;
+                var totalFailed = failedUploads.Count;
 
-                return Ok(new { success = true, message = "Dosyalar UI projesine yüklendi.", filePaths });
+                if (totalUploaded == 0)
+                {
+                    return Ok(new
+                    {
+                        success = false,
+                        message = "Hiçbir dosya yüklenemedi.",
+                        totalUploaded,
+                        totalFailed,
+                        failedUploads
+                    });
+                }
+
+                if (totalFailed == 0)
+                {
+                    return Ok(new
+                    {
+                        success = true,
+                        message = "Tüm dosyalar başarıyla yüklendi.",
+                        totalUploaded,
+                        totalFailed,
+                        successfullyUploaded
+                    });
+                }
+
+                return Ok(new
+                {
+                    success = false,
+                    message = "Bazı dosyalar yüklenemedi.",
+                    totalUploaded,
+                    totalFailed,
+                    successfullyUploaded,
+                    failedUploads
+                });
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                return Ok(new { success = false, message = $"Dosyalar yüklenirken hata oluştu: {ex.Message}" });
             }
         }
 
@@ -179,27 +218,5 @@ namespace Shift_System.WebAPI.Controllers
             return NotFound(new { success = false, message = $"Dosya bulunamadı: {fileName}" });
         }
 
-        //[HttpPost("upload-single")]
-        //public async Task<IActionResult> UploadSingleFile(IFormFile file)
-        //{
-        //    try
-        //    {
-        //        if (file == null || file.Length == 0)
-        //            return BadRequest("Dosya seçilmedi.");
-
-        //        // Dosya yükleme servisini kullanıyoruz
-        //        var folderPath = Path.Combine(Directory.GetCurrentDirectory(), "Uploads");
-        //        var filePath = await _fileUploadService.UploadFileAsync(file, folderPath);
-
-        //        if (string.IsNullOrEmpty(filePath))
-        //            return BadRequest("Dosya yüklenemedi.");
-
-        //        return Ok(new { success = true, message = "Dosya yüklendi.", filePath });
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return BadRequest(ex.Message);
-        //    }
-        //}
     }
 }

@@ -17,8 +17,6 @@ namespace Micro.Teams.API.Controllers
             _mediator = mediator;
         }
 
-
-
         [HttpGet]
         public async Task<ActionResult<Result<List<GetAllTeamsDto>>>> Get()
         {

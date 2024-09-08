@@ -15,6 +15,7 @@ namespace Shift_System_UI.Controllers
         private readonly SignInManager<AppUser> _signInManager;
         private readonly HttpClient _httpClient;
         private readonly IHttpContextAccessor _httpContextAccessor;
+        private static string apiLoginEndpoint = "/api/auth/login";
         public AuthController(SignInManager<AppUser> signInManager, IHttpClientFactory httpClientFactory, IHttpContextAccessor httpContextAccessor)
         {
             _signInManager = signInManager;
@@ -65,7 +66,7 @@ namespace Shift_System_UI.Controllers
             var loginModel = new LoginModel(username, password);
             var content = new StringContent(JsonConvert.SerializeObject(loginModel), Encoding.UTF8, "application/json");
 
-            var response = await _httpClient.PostAsync("/api/auth/login", content);
+            var response = await _httpClient.PostAsync(apiLoginEndpoint, content);
             if (!response.IsSuccessStatusCode)
             {
                 return Json(new { success = false, message = "Login API çağrısı başarısız." });
@@ -96,7 +97,6 @@ namespace Shift_System_UI.Controllers
 
             return Json(new { success = true, message = Messages.Logout_Successful_TR });
         }
-
 
         public JsonResult ApiConnectionStatus()
         {

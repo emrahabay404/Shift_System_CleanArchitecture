@@ -80,5 +80,35 @@
 
         public static string Permission_Denied_TR => "Bu işlemi gerçekleştirme izniniz yok.";
         public static string Permission_Denied_EN => "You do not have permission to perform this action.";
+
+        // Additional Popular Operations
+
+        // Password Reset
+        public static string Password_Reset_Success_TR => "Şifre başarıyla sıfırlandı.";
+        public static string Password_Reset_Success_EN => "Password reset successfully.";
+
+        public static string Password_Reset_Failed_TR => "Şifre sıfırlama başarısız oldu.";
+        public static string Password_Reset_Failed_EN => "Password reset failed.";
+
+        // Account Activation
+        public static string Account_Activation_Success_TR => "Hesap başarıyla aktifleştirildi.";
+        public static string Account_Activation_Success_EN => "Account activated successfully.";
+
+        public static string Account_Activation_Failed_TR => "Hesap aktivasyonu başarısız oldu.";
+        public static string Account_Activation_Failed_EN => "Account activation failed.";
+
+        // File Upload
+        public static string File_Upload_Success_TR => "Dosya başarıyla yüklendi.";
+        public static string File_Upload_Success_EN => "File uploaded successfully.";
+
+        public static string File_Upload_Failed_TR => "Dosya yükleme başarısız oldu.";
+        public static string File_Upload_Failed_EN => "File upload failed.";
+
+        // Email Sending
+        public static string Email_Sent_Success_TR => "E-posta başarıyla gönderildi.";
+        public static string Email_Sent_Success_EN => "Email sent successfully.";
+
+        public static string Email_Sent_Failed_TR => "E-posta gönderimi başarısız oldu.";
+        public static string Email_Sent_Failed_EN => "Email sending failed.";
     }
 }

@@ -3,10 +3,12 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Shift_System.Application.Features.Shifts.Queries;
+using Shift_System.Application.Features.Teams.Commands;
 using Shift_System.Application.Interfaces;
 using Shift_System.Domain.Entities.Models;
 using Shift_System.Infrastructure.Services;
 using Shift_System.Persistence.Contexts;
+using Shift_System.Shared.Helpers;
 using Shift_System_UI.Models;
 using System.Diagnostics;
 
@@ -79,36 +81,6 @@ namespace Shift_System_UI.Controllers
             return new JsonResult(new { errors = errorMessages }) { StatusCode = 400 };
         }
 
-        // POST: FileUpload/Upload
-        [HttpPost]
-        public async Task<JsonResult> Upload(IFormFile file)
-        {
-            if (file == null || file.Length == 0)
-            {
-                return Json(new { success = false, message = "Dosya seçilmedi." });
-            }
-
-            // Yükleme yapılacak klasör
-            var folderPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/uploads");
-
-            try
-            {
-                // Servis ile dosya yükleme işlemini gerçekleştir
-                var filePath = await _fileUploadService.UploadFileAsync(file, folderPath);
-
-                if (string.IsNullOrEmpty(filePath))
-                {
-                    return Json(new { success = false, message = "Dosya yüklenemedi." });
-                }
-
-                return Json(new { success = true, message = "Dosya başarıyla yüklendi!" });
-            }
-            catch (Exception ex)
-            {
-                return Json(new { success = false, message = "Dosya yükleme hatası: " + ex.Message });
-            }
-        }
-
         [HttpPost]
         public IActionResult DeleteFile(string fileName)
         {
@@ -150,6 +122,41 @@ namespace Shift_System_UI.Controllers
             }
 
             return Json(new { success = false, message = $"Dosya silinemedi: {fileNameWithExtension}" });
+        }
+
+        [HttpPost]
+        public async Task<ActionResult<Result<int>>> Create(CreateTeamCommand command)
+        {
+            return await _mediator.Send(command);
+        }
+        // POST: FileUpload/Upload
+        [HttpPost]
+        public async Task<JsonResult> Upload(IFormFile file)
+        {
+            if (file == null || file.Length == 0)
+            {
+                return Json(new { success = false, message = "Dosya seçilmedi." });
+            }
+
+            // Yükleme yapılacak klasör
+            var folderPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/uploads");
+
+            try
+            {
+                // Servis ile dosya yükleme işlemini gerçekleştir
+                var filePath = await _fileUploadService.UploadFileAsync(file, folderPath);
+
+                if (string.IsNullOrEmpty(filePath))
+                {
+                    return Json(new { success = false, message = "Dosya yüklenemedi." });
+                }
+
+                return Json(new { success = true, message = "Dosya başarıyla yüklendi!" });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = "Dosya yükleme hatası: " + ex.Message });
+            }
         }
 
         [HttpGet]

@@ -128,7 +128,7 @@ function uploadFile() {
             scrollToTop();
         }
     });
-  
+
 }
 
 // Form ve Önizleme Alanını Sıfırlama İşlemi

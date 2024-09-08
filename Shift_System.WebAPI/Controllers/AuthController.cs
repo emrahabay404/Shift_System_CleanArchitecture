@@ -17,7 +17,7 @@ namespace Shift_System.WebAPI.Controllers
         }
 
         [HttpPost]
-        [Route("login")]
+        [Route("Login")]
         [AllowAnonymous]
         public async Task<IActionResult> Login(LoginModel model)
         {
@@ -25,10 +25,10 @@ namespace Shift_System.WebAPI.Controllers
             {
                 if (!ModelState.IsValid)
                     return BadRequest("Invalid payload");
-                var (status, message) = await _authService.Login(model);
+                var (status, response) = await _authService.Login(model);
                 if (status == 0)
-                    return BadRequest(message);
-                return Ok(message);
+                    return BadRequest(response);
+                return Ok(new { success = true, token = response });
             }
             catch (Exception ex)
             {
@@ -38,7 +38,7 @@ namespace Shift_System.WebAPI.Controllers
         }
 
         [HttpPost]
-        [Route("registeration")]
+        [Route("Register")]
         [Authorize(Roles = "Yönetici")]
         public async Task<IActionResult> Register(RegistrationModel model)
         {

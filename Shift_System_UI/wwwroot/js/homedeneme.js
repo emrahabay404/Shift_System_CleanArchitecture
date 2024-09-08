@@ -1,6 +1,6 @@
 ﻿$(document).ready(function () {
     var currentPage = 1;
-    var pageSize = 9969;
+    var pageSize = 2500;
 
 
     function loadShifts(pageNumber) {
@@ -29,6 +29,11 @@
                         <tr>
                             <td>${item.id}</td>
                             <td>${item.shift_Name}</td>
+                         <td>${item.url1}</td> 
+                            <td>${item.url2}</td> 
+                            <td>${item.url3}</td> 
+                            <td>${item.url4}</td> 
+                            <td>${item.url5}</td> 
                         </tr>
                     `);
         });

@@ -95,21 +95,5 @@ namespace Shift_System.Infrastructure.Services
         }
 
 
-        //private string GenerateToken(IEnumerable<Claim> claims)
-        //{
-        //    var authSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("ByYM000OLlMQG6VVVp1OH7Xzyr7gHuw1qvUC5dcGt3SNM"));
-        //    var tokenDescriptor = new SecurityTokenDescriptor
-        //    {
-        //        Issuer = "https://localhost:7157",
-        //        Audience = "https://localhost:7157",
-        //        Expires = DateTime.UtcNow.AddMinutes(5),
-        //        SigningCredentials = new SigningCredentials(authSigningKey, SecurityAlgorithms.HmacSha256),
-        //        Subject = new ClaimsIdentity(claims)
-        //    };
-        //    var tokenHandler = new JwtSecurityTokenHandler();
-        //    var token = tokenHandler.CreateToken(tokenDescriptor);
-        //    return tokenHandler.WriteToken(token);
-        //}
-
     }
 }

@@ -50,12 +50,11 @@ builder.Services.ConfigureApplicationCookie(options =>
     options.Cookie.SameSite = SameSiteMode.Strict; // CSRF saldýrýlarýna karþý koruma
     options.Cookie.HttpOnly = true; // XSS saldýrýlarýna karþý koruma
     options.Cookie.SecurePolicy = CookieSecurePolicy.Always; // Sadece HTTPS üzerinden gönder
-    options.ExpireTimeSpan = TimeSpan.FromMinutes(15); // Kýsa tutmak test amaçlýdýr
+    options.ExpireTimeSpan = TimeSpan.FromMinutes(30); // Kýsa tutmak test amaçlýdýr
     options.LoginPath = "/Account/Login/"; // Giriþ yolu
     options.AccessDeniedPath = "/Auth/AccessDenied/"; // Eriþim engellendiði durumda yönlendirilecek yol
     options.SlidingExpiration = true; // Her istekle birlikte süresini uzat
 });
-
 
 builder.Services.AddScoped<IFileUploadService, FileUploadService>();
 
@@ -68,7 +67,7 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
-app.UseStatusCodePagesWithReExecute("/Auth/Page404", "?code={0}");
+app.UseStatusCodePagesWithReExecute("/Auth/Page404/", "?code={0}");
 app.UseSession(); // Session middleware'i kullanýma alýn
 app.UseHttpsRedirection();
 app.UseStaticFiles();
