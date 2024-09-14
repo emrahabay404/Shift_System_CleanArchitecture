@@ -5,6 +5,8 @@
         // Auth
         public static string Login_Failed_TR => "Kullanıcı | Şifre Yanlış";
         public static string Login_Failed_EN => "User | Password is Wrong";
+        public static string Token_Created_Success_TR => "Jeton Başarıyla Oluşturuldu";
+        public static string Token_Created_Success_EN => "Token Has Been Successfully Created";
 
         // Teams
         public static string Teams_Listed_TR => "Takımlar Listelendi";

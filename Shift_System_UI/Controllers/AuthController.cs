@@ -72,10 +72,17 @@ namespace Shift_System_UI.Controllers
                 return Json(new { success = false, message = "Login API çağrısı başarısız." });
             }
 
-            // Yanıtın düz metin JWT token olduğunu varsayarak doğrudan oku
-            var token = await response.Content.ReadAsStringAsync();
-            // Token'ı temizle (eğer çift tırnak içinde dönüyorsa)
-            token = token.Trim(new char[] { '\"' });
+            // Yanıtı JSON olarak deserializ edelim
+            var responseContent = await response.Content.ReadAsStringAsync();
+            var loginResponse = JsonConvert.DeserializeObject<dynamic>(responseContent);
+
+            // Token'ı al
+            string token = loginResponse.token.ToString();
+
+            if (string.IsNullOrEmpty(token))
+            {
+                return Json(new { success = false, message = "Token alınamadı." });
+            }
 
             // Token'ı session'a kaydet
             _httpContextAccessor.HttpContext.Session.SetString("JWTToken", token);
@@ -95,8 +102,10 @@ namespace Shift_System_UI.Controllers
                 return Json(new { success = false, message = "JWT Token saklama başarısız!" });
             }
 
-            return Json(new { success = true, message = Messages.Logout_Successful_TR });
+            return Json(new { success = true, message = loginResponse.message.ToString(), token = token });
         }
+
+
 
         public JsonResult ApiConnectionStatus()
         {

@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Shift_System.Application.Interfaces;
 using Shift_System.Domain.Entities.Models;
+using Shift_System.Shared.Helpers;
 
 namespace Shift_System.WebAPI.Controllers
 {
@@ -28,7 +29,8 @@ namespace Shift_System.WebAPI.Controllers
                 var (status, response) = await _authService.Login(model);
                 if (status == 0)
                     return BadRequest(response);
-                return Ok(new { success = true, token = response });
+                //return Ok(response);
+                return Ok(new { message = Messages.Token_Created_Success_TR, success = true, token = response });
             }
             catch (Exception ex)
             {

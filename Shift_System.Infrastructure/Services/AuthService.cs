@@ -77,7 +77,6 @@ namespace Shift_System.Infrastructure.Services
             return (1, token);
         }
 
-
         private string GenerateToken(IEnumerable<Claim> claims)
         {
             var authSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("ByYM000OLlMQG6VVVp1OH7Xzyr7gHuw1qvUC5dcGt3SNM"));
@@ -93,7 +92,6 @@ namespace Shift_System.Infrastructure.Services
             var token = tokenHandler.CreateToken(tokenDescriptor);
             return tokenHandler.WriteToken(token);
         }
-
 
     }
 }

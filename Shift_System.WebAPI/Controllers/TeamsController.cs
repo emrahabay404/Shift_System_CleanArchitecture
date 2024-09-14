@@ -11,7 +11,7 @@ using Shift_System.Shared.Helpers;
 namespace Shift_System.WebAPI.Controllers
 {
     [Route("api/[controller]")]
-    [ApiController] 
+    [ApiController]
     public class TeamsController : ApiControllerBase
     {
         private readonly IMediator _mediator; private readonly IFileUploadService _fileUploadService;
@@ -20,6 +20,7 @@ namespace Shift_System.WebAPI.Controllers
             _mediator = mediator;
             _fileUploadService = fileUploadService;
         }
+
         [HttpGet]
         public ActionResult Index()
         {
@@ -53,6 +54,7 @@ namespace Shift_System.WebAPI.Controllers
             }
         }
 
+        [AllowAnonymous]
         [HttpGet("paged")]
         public async Task<ActionResult<PaginatedResult<GetAllShiftsDto>>> GetShiftsWithPagination([FromQuery] GetShiftsWithPaginationQuery query)
         {

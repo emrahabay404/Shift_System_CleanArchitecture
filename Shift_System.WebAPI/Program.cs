@@ -15,7 +15,7 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowSpecificOrigins", builder =>
     {
-        builder.WithOrigins("https://localhost:7280", "http://localhost:7280") // Web uygulamanýzýn URL'sini buraya yazýn
+        builder.WithOrigins("http://localhost:7280", "https://localhost:7280") // Web uygulamanýzýn URL'sini buraya yazýn
                .AllowAnyHeader()
                .AllowAnyMethod()
                .AllowCredentials(); // Kimlik bilgileri gönderimine izin ver

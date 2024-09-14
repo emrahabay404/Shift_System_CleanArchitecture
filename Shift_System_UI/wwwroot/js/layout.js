@@ -116,7 +116,6 @@ $("#apiBtn").click(function () {
     });
 });
 
-
 $(document).ready(function () {
     // Sayfa yüklendiğinde AJAX isteği yap
     $.ajax({
@@ -146,5 +145,25 @@ $(document).ready(function () {
                 .css('cursor', 'pointer'); // Farenin üzerine gelince göstergeyi değiştir
         }
     });
+
+
+
+
+    $(".changeSideBarColor").on("click", function () {
+        if ($(this).attr("data-color") == "default") {
+            $(".sidebar").removeAttr("data-background-color");
+        } else {
+            $(".sidebar").attr("data-background-color", $(this).attr("data-color"));
+        }
+
+        $(this).parent().find(".changeSideBarColor").removeClass("selected");
+        $(this).addClass("selected");
+        layoutsColors();
+        getCheckmark();
+    });
+
+
 });
+
+
 

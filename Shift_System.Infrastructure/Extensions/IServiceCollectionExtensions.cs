@@ -25,6 +25,5 @@ namespace Shift_System.Infrastructure.Extensions
            .AddTransient<IAuthService, AuthService>()
            .AddScoped<IFileUploadService, FileUploadService>();
         }
-        //builder.Services.AddScoped<IFileUploadService, FileUploadService>();
     }
 }
