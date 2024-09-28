@@ -60,14 +60,16 @@ namespace Shift_System.Infrastructure.Services
             var userRoles = await userManager.GetRolesAsync(user);
             var authClaims = new List<Claim>
             {
+                new Claim(ClaimTypes.NameIdentifier, user.Id),
                new Claim(ClaimTypes.Name, user.UserName),
-               new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+               new Claim(ClaimTypes.Email, user.Email),
+               new Claim(ClaimTypes.GivenName, user.FullName),
+                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
             };
 
             foreach (var userRole in userRoles)
             {
                 authClaims.Add(new Claim(ClaimTypes.Role, userRole));
-
                 //authClaims.Add(new Claim(ClaimTypes.Role, userRole));
                 //MicroService role bazlı erişim için
                 //authClaims.Add(new Claim("Role", userRole));

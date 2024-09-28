@@ -1,4 +1,50 @@
-﻿
+﻿@model RoleAssignmentViewModel
+
+<h2>Admin Page</h2>
 
 
-<p>ooooooooo adminnn  hg </p>
+<div class="alert alert-success mt-3"> Bilgi :  @TempData["Message"] </div>
+
+@* <style>
+    .form-control {
+        margin-right: 10px;
+    }
+
+    .btn-primary {
+        height: 38px; /* Seçim kutularına eşit yükseklik */
+    }
+</style> *@
+
+
+<form action="/Admin/AssignRole" method="post">
+    <div class="row">
+        <!-- Kullanıcı Seçimi -->
+        <div class="col-md-3">
+            <label for="Username">Kullanıcı Seçin:</label>
+            <select name="Username" id="Username" class="form-control">
+                <option value="">Kullanıcı Seçin</option>
+                @foreach (var user in Model.Users)
+                {
+                    <option value="@user.UserName">@user.UserName</option>
+                }
+            </select>
+        </div>
+
+        <!-- Rol Seçimi -->
+        <div class="col-md-3">
+            <label for="RoleName">Rol Seçin:</label>
+            <select name="RoleName" id="RoleName" class="form-control">
+                <option value="">Rol Seçin</option>
+                @foreach (var role in Model.Roles)
+                {
+                    <option value="@role.Name">@role.Name</option>
+                }
+            </select>
+        </div>
+
+        <!-- Submit Butonu -->
+        <div class="col-md-2 d-flex align-items-end">
+            <button type="submit" class="btn btn-primary">Rol Ata</button>
+        </div>
+    </div>
+</form>

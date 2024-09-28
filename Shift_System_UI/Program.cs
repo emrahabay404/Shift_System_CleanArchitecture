@@ -8,6 +8,9 @@ using Shift_System.Persistence.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// IHttpContextAccessor ekleyin
+builder.Services.AddHttpContextAccessor();
+
 // HttpClient servisini ekleyin
 builder.Services.AddHttpClient("ApiClient", client =>
 {

@@ -7,13 +7,13 @@ namespace Shift_System.Application.Features.Employees.Queries
     {
         public int Id { get; init; }
         public int EmployeeCode { get; set; }
-        public string Name { get; set; }
-        public string SurName { get; set; }
-        public string UserName { get; set; }
-        public string Mail { get; set; }
-        public string Phone { get; set; }
-        public string Address { get; set; }
-        public string Title { get; set; }
+        public string Name { get; set; } = string.Empty;
+        public string SurName { get; set; } = string.Empty;
+        public string UserName { get; set; } = string.Empty;
+        public string Mail { get; set; } = string.Empty;
+        public string Phone { get; set; } = string.Empty;
+        public string Address { get; set; } = string.Empty;
+        public string Title { get; set; } = string.Empty;
         public bool Activity { get; set; }
     }
 }

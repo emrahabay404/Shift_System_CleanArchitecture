@@ -12,7 +12,7 @@ using Shift_System.Persistence.Contexts;
 namespace Shift_System.Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240529113424_Mig1")]
+    [Migration("20240928110439_Mig1")]
     partial class Mig1
     {
         /// <inheritdoc />
@@ -245,10 +245,16 @@ namespace Shift_System.Persistence.Migrations
                     b.Property<DateTime?>("CreatedDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<bool?>("IsDeleted")
+                        .HasColumnType("bit");
+
                     b.Property<int?>("ShiftId")
                         .IsRequired()
                         .HasColumnType("int")
                         .HasColumnName("Shift_Id");
+
+                    b.Property<bool?>("Status")
+                        .HasColumnType("bit");
 
                     b.Property<int?>("TeamId")
                         .IsRequired()
@@ -294,6 +300,9 @@ namespace Shift_System.Persistence.Migrations
                     b.Property<int>("EmployeeCode")
                         .HasColumnType("int");
 
+                    b.Property<bool?>("IsDeleted")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Mail")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -305,6 +314,9 @@ namespace Shift_System.Persistence.Migrations
                     b.Property<string>("Phone")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool?>("Status")
+                        .HasColumnType("bit");
 
                     b.Property<string>("SurName")
                         .IsRequired()
@@ -347,12 +359,18 @@ namespace Shift_System.Persistence.Migrations
                     b.Property<DateTime?>("CreatedDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<bool?>("IsDeleted")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<float>("Price")
                         .HasColumnType("real");
+
+                    b.Property<bool?>("Status")
+                        .HasColumnType("bit");
 
                     b.Property<int>("Stock")
                         .HasColumnType("int");
@@ -382,10 +400,16 @@ namespace Shift_System.Persistence.Migrations
                     b.Property<DateTime?>("CreatedDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<bool?>("IsDeleted")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Shift_Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)")
                         .HasColumnName("Shift_Name");
+
+                    b.Property<bool?>("Status")
+                        .HasColumnType("bit");
 
                     b.Property<int?>("UpdatedBy")
                         .HasColumnType("int");
@@ -411,6 +435,16 @@ namespace Shift_System.Persistence.Migrations
 
                     b.Property<DateTime?>("CreatedDate")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("FileName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool?>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<bool?>("Status")
+                        .HasColumnType("bit");
 
                     b.Property<string>("TeamName")
                         .IsRequired()
@@ -446,9 +480,15 @@ namespace Shift_System.Persistence.Migrations
                         .HasColumnType("int")
                         .HasColumnName("Employee_Id");
 
+                    b.Property<bool?>("IsDeleted")
+                        .HasColumnType("bit");
+
                     b.Property<bool?>("IsLeader")
                         .HasColumnType("bit")
                         .HasColumnName("isLeader");
+
+                    b.Property<bool?>("Status")
+                        .HasColumnType("bit");
 
                     b.Property<int?>("TeamId")
                         .IsRequired()

@@ -23,7 +23,7 @@ $("#loginBtn").on("click", function (event) {
                 window.location.href = "/Home/Index";
             } else {
                 // Hata mesajını swal ile göster
-                swal(response, "You clicked the button!", {
+                swal(response, "", {
                     icon: "warning",
                     buttons: {
                         confirm: {
@@ -35,7 +35,7 @@ $("#loginBtn").on("click", function (event) {
             }
         },
         error: function (xhr, textStatus, errorThrown) {
-            swal(errorThrown, "You clicked the button!", {
+            swal(errorThrown, "", {
                 icon: "warning",
                 buttons: {
                     confirm: {
@@ -47,3 +47,5 @@ $("#loginBtn").on("click", function (event) {
         }
     });
 });
+
+

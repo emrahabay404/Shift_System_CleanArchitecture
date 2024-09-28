@@ -70,7 +70,9 @@ namespace Shift_System.Persistence.Migrations
                     CreatedBy = table.Column<int>(type: "int", nullable: true),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     UpdatedBy = table.Column<int>(type: "int", nullable: true),
-                    UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: true)
+                    UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    Status = table.Column<bool>(type: "bit", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -90,7 +92,9 @@ namespace Shift_System.Persistence.Migrations
                     CreatedBy = table.Column<int>(type: "int", nullable: true),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     UpdatedBy = table.Column<int>(type: "int", nullable: true),
-                    UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: true)
+                    UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    Status = table.Column<bool>(type: "bit", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -107,7 +111,9 @@ namespace Shift_System.Persistence.Migrations
                     CreatedBy = table.Column<int>(type: "int", nullable: true),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     UpdatedBy = table.Column<int>(type: "int", nullable: true),
-                    UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: true)
+                    UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    Status = table.Column<bool>(type: "bit", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -121,10 +127,13 @@ namespace Shift_System.Persistence.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     TeamName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    FileName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CreatedBy = table.Column<int>(type: "int", nullable: true),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     UpdatedBy = table.Column<int>(type: "int", nullable: true),
-                    UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: true)
+                    UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    Status = table.Column<bool>(type: "bit", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -248,7 +257,9 @@ namespace Shift_System.Persistence.Migrations
                     CreatedBy = table.Column<int>(type: "int", nullable: true),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     UpdatedBy = table.Column<int>(type: "int", nullable: true),
-                    UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: true)
+                    UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    Status = table.Column<bool>(type: "bit", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -279,7 +290,9 @@ namespace Shift_System.Persistence.Migrations
                     CreatedBy = table.Column<int>(type: "int", nullable: true),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     UpdatedBy = table.Column<int>(type: "int", nullable: true),
-                    UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: true)
+                    UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    Status = table.Column<bool>(type: "bit", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: true)
                 },
                 constraints: table =>
                 {

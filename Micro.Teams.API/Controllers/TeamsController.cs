@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Shift_System.Application.Features.Teams.Commands;
 using Shift_System.Application.Features.Teams.Queries;
@@ -18,6 +19,7 @@ namespace Micro.Teams.API.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public async Task<ActionResult<Result<List<GetAllTeamsDto>>>> Get()
         {
             return await _mediator.Send(new GetAllTeamsQuery());

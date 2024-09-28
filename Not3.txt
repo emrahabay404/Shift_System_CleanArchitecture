@@ -1,0 +1,68 @@
+   [HttpGet("Index")]
+        public ActionResult Index()
+        {
+            using (var _cnn = DapperContext.CreateConnection())
+            {
+                string query = @"
+        SELECT 
+            p.PersonelKodu,
+            p.Adi AS PersonelAdi,
+            p.Soyadi AS PersonelSoyadi,
+            t.TakimAdi,
+            v.VardiyaAdi,
+            v.BaslangicTarihi,
+            v.BitisTarihi
+        FROM 
+            Personel p
+        JOIN 
+            TakimPersonel tp ON p.PersonelID = tp.PersonelID
+        JOIN 
+            Takim t ON tp.TakimID = t.TakimID
+        JOIN 
+            VardiyaTakim vt ON t.TakimID = vt.TakimID
+        JOIN 
+            Vardiya v ON vt.VardiyaID = v.VardiyaID
+        ORDER BY 
+            p.PersonelKodu;
+        ";
+                var teamResponses = _cnn.Query(query).ToList();
+
+                return Ok(teamResponses);
+            }
+        }
+
+     private static string apiTeamsEndpoint = "/api/Teams/Index/";
+ [HttpGet]
+        public async Task<IActionResult> Deneme()
+        {
+            //return View();
+            try
+            {
+                var teams = await _apiService.GetAsync<List<TeamResponse>>(apiTeamsEndpoint);
+                return View(teams); // Doðrudan View'e model olarak gönder
+            }
+            catch (Exception ex)
+            {
+                // Hata yönetimi
+                var errorViewModel = new ErrorViewModel
+                {
+                    Url = apiTeamsEndpoint,
+                    RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier,
+                    Message = ex.Message // Hata mesajýný modelde saklayýn
+                };
+                return View("Error", errorViewModel);
+            }
+        }
+
+        @model List<Shift_System.Domain.Entities.Models.TeamResponse>
+@if (Model != null && Model.Any())
+{
+    @foreach (var item in Model)
+    {
+        <p>@item.PersonelKodu</p>
+    }
+}
+else
+{
+    <p>No data available.</p>
+}

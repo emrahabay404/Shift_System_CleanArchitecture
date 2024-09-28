@@ -48,6 +48,5 @@ namespace Shift_System.Persistence.Extensions
              .AddTransient<IEmployeeRepository, EmployeeRepository>()
              .AddTransient<ITeam_EmployeeRepository, Team_EmployeeRepository>();
         }
-
     }
 }

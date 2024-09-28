@@ -10,8 +10,8 @@ namespace Shift_System.Application.Features.Teams.Commands
 {
     public record CreateTeamCommand : IRequest<Result<int>>, IMapFrom<Team>
     {
-        public string TeamName { get; set; } 
-        public string? FileName { get; set; }
+        public string TeamName { get; set; } = string.Empty;
+        public string? FileName { get; set; }  
     }
 
     internal class CreateTeamCommandHandler : IRequestHandler<CreateTeamCommand, Result<int>>

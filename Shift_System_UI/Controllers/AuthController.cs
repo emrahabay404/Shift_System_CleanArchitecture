@@ -13,14 +13,16 @@ namespace Shift_System_UI.Controllers
     public class AuthController : Controller
     {
         private readonly SignInManager<AppUser> _signInManager;
+        private readonly UserManager<AppUser> _userManager;
         private readonly HttpClient _httpClient;
         private readonly IHttpContextAccessor _httpContextAccessor;
-        private static string apiLoginEndpoint = "/api/auth/login";
-        public AuthController(SignInManager<AppUser> signInManager, IHttpClientFactory httpClientFactory, IHttpContextAccessor httpContextAccessor)
+
+        public AuthController(SignInManager<AppUser> signInManager, IHttpClientFactory httpClientFactory, IHttpContextAccessor httpContextAccessor, UserManager<AppUser> userManager)
         {
             _signInManager = signInManager;
             _httpClient = httpClientFactory.CreateClient("ApiClient");
             _httpContextAccessor = httpContextAccessor;
+            _userManager = userManager;
         }
 
         [HttpGet]
@@ -53,6 +55,32 @@ namespace Shift_System_UI.Controllers
         }
 
         [HttpPost]
+        [AllowAnonymous]
+        public async Task<JsonResult> Register(RegistrationModel model)
+        {
+            // Yeni bir kullanıcı oluşturuyoruz
+            var user = new AppUser
+            {
+                UserName = model.Username,
+                FullName = model.Name + model.Surname,
+                Email = model.Email,
+                PhoneNumber = model.PhoneNumber,
+            };
+            // Kullanıcıyı oluşturmaya çalışıyoruz
+            var result = await _userManager.CreateAsync(user, model.Password);
+            if (result.Succeeded)
+            {
+                // Eğer başarılıysa, otomatik olarak giriş yapabiliriz
+                await _signInManager.SignInAsync(user, isPersistent: false);
+                return Json(new { success = true, message = "Kullanıcı başarıyla kaydedildi ve giriş yapıldı." });
+            }
+            // Eğer hata oluşursa, hata mesajlarını geri döndürüyoruz
+            var errors = string.Join(", ", result.Errors.Select(e => e.Description));
+            return Json(new { success = false, message = $"Kayıt işlemi başarısız: {errors}" });
+        }
+
+
+        [HttpPost]
         [Authorize]
         public async Task<JsonResult> ApiLogin(string password)
         {
@@ -66,7 +94,7 @@ namespace Shift_System_UI.Controllers
             var loginModel = new LoginModel(username, password);
             var content = new StringContent(JsonConvert.SerializeObject(loginModel), Encoding.UTF8, "application/json");
 
-            var response = await _httpClient.PostAsync(apiLoginEndpoint, content);
+            var response = await _httpClient.PostAsync(ApiEndPoints.ApiLoginEnddpoint, content);
             if (!response.IsSuccessStatusCode)
             {
                 return Json(new { success = false, message = "Login API çağrısı başarısız." });
@@ -104,8 +132,6 @@ namespace Shift_System_UI.Controllers
 
             return Json(new { success = true, message = loginResponse.message.ToString(), token = token });
         }
-
-
 
         public JsonResult ApiConnectionStatus()
         {

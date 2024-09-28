@@ -5,10 +5,13 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Shift_System.Application.Extensions;
 using Shift_System.Infrastructure.Extensions;
+using Shift_System.Infrastructure.Services;
 using Shift_System.Persistence.Extensions;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddScoped<LoggedUserService>();
 
 // CORS yapýlandýrmasý
 builder.Services.AddCors(options =>
@@ -104,8 +107,24 @@ builder.Services.AddControllers(config =>
     config.Filters.Add(new AuthorizeFilter(policy));
 });
 
-
 var app = builder.Build();
+
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    try
+    {
+        // Rolleri ve SuperAdmin'i kontrol et ve oluþtur
+        await RoleAndUserInitialization.InitializeRolesAndSuperAdminAsync(services, builder.Configuration);
+    }
+    catch (Exception ex)
+    {
+        // Eðer hata oluþursa logla
+        var logger = services.GetRequiredService<ILogger<Program>>();
+        logger.LogError(ex, "An error occurred while initializing roles and super admin.");
+    }
+}
+
 
 if (app.Environment.IsDevelopment())
 {

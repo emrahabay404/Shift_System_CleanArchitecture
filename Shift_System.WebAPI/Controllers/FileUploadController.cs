@@ -1,15 +1,11 @@
 ﻿using MediatR;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Shift_System.Application.Features.Teams.Commands;
 using Shift_System.Application.Interfaces;
-using Shift_System.Shared.Helpers;
 
 namespace Shift_System.WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [AllowAnonymous]
     public class FileUploadController : ControllerBase
     {
         private readonly IFileUploadService _fileUploadService;

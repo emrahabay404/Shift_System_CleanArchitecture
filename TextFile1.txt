@@ -1,0 +1,112 @@
+      [HttpGet("Get")]
+        public async Task<ActionResult<Result<List<GetAllTeamsDto>>>> Get()
+        {
+            return await _mediator.Send(new GetAllTeamsQuery());
+        }
+
+        [HttpGet("paged")]
+        public async Task<ActionResult<PaginatedResult<GetAllShiftsDto>>> GetShiftsWithPagination([FromQuery] GetShiftsWithPaginationQuery query)
+        {
+            var validator = new GetShiftsWithPaginationValidator();
+            var result = validator.Validate(query);
+            if (result.IsValid)
+            {
+                return await _mediator.Send(query);
+            }
+            var errorMessages = result.Errors.Select(x => x.ErrorMessage).ToList();
+            return BadRequest(errorMessages);
+        }
+
+        [HttpPost("upload-and-create-team")]
+        [Consumes("multipart/form-data")]
+        public async Task<IActionResult> UploadAndCreateTeam(IFormFile file, [FromForm] CreateTeamCommand command)
+        {
+            const long maxFileSize = 5 * 1024 * 1024; // Maksimum dosya boyutu 5 MB
+
+            // Dosya var mý kontrolü
+            if (file == null || file.Length == 0)
+            {
+                return BadRequest(new { success = false, message = "Dosya seçilmedi." });
+            }
+
+            // Dosya boyutu kontrolü
+            if (file.Length > maxFileSize)
+            {
+                return BadRequest(new { success = false, message = $"Dosya boyutu {maxFileSize / (1024 * 1024)} MB'ý aþýyor." });
+            }
+
+            try
+            {
+                // Dosya yükleme dizinini ayarlama
+                var currentDirectory = Directory.GetCurrentDirectory();
+                var folderPathAfterWwwroot = "Uploads";
+                var uiProjectDirectory = currentDirectory.Replace(
+                    "Shift_System.WebAPI",
+                    $@"Shift_System_UI\wwwroot\{folderPathAfterWwwroot}\"
+                );
+
+                // Dizin yoksa oluþtur
+                if (!Directory.Exists(uiProjectDirectory))
+                {
+                    Directory.CreateDirectory(uiProjectDirectory);
+                }
+
+                // Dosya adý oluþturma (benzersiz bir GUID ile)
+                var newFileName = $"{Guid.NewGuid()}_{file.FileName}";
+                var filePath = Path.Combine(uiProjectDirectory, newFileName);
+
+                // Dosyayý belirtilen yola kaydetme
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    await file.CopyToAsync(stream);
+                }
+
+                // Dosya adýný CreateTeamCommand'e atayýn
+                command.FileName = newFileName; // Dosya adý model içinde otomatik olarak atanacak ve kaydedilecek
+
+                // Takým oluþturma iþlemi
+                var result = await _mediator.Send(command);
+
+                if (result.Succeeded)
+                {
+                    // Hem dosya hem de takým baþarýyla oluþturuldu
+                    return Ok(new
+                    {
+                        success = true,
+                        message = "Takým baþarýyla oluþturuldu ve dosya baþarýyla yüklendi.",
+                        filePath,
+                        teamResult = result
+                    });
+                }
+                else
+                {
+                    // Dosya baþarýyla yüklendi ama takým oluþturulamadý
+                    return BadRequest(new
+                    {
+                        success = false,
+                        message = "Dosya yüklendi ancak takým oluþturulamadý.",
+                        filePath
+                    });
+                }
+            }
+            catch (Exception ex)
+            {
+                // Dosya yüklenirken veya takým oluþturulurken bir hata meydana geldi
+                return StatusCode(500, new { success = false, message = $"Dosya veya takým iþlemleri sýrasýnda hata oluþtu: {ex.Message}" });
+            }
+        }
+
+        [HttpGet("GetLoggedUserInfo")]
+        public IActionResult GetLoggedUserInfo()
+        {
+            var userId = _userService.GetUserId();
+            var userName = _userService.GetUserName();
+            var userEmail = _userService.GetUserEmail();
+
+            return Ok(new
+            {
+                UserId = userId,
+                UserName = userName,
+                UserEmail = userEmail
+            });
+        }

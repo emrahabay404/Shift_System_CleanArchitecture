@@ -1,0 +1,97 @@
+@using Shift_System.Domain.Entities.Models
+@model TeamsModel
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+ [HttpGet]
+        public async Task<IActionResult> Index()
+        {
+            ViewBag.userId = _loggedUserService.GetUserId();
+            ViewBag.userName = await _loggedUserService.GetUserNameAsync();
+            ViewBag.userEmail = await _loggedUserService.GetUserEmailAsync();
+
+            using var _cnn = DapperContext.CreateConnection();
+            string query = @"
+        SELECT 
+            p.PersonelKodu,
+            p.Adi AS PersonelAdi,
+            p.Soyadi AS PersonelSoyadi,
+            t.TakimAdi,
+            v.VardiyaAdi,
+            v.BaslangicTarihi,
+            v.BitisTarihi
+        FROM 
+            Personel p
+        JOIN 
+            TakimPersonel tp ON p.PersonelID = tp.PersonelID
+        JOIN 
+            Takim t ON tp.TakimID = t.TakimID
+        JOIN 
+            VardiyaTakim vt ON t.TakimID = vt.TakimID
+        JOIN 
+            Vardiya v ON vt.VardiyaID = v.VardiyaID
+        ORDER BY 
+            p.PersonelKodu;
+        ";
+            var teamResponses = _cnn.Query<TeamResponse>(query).ToList();
+            var viewModel = new TeamsModel()
+            {
+                Teams = teamResponses
+            };
+            return View(viewModel);
+        }
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+<div class="card">
+    <div class="card-header">
+        <h4 class="card-title">Home Index</h4>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table id="multi-filter-select" class="display table table-striped table-hover">
+                <thead>
+                    <tr>
+                        <th>Personel Kodu</th>
+                        <th>Adý</th>
+                        <th>Soyadý</th>
+                        <th>Takým</th>
+                        <th>Vardiya</th>
+                        <th>Baþlangýç Tarihi</th>
+                        <th>Bitiþ Tarihi</th>
+                        <th>Ýþlemler</th>
+                    </tr>
+                </thead>
+                <tfoot>
+                    <tr>
+                        <th>Personel Kodu</th>
+                        <th>Adý</th>
+                        <th>Soyadý</th>
+                        <th>Takým</th>
+                        <th>Vardiya</th>
+                        <th>Baþlangýç Tarihi</th>
+                        <th>Bitiþ Tarihi</th>
+                        <th>Ýþlemler</th>
+                    </tr>
+                </tfoot>
+                <tbody id="teamTableBody">
+                    @foreach (var item in Model.Teams)
+                    {
+                        <tr>
+                            <td>@item.PersonelKodu</td>
+                            <td>@item.PersonelAdi</td>
+                            <td>@item.PersonelSoyadi</td>
+                            <td>@item.TakimAdi</td>
+                            <td>@item.VardiyaAdi</td>
+                            <td>@item.BaslangicTarihi</td>
+                            <td>@item.BitisTarihi</td>
+                            <td>
+                                <div class="d-flex gap-2">
+                                    <button class="btn btn-primary">  <i class="fas fas-lg fa-edit"></i></button>
+                                    <button class="btn   btn-danger">  <i class="fas fas-lg fa-trash"></i></button>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
