@@ -1,10 +1,5 @@
-﻿using MediatR;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Shift_System.Application.Features.Teams.Queries;
-using Shift_System.Domain.Entities;
-using Shift_System.Infrastructure.Services;
-using Shift_System.Shared.Helpers;
 using Shift_System_UI.Models;
 using System.Diagnostics;
 
@@ -12,9 +7,17 @@ namespace Shift_System_UI.Controllers
 {
     public class HomeController : Controller
     {
+        public IActionResult Index()
+        {
 
+            return View();
+        }
 
-
+        [AllowAnonymous]
+        public IActionResult Deneme()
+        {
+            return Json("örnek veri geldii");
+        }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error(ErrorViewModel model)

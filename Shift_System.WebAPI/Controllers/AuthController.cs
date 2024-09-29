@@ -31,17 +31,16 @@ namespace Shift_System.WebAPI.Controllers
             try
             {
                 if (!ModelState.IsValid)
-                    return BadRequest("Invalid payload");
+                    return BadRequest(Messages.Invalid_Input_TR);
                 var (status, response) = await _AuthService.Login(model);
                 if (status == 0)
-                    return BadRequest(response);
-                //return Ok(response);
+                    return BadRequest(Messages.Login_Failed_TR);
+
                 return Ok(new { message = Messages.Token_Created_Success_TR, success = true, token = response });
             }
             catch (Exception ex)
             {
-                //_logger.LogError(ex.Message);
-                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+                return StatusCode(StatusCodes.Status500InternalServerError, Messages.Unexpected_Error_TR);
             }
         }
 
@@ -53,18 +52,17 @@ namespace Shift_System.WebAPI.Controllers
             try
             {
                 if (!ModelState.IsValid)
-                    return BadRequest("Invalid payload");
+                    return BadRequest(Messages.Invalid_Input_TR);
+
                 var (status, message) = await _AuthService.Registeration(model, UserRoles.User);
                 if (status == 0)
-                {
-                    return BadRequest(message);
-                }
-                return CreatedAtAction(nameof(Register), model);
+                    return BadRequest(Messages.User_Registration_Failed_TR);
+
+                return CreatedAtAction(nameof(Register), new { message = Messages.User_Registered_Successfully_TR });
             }
             catch (Exception ex)
             {
-                //_logger.LogError(ex.Message);
-                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+                return StatusCode(StatusCodes.Status500InternalServerError, Messages.Unexpected_Error_TR);
             }
         }
 
@@ -75,47 +73,47 @@ namespace Shift_System.WebAPI.Controllers
         {
             if (model == null || string.IsNullOrEmpty(model.Username) || string.IsNullOrEmpty(model.RoleName))
             {
-                return BadRequest(new { success = false, message = "Kullanıcı adı ve rol adı boş olamaz." });
+                return BadRequest(new { success = false, message = Messages.Required_Field_Missing_TR });
             }
 
             var user = await _UserManager.FindByNameAsync(model.Username);
             if (user == null)
             {
-                return NotFound(new { success = false, message = "Kullanıcı bulunamadı." });
+                return NotFound(new { success = false, message = Messages.User_Not_Found_TR });
             }
 
             var roleExist = await _RoleManager.RoleExistsAsync(model.RoleName);
             if (!roleExist)
             {
-                return NotFound(new { success = false, message = "Rol bulunamadı." });
+                return NotFound(new { success = false, message = Messages.Role_Not_Found_TR });
             }
 
             var result = await _UserManager.AddToRoleAsync(user, model.RoleName);
             if (result.Succeeded)
             {
-                return Ok(new { success = true, message = "Rol başarıyla kullanıcıya atandı." });
+                return Ok(new { success = true, message = Messages.Role_Assigned_Successfully_TR });
             }
 
-            return StatusCode(500, new { success = false, message = "Rol atama işlemi başarısız." });
+            return StatusCode(500, new { success = false, message = Messages.Role_Assignment_Failed_TR });
         }
 
         [HttpGet]
         [Authorize(Roles = "Manager,Admin")]
         [Route("api/get-users")]
-        public async Task<IActionResult> GetAllUsers()
+        public IActionResult GetAllUsers()
         {
             var users = _UserManager.Users.ToList();
 
             if (users == null || users.Count == 0)
             {
-                return NotFound(new { success = false, message = "Kullanıcı bulunamadı." });
+                return NotFound(new { success = false, message = Messages.User_Not_Found_TR });
             }
 
             var userList = users.Select(async user => new
             {
                 Username = user.UserName,
                 Email = user.Email,
-                Roles = string.Join(",", await _UserManager.GetRolesAsync(user)) // Kullanıcının tüm rollerini çekiyoruz
+                Roles = string.Join(",", await _UserManager.GetRolesAsync(user))
             }).ToList();
 
             return Ok(new { success = true, users = userList });
@@ -130,7 +128,7 @@ namespace Shift_System.WebAPI.Controllers
 
             if (roles == null || roles.Count == 0)
             {
-                return NotFound(new { success = false, message = "Rol bulunamadı." });
+                return NotFound(new { success = false, message = Messages.Role_Not_Found_TR });
             }
 
             var roleList = roles.Select(role => new
@@ -140,6 +138,5 @@ namespace Shift_System.WebAPI.Controllers
 
             return Ok(new { success = true, roles = roleList });
         }
-
     }
 }

@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Shift_System.Application.Interfaces;
+using Shift_System.Shared.Helpers;
 
 namespace Shift_System.WebAPI.Controllers
 {
@@ -25,12 +26,12 @@ namespace Shift_System.WebAPI.Controllers
 
             if (file == null || file.Length == 0)
             {
-                return Ok(new { success = false, message = "Dosya seçilmedi." });
+                return Ok(new { success = false, message = Messages.File_Upload_Failed_TR });
             }
 
             if (file.Length > maxFileSize)
             {
-                return Ok(new { success = false, message = $"Dosya boyutu {maxFileSize / (1024 * 1024)} MB'ı aşıyor." });
+                return Ok(new { success = false, message = string.Format(Messages.File_Size_Exceeded_TR, maxFileSize / (1024 * 1024)) });
             }
 
             try
@@ -56,11 +57,11 @@ namespace Shift_System.WebAPI.Controllers
                     await file.CopyToAsync(stream);
                 }
 
-                return Ok(new { success = true, message = "Dosya başarıyla yüklendi.", filePath });
+                return Ok(new { success = true, message = Messages.File_Upload_Success_TR, filePath });
             }
             catch (Exception ex)
             {
-                return Ok(new { success = false, message = $"Dosya yüklenirken hata oluştu: {ex.Message}" });
+                return Ok(new { success = false, message = $"{Messages.File_Upload_Failed_TR}: {ex.Message}" });
             }
         }
 
@@ -70,14 +71,14 @@ namespace Shift_System.WebAPI.Controllers
         {
             const long maxFileSize = 5 * 1024 * 1024; // 5 MB
 
-            var successfullyUploaded = new List<object>(); // Detaylı bilgi için object kullanıyoruz
-            var failedUploads = new List<object>(); // Detaylı hata bilgisi için object kullanıyoruz
+            var successfullyUploaded = new List<object>();
+            var failedUploads = new List<object>();
 
             try
             {
                 if (files == null || files.Count == 0)
                 {
-                    return Ok(new { success = false, message = "Dosya seçilmedi." });
+                    return Ok(new { success = false, message = Messages.File_Upload_Failed_TR });
                 }
 
                 var currentDirectory = Directory.GetCurrentDirectory();
@@ -102,8 +103,8 @@ namespace Shift_System.WebAPI.Controllers
                             failedUploads.Add(new
                             {
                                 FileName = file.FileName,
-                                Status = false, // Başarısız durumu false olarak döndürülüyor
-                                Description = $"Dosya boyutu {maxFileSize / (1024 * 1024)} MB'ı aşıyor."
+                                Status = false,
+                                Description = string.Format(Messages.File_Size_Exceeded_TR, maxFileSize / (1024 * 1024))
                             });
                             continue;
                         }
@@ -119,8 +120,8 @@ namespace Shift_System.WebAPI.Controllers
                         successfullyUploaded.Add(new
                         {
                             FileName = newFileName,
-                            Status = true, // Başarılı durumu true olarak döndürülüyor
-                            Description = "Dosya başarıyla yüklendi."
+                            Status = true,
+                            Description = Messages.File_Upload_Success_TR
                         });
                     }
                     catch (Exception ex)
@@ -128,8 +129,8 @@ namespace Shift_System.WebAPI.Controllers
                         failedUploads.Add(new
                         {
                             FileName = file.FileName,
-                            Status = false, // Hata durumunda false döndürülüyor
-                            Description = $"Yükleme hatası: {ex.Message}"
+                            Status = false,
+                            Description = $"{Messages.File_Upload_Failed_TR}: {ex.Message}"
                         });
                     }
                 }
@@ -142,7 +143,7 @@ namespace Shift_System.WebAPI.Controllers
                     return Ok(new
                     {
                         success = false,
-                        message = "Hiçbir dosya yüklenemedi.",
+                        message = Messages.No_Files_Uploaded_TR,
                         totalUploaded,
                         totalFailed,
                         failedUploads
@@ -154,7 +155,7 @@ namespace Shift_System.WebAPI.Controllers
                     return Ok(new
                     {
                         success = true,
-                        message = "Tüm dosyalar başarıyla yüklendi.",
+                        message = Messages.All_Files_Uploaded_Success_TR,
                         totalUploaded,
                         totalFailed,
                         successfullyUploaded
@@ -164,7 +165,7 @@ namespace Shift_System.WebAPI.Controllers
                 return Ok(new
                 {
                     success = false,
-                    message = "Bazı dosyalar yüklenemedi.",
+                    message = Messages.Some_Files_Failed_TR,
                     totalUploaded,
                     totalFailed,
                     successfullyUploaded,
@@ -173,46 +174,40 @@ namespace Shift_System.WebAPI.Controllers
             }
             catch (Exception ex)
             {
-                return Ok(new { success = false, message = $"Dosyalar yüklenirken hata oluştu: {ex.Message}" });
+                return Ok(new { success = false, message = $"{Messages.File_Upload_Failed_TR}: {ex.Message}" });
             }
         }
 
         [HttpDelete("delete-file/{fileName}")]
         public IActionResult DeleteFile(string fileName)
         {
-            // Uygulamanın çalışma dizinini kontrol edelim
             var folderPath = Path.Combine(Directory.GetCurrentDirectory(), "Uploads");
 
-            // Dosya uzantısı belirtilmediyse otomatik olarak tespit edelim
             var filesInDirectory = Directory.GetFiles(folderPath);
             string fullFilePath = null;
 
-            // Uzantısız dosya adını bul ve eşleşen dosyayı tespit et
             foreach (var file in filesInDirectory)
             {
                 var fileNameWithoutExtension = Path.GetFileNameWithoutExtension(file);
                 if (fileNameWithoutExtension.Equals(fileName, StringComparison.OrdinalIgnoreCase))
                 {
-                    fullFilePath = file;  // Eşleşen dosya bulundu
+                    fullFilePath = file;
                     break;
                 }
             }
 
             if (fullFilePath == null)
             {
-                Console.WriteLine("Dosya bulunamadı, dosya adını ve uzantısını kontrol edin.");
-                return NotFound(new { success = false, message = $"Dosya bulunamadı: {fileName}" });
+                return NotFound(new { success = false, message = $"{Messages.File_Not_Found_TR}: {fileName}" });
             }
 
-            // Dosya bulundu ve silme işlemi yapılacak
             if (System.IO.File.Exists(fullFilePath))
             {
                 System.IO.File.Delete(fullFilePath);
-                return Ok(new { success = true, message = "Dosya başarıyla silindi!" });
+                return Ok(new { success = true, message = Messages.File_Deleted_Success_TR });
             }
 
-            return NotFound(new { success = false, message = $"Dosya bulunamadı: {fileName}" });
+            return NotFound(new { success = false, message = $"{Messages.File_Not_Found_TR}: {fileName}" });
         }
-
     }
 }

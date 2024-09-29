@@ -1,21 +1,8 @@
-﻿@model RoleAssignmentViewModel
+﻿ @model RoleAssignmentViewModel
 
 <h2>Admin Page</h2>
 
-
-<div class="alert alert-success mt-3"> Bilgi :  @TempData["Message"] </div>
-
-@* <style>
-    .form-control {
-        margin-right: 10px;
-    }
-
-    .btn-primary {
-        height: 38px; /* Seçim kutularına eşit yükseklik */
-    }
-</style> *@
-
-
+<!-- Kullanıcılara Rol Atama Formu -->
 <form action="/Admin/AssignRole" method="post">
     <div class="row">
         <!-- Kullanıcı Seçimi -->
@@ -48,3 +35,49 @@
         </div>
     </div>
 </form>
+
+<!-- Yeni Rol Ekleme Formu -->
+<form action="/Admin/CreateRole" method="post" class="mt-4">
+    <div class="row">
+        <!-- Yeni Rol İsmi -->
+        <div class="col-md-3">
+            <label for="roleName">Yeni Rol Oluştur:</label>
+            <input type="text" name="roleName" id="roleName" class="form-control" placeholder="Rol İsmi" />
+        </div>
+
+        <!-- Submit Butonu -->
+        <div class="col-md-2 d-flex align-items-end">
+            <button type="submit" class="btn btn-success">Rol Oluştur</button>
+        </div>
+    </div>
+</form>
+
+@if (TempData["Message"] != null)
+{
+    <div class="alert alert-warning mt-3 col-lg-6">@TempData["Message"]</div>
+}
+
+<!-- Kullanıcı ve Rollerin Tablosu -->
+<table class="table table-striped mt-4">
+    <thead>
+        <tr>
+            <th>Kullanıcı Adı</th>
+            <th>Adı Soyadı</th> <!-- FullName -->
+            <th>Email</th>
+            <th>Telefon Numarası</th>
+            <th>Roller</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var userRole in Model.UserRoles)
+        {
+            <tr>
+                <td>@userRole.Username</td>
+                <td>@userRole.FullName</td> <!-- FullName burada gösteriliyor -->
+                <td>@userRole.Email</td> <!-- Email burada gösteriliyor -->
+                <td>@userRole.PhoneNumber</td> <!-- Telefon numarası burada gösteriliyor -->
+                <td>@string.Join(", ", userRole.Roles)</td> <!-- Roller burada gösteriliyor -->
+            </tr>
+        }
+    </tbody>
+</table>

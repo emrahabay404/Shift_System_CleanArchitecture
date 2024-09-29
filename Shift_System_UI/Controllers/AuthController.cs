@@ -27,8 +27,15 @@ namespace Shift_System_UI.Controllers
 
         [HttpGet]
         [Route("/Account/Login/")]
-        public IActionResult Login()
+        public IActionResult Login(string returnUrl = null)
         {
+            // ReturnUrl uzun ve güvensizse, geçerli bir yerel URL değilse bunu kontrol edelim
+            if (!string.IsNullOrEmpty(returnUrl) && returnUrl.Length > 2000)
+            {
+                // Eğer URL aşırı uzun ve güvenli değilse ana sayfaya yönlendirelim
+                return RedirectToAction("Index", "Home");
+            }
+            ViewData["ReturnUrl"] = returnUrl;
             return View();
         }
 
@@ -39,9 +46,7 @@ namespace Shift_System_UI.Controllers
             var result = await _signInManager.PasswordSignInAsync(username, password, true, true);
             if (!result.Succeeded)
             {
-                //return Json("Kullanıcı adı veya şifre hatalı.");
                 return Json(Messages.Login_Failed_TR);
-                //return Json(new { success = false, message = "Kullanıcı adı veya şifre hatalı." });
             }
             try
             {
@@ -49,8 +54,7 @@ namespace Shift_System_UI.Controllers
             }
             catch (Exception ex)
             {
-                return Json($"Bir hata oluştu: {ex.Message}");
-                //return Json(new { success = false, message = $"Bir hata oluştu: {ex.Message}" });
+                return Json(Messages.Operation_Failed_TR + ex.Message);
             }
         }
 
@@ -79,7 +83,6 @@ namespace Shift_System_UI.Controllers
             return Json(new { success = false, message = $"Kayıt işlemi başarısız: {errors}" });
         }
 
-
         [HttpPost]
         [Authorize]
         public async Task<JsonResult> ApiLogin(string password)
@@ -87,7 +90,7 @@ namespace Shift_System_UI.Controllers
             string username = User.Identity.Name;
             if (string.IsNullOrEmpty(username))
             {
-                return Json(new { success = false, message = "Kullanıcı kimliği doğrulanamadı." });
+                return Json(new { success = false, message = Messages.Login_Failed_TR });
             }
 
             // Kimlik doğrulama başarılıysa, API'ye login isteği yap
@@ -97,7 +100,7 @@ namespace Shift_System_UI.Controllers
             var response = await _httpClient.PostAsync(ApiEndPoints.ApiLoginEnddpoint, content);
             if (!response.IsSuccessStatusCode)
             {
-                return Json(new { success = false, message = "Login API çağrısı başarısız." });
+                return Json(new { success = false, message = Messages.Login_Failed_TR });
             }
 
             // Yanıtı JSON olarak deserializ edelim
@@ -105,11 +108,11 @@ namespace Shift_System_UI.Controllers
             var loginResponse = JsonConvert.DeserializeObject<dynamic>(responseContent);
 
             // Token'ı al
-            string token = loginResponse.token.ToString();
+            string token = loginResponse?.token?.ToString();
 
             if (string.IsNullOrEmpty(token))
             {
-                return Json(new { success = false, message = "Token alınamadı." });
+                return Json(new { success = false, message = Messages.Token_Could_Not_Be_Received_TR });
             }
 
             // Token'ı session'a kaydet
@@ -127,10 +130,11 @@ namespace Shift_System_UI.Controllers
             var testToken = _httpContextAccessor.HttpContext.Session.GetString("JWTToken");
             if (string.IsNullOrEmpty(testToken))
             {
-                return Json(new { success = false, message = "JWT Token saklama başarısız!" });
+                return Json(new { success = false, message = Messages.Jwt_Token_Storage_Failed_TR });
             }
 
-            return Json(new { success = true, message = loginResponse.message.ToString(), token = token });
+            // Mesaj yoksa varsayılan başarı mesajı gönder
+            return Json(new { success = true, message = loginResponse?.message?.ToString() ?? Messages.Token_Created_Success_TR, token = token });
         }
 
         public JsonResult ApiConnectionStatus()

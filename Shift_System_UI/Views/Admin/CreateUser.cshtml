@@ -1,0 +1,63 @@
+﻿@model CreateUserViewModel
+
+<h2>Yeni Kullanıcı Oluştur</h2>
+
+<!-- Yeni Kullanıcı Ekleme Formu -->
+<form asp-action="CreateUser" method="post">
+    <div class="row">
+        <!-- Kullanıcı Adı -->
+        <div class="col-md-4">
+            <label for="Username">Kullanıcı Adı</label>
+            <input type="text" name="Username" id="Username" class="form-control" placeholder="Kullanıcı Adı" required />
+        </div>
+
+        <!-- E-posta -->
+        <div class="col-md-4">
+            <label for="Email">E-posta</label>
+            <input type="email" name="Email" id="Email" class="form-control" placeholder="E-posta" required />
+        </div>
+
+        <!-- Şifre -->
+        <div class="col-md-4">
+            <label for="Password">Şifre</label>
+            <input type="password" name="Password" id="Password" class="form-control" placeholder="Şifre" required />
+        </div>
+    </div>
+
+    <div class="row mt-4">
+        <!-- Cep Telefonu -->
+        <div class="col-md-4">
+            <label for="PhoneNumber">Cep Telefonu</label>
+            <input type="text" name="PhoneNumber" id="PhoneNumber" class="form-control" placeholder="Cep Telefonu" required />
+        </div>
+
+        <!-- Rol Seçimi -->
+        <div class="col-md-4">
+            <label for="RoleName">Rol Seçin</label>
+            @if (Model.Roles != null && Model.Roles.Any())
+            {
+                <select name="RoleName" id="RoleName" class="form-control">
+                    <option value="">Rol Seçin</option>
+                    @foreach (var role in Model.Roles)
+                    {
+                        <option value="@role.Name">@role.Name</option>
+                    }
+                </select>
+            }
+            else
+            {
+                <p class="text-danger">Hiç rol bulunamadı. Lütfen önce rol ekleyin.</p>
+            }
+        </div>
+
+        <!-- Submit Butonu -->
+        <div class="col-md-4 d-flex align-items-end">
+            <button type="submit" class="btn btn-primary">Kullanıcı Oluştur</button>
+        </div>
+    </div>
+</form>
+
+@if (TempData["Message"] != null)
+{
+    <div class="alert alert-warning mt-3 col-lg-6">@TempData["Message"]</div>
+}

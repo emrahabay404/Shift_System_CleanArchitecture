@@ -25,7 +25,7 @@ $("#apiBtn").click(function () {
                 placeholder: "Şifrenizi Girin",
                 type: "password",
                 id: "passwordapi",
-                value: "Ea123123.*",
+                value: "De*1wrlCRo04Y@Ph==R?T",
                 className: "form-control",
             },
         },
@@ -62,11 +62,12 @@ $("#apiBtn").click(function () {
 
         // Spinner'ı SweetAlert içeriğine butonların altına ekle
         var spinnerHtml = `
-            <div id="spinner-container" style="text-align: center; margin-top: 10px;">
-                <div id="spinnerloginapi" class="spinner-border text-primary" role="status" style="width: 3rem; height: 3rem; display: none;">
-                    <span class="sr-only">Loading...</span>
-                </div>
-            </div>`;
+    <div id="spinner-container" style="text-align: center; margin-top: 10px;">
+        <div id="spinnerloginapi" class="spinner-border text-primary" role="status" style="width: 3rem; height: 3rem;">
+            <span class="sr-only">Loading...</span>
+        </div>
+    </div>`;
+
         $(".swal-content").append(spinnerHtml); // Spinner HTML'ini butonların altına ekle
 
         // Spinner'ı göster
@@ -87,7 +88,7 @@ $("#apiBtn").click(function () {
 
                 if (response.success) {
                     // "Bağlantı Başarılı" mesajını göster ve ardından sayfayı yenile
-                    swal("Bağlantı Başarılı", {
+                    swal(response.message, {
                         icon: "success",
                         buttons: {
                             confirm: {
@@ -117,37 +118,34 @@ $("#apiBtn").click(function () {
 });
 
 $(document).ready(function () {
-    // Sayfa yüklendiğinde AJAX isteği yap
-    $.ajax({
-        type: "GET",
-        url: "/Auth/ApiConnectionStatus", // API metoduna istek
-        success: function (response) {
-            if (response.success) {
-                // JWT Token mevcutsa, menü öğesini "Bağlanıldı" olarak değiştir ve check ikonu ekle
-                $("#apiBtn")
-                    .html('<i class="fas fa-check"></i><p>Servis Bağlantısı : Bağlı</p>')
-                    .removeAttr('href') // Bağlantıyı kaldır
-                    .css('cursor', 'default') // Farenin üzerine gelince göstergeyi değiştir
-                    .off('click'); // Tıklama olayını kaldır
-            } else {
-                // JWT Token yoksa, menü öğesi "Servise Bağlan" olarak kalır
-                $("#apiBtn")
-                    .html('<i class="fas fa-link"></i><p>Servise Bağlan</p><span class="badge badge-secondary">1</span>')
-                    .attr('href', '#') // Bağlantıyı tekrar ekle
-                    .css('cursor', 'pointer'); // Farenin üzerine gelince göstergeyi değiştir
-            }
-        },
-        error: function () {
-            // AJAX hatası durumunda menü öğesi "Servise Bağlan" olarak kalır
-            $("#apiBtn")
-                .html('<i class="fas fa-link"></i><p>Servise Bağlan</p><span class="badge badge-secondary">1</span>')
-                .attr('href', '#') // Bağlantıyı tekrar ekle
-                .css('cursor', 'pointer'); // Farenin üzerine gelince göstergeyi değiştir
-        }
-    });
-
-
-
+    //// Sayfa yüklendiğinde AJAX isteği yap
+    //$.ajax({
+    //    type: "GET",
+    //    url: "/Auth/ApiConnectionStatus", // API metoduna istek
+    //    success: function (response) {
+    //        if (response.success) {
+    //            // JWT Token mevcutsa, menü öğesini "Bağlanıldı" olarak değiştir ve check ikonu ekle
+    //            $("#apiBtn")
+    //                .html('<i class="fas fa-check"></i><p>Servis Bağlantısı : Bağlı</p>')
+    //                .removeAttr('href') // Bağlantıyı kaldır
+    //                .css('cursor', 'default') // Farenin üzerine gelince göstergeyi değiştir
+    //                .off('click'); // Tıklama olayını kaldır
+    //        } else {
+    //            // JWT Token yoksa, menü öğesi "Servise Bağlan" olarak kalır
+    //            $("#apiBtn")
+    //                .html('<i class="fas fa-link"></i><p>Servise Bağlan</p><span class="badge badge-secondary">1</span>')
+    //                .attr('href', '#') // Bağlantıyı tekrar ekle
+    //                .css('cursor', 'pointer'); // Farenin üzerine gelince göstergeyi değiştir
+    //        }
+    //    },
+    //    error: function () {
+    //        // AJAX hatası durumunda menü öğesi "Servise Bağlan" olarak kalır
+    //        $("#apiBtn")
+    //            .html('<i class="fas fa-link"></i><p>Servise Bağlan</p><span class="badge badge-secondary">1</span>')
+    //            .attr('href', '#') // Bağlantıyı tekrar ekle
+    //            .css('cursor', 'pointer'); // Farenin üzerine gelince göstergeyi değiştir
+    //    }
+    //});
 
     $(".changeSideBarColor").on("click", function () {
         if ($(this).attr("data-color") == "default") {
@@ -155,15 +153,11 @@ $(document).ready(function () {
         } else {
             $(".sidebar").attr("data-background-color", $(this).attr("data-color"));
         }
-
         $(this).parent().find(".changeSideBarColor").removeClass("selected");
         $(this).addClass("selected");
         layoutsColors();
         getCheckmark();
     });
 
-
 });
-
-
 
