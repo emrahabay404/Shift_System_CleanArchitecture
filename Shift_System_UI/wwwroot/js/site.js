@@ -117,16 +117,34 @@ function PostRequestSwal(url, postData) {
         });
 }
 
-function setHTML(id, content) {
+function SetHTMLtoDiv(id, content) {
     document.getElementById(id).innerHTML = content;
 }
 
 // Spinner'ı görünür hale getirir
 function OpenSpinner() {
-    document.getElementById('layoutspinner').style.display = 'block'; // Spinner'ı göster
+    //document.getElementById('layoutspinner').style.display = 'block'; // Spinner'ı göster
+    document.getElementById('layoutspinner').style.visibility = 'visible';
 }
 
 // Spinner'ı gizler
 function CloseSpinner() {
-    document.getElementById('layoutspinner').style.display = 'none'; // Spinner'ı gizle
+    document.getElementById('layoutspinner').style.visibility = 'hidden';
 }
+
+
+WebFont.load({
+    google: { families: ["Public Sans:300,400,500,600,700"] },
+    custom: {
+        families: [
+            "Font Awesome 5 Solid",
+            "Font Awesome 5 Regular",
+            "Font Awesome 5 Brands",
+            "simple-line-icons",
+        ],
+        urls: ['/tema/assets/css/fonts.min.css'],
+    },
+    active: function () {
+        sessionStorage.fonts = true;
+    },
+});

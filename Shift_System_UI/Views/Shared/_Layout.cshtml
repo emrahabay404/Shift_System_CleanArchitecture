@@ -36,23 +36,6 @@
     <link rel="icon" href="~/tema/assets/img/kaiadmin/favicon.ico" type="image/x-icon" />
 
     <script src="~/tema/assets/js/plugin/webfont/webfont.min.js"></script>
-    <script>
-        WebFont.load({
-            google: { families: ["Public Sans:300,400,500,600,700"] },
-            custom: {
-                families: [
-                    "Font Awesome 5 Solid",
-                    "Font Awesome 5 Regular",
-                    "Font Awesome 5 Brands",
-                    "simple-line-icons",
-                ],
-                urls: ['/tema/assets/css/fonts.min.css'],
-            },
-            active: function () {
-                sessionStorage.fonts = true;
-            },
-        });
-    </script>
 
     <link rel="stylesheet" href="~/tema/assets/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/tema/assets/css/plugins.min.css" />
@@ -61,6 +44,30 @@
     <link href="~/tema/assets/css/fonts.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="~/tema/assets/css/demo.css" />
     <script src="~/js/site.js"></script>
+    <link href="~/css/site.css" rel="stylesheet" />
+
+    <style type="text/css">
+        .demo-spinner-overlay {
+            position: fixed; /* Sayfa boyunca sabit kalmasını sağlar */
+            top: 0;
+            left: 0;
+            width: 100vw; /* Tüm genişliği kaplar */
+            height: 100vh; /* Tüm yüksekliği kaplar */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: rgba(255, 255, 255, 0.7); /* Yarı şeffaf bir arka plan */
+            backdrop-filter: blur(5px); /* Arka planı bulanıklaştırır */
+            z-index: 9999; /* Sayfadaki diğer içeriklerin üstünde */
+        }
+
+        .spinner-border {
+            width: 100px;
+            height: 100px;
+            z-index: 10000;
+        }
+    </style>
+
 </head>
 <body>
     <div class="wrapper">
@@ -145,18 +152,18 @@
         <div class="main-panel">
             <div class="main-header">
                 <!-- Navbar Header -->
-                <nav class="navbar navbar-header navbar-header-transparent navbar-expand-lg border-bottom">
+                <nav data-background-color="dark" class="navbar navbar-header navbar-header-transparent navbar-expand-lg border-bottom">
                     <div class="container-fluid">
-                        @*   <nav class="navbar navbar-header-left navbar-expand-lg navbar-form nav-search p-0 d-none d-lg-flex">
-                        <div class="input-group">
-                        <div class="input-group-prepend">
-                        <button type="submit" class="btn btn-search pe-1">
-                        <i class="fa fa-search search-icon"></i>
-                        </button>
-                        </div>
-                        <input type="text" placeholder="Search ..." class="form-control" />
-                        </div>
-                        </nav> *@
+                        <nav class="navbar navbar-header-left navbar-expand-lg navbar-form nav-search p-0 d-none d-lg-flex">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <button type="submit" class="btn btn-search pe-1">
+                                        <i class="fa fa-search search-icon"></i>
+                                    </button>
+                                </div>
+                                <input type="text" placeholder="Search ..." class="form-control" />
+                            </div>
+                        </nav>
 
                         <ul class="navbar-nav topbar-nav ms-md-auto align-items-center">
                             <li class="nav-item topbar-icon dropdown hidden-caret d-flex d-lg-none">
@@ -185,16 +192,16 @@
                                 <ul class="dropdown-menu dropdown-user animated fadeIn">
                                     @* <div class="dropdown-user-scroll scrollbar-outer"> *@
                                     <li>
-                                        <div class="user-box">
+                                        <div class="user-box text-white">
                                             <div class="avatar-lg">
                                                 <img src="~/tema/assets/img/profile.jpg" alt="image profile" class="avatar-img rounded" />
                                             </div>
-                                            <div class="u-text">
+                                            <div class="u-text text-white">
                                                 <h4 style="font-size:small">@fullname</h4>
-                                                <p style="font-size:small" class="text-muted">@usermail</p>
+                                                <p style="font-size:small" class="text-white">@usermail</p>
                                                 @if (isAdmin)
                                                 {
-                                                    <p style="font-size:small" class="text-muted">  Admin  </p>
+                                                    <p style="font-size:small" class="text-white">  Admin  </p>
                                                 }
                                                 <button style="font-size:small" id="logoutbtn" class="btn btn-xs btn-secondary btn-sm">Çıkış Yap</button>
                                             </div>
@@ -213,17 +220,11 @@
             <div class="container">
                 <div class="page-inner">
                     <div class="page-category">
-
-                        <center>
-                            <div style="display: none;" id="layoutspinner" class="demo-spinner">
-                                <div class="spinner-border text-primary"
-                                     style="width: 32.5rem; height: 32.5rem"
-                                     role="status">
-                                    <span class="visually-hidden">Loading...</span>
-                                </div>
+                        <div id="layoutspinner" style="visibility:hidden" class="demo-spinner-overlay">
+                            <div class="spinner-border text-primary" role="status">
+                                <span class="visually-hidden">Loading...</span>
                             </div>
-                        </center>
-
+                        </div>
                         @RenderBody()
                     </div>
                 </div>
@@ -277,4 +278,3 @@
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
-

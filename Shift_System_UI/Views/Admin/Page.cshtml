@@ -1,6 +1,7 @@
 ﻿ @model RoleAssignmentViewModel
 
-<h2>Admin Page</h2>
+<h2> Admin<i class="fas fa-user-plus"></i>  </h2>
+<hr />
 
 <!-- Kullanıcılara Rol Atama Formu -->
 <form action="/Admin/AssignRole" method="post">
@@ -42,7 +43,7 @@
         <!-- Yeni Rol İsmi -->
         <div class="col-md-3">
             <label for="roleName">Yeni Rol Oluştur:</label>
-            <input type="text" name="roleName" id="roleName" class="form-control" placeholder="Rol İsmi" />
+            <input type="text" min="3" name="roleName" id="roleName" class="form-control" placeholder="Rol İsmi" required />
         </div>
 
         <!-- Submit Butonu -->

@@ -1,9 +1,4 @@
 ﻿
-$(document).ready(function () {
-    //Swal.fire("SweetAlert2 is working!");
-    //alert("ssaddsa");
-});
-
 
 $("#loginBtn").on("click", function (event) {
 
