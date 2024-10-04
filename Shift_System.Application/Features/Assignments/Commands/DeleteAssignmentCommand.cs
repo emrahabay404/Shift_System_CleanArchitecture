@@ -8,19 +8,19 @@ using Shift_System.Shared.Helpers;
 
 namespace Shift_System.Application.Features.Assignments.Commands
 {
-    public record DeleteAssignmentCommand : IRequest<Result<int>>, IMapFrom<AssignList>
+    public record DeleteAssignmentCommand : IRequest<Result<Guid>>, IMapFrom<AssignList>
     {
-        public int Id { get; set; }
+        public Guid Id { get; set; }
         public DeleteAssignmentCommand()
         {
         }
-        public DeleteAssignmentCommand(int id)
+        public DeleteAssignmentCommand(Guid id)
         {
             Id = id;
         }
     }
 
-    internal class DeleteAssignmentCommandHandler : IRequestHandler<DeleteAssignmentCommand, Result<int>>
+    internal class DeleteAssignmentCommandHandler : IRequestHandler<DeleteAssignmentCommand, Result<Guid>>
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
@@ -32,7 +32,7 @@ namespace Shift_System.Application.Features.Assignments.Commands
         }
 
 
-        public async Task<Result<int>> Handle(DeleteAssignmentCommand command, CancellationToken cancellationToken)
+        public async Task<Result<Guid>> Handle(DeleteAssignmentCommand command, CancellationToken cancellationToken)
         {
             var _AssignList = await _unitOfWork.Repository<AssignList>().GetByIdAsync(command.Id);
             if (_AssignList != null)
@@ -42,11 +42,11 @@ namespace Shift_System.Application.Features.Assignments.Commands
 
                 await _unitOfWork.Save(cancellationToken);
 
-                return await Result<int>.SuccessAsync(_AssignList.Id, "AssignList_Deleted");
+                return await Result<Guid>.SuccessAsync(_AssignList.Id, "AssignList_Deleted");
             }
             else
             {
-                return await Result<int>.FailureAsync("AssignList_Not_Found");
+                return await Result<Guid>.FailureAsync("AssignList_Not_Found");
             }
         }
     }

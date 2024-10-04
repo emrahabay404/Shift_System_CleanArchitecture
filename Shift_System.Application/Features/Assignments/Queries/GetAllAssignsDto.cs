@@ -7,8 +7,8 @@ namespace Shift_System.Application.Features.Assignments.Queries
     {
         public int Id { get; init; }
 
-        public int? ShiftId { get; set; }
-        public int? TeamId { get; set; }
+        public Guid? ShiftId { get; set; }
+        public Guid? TeamId { get; set; }
 
     }
 }

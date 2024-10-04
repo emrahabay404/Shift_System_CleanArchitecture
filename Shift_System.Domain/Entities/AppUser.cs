@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using Shift_System.Domain.Common;
 
 namespace Shift_System.Domain.Entities
 {
@@ -7,12 +6,10 @@ namespace Shift_System.Domain.Entities
     {
         public string FullName { get; set; }
 
-
-
         //BaseAuditableEntity
-        public int? CreatedBy { get; set; }
+        public Guid? CreatedBy { get; set; }
         public DateTime? CreatedDate { get; set; }
-        public int? UpdatedBy { get; set; }
+        public Guid? UpdatedBy { get; set; }
         public DateTime? UpdatedDate { get; set; }
         public bool? IsDeleted { get; set; }
         public bool Status { get; set; }

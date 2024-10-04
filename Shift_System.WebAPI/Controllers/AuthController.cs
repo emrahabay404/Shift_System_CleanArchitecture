@@ -9,6 +9,7 @@ using Shift_System.Shared.Helpers;
 namespace Shift_System.WebAPI.Controllers
 {
     [Route("api/[controller]")]
+    [Authorize(Roles = "Manager,Admin")]
     [ApiController]
     public class AuthController : ApiControllerBase
     {
@@ -46,7 +47,6 @@ namespace Shift_System.WebAPI.Controllers
 
         [HttpPost]
         [Route("Register")]
-        [Authorize(Roles = "Manager,Admin")]
         public async Task<IActionResult> Register(RegistrationModel model)
         {
             try
@@ -68,7 +68,6 @@ namespace Shift_System.WebAPI.Controllers
 
         [HttpPost]
         [Route("assign-role")]
-        [Authorize(Roles = "Manager,Admin")]
         public async Task<IActionResult> AssignRole([FromBody] RoleAssignmentModel model)
         {
             if (model == null || string.IsNullOrEmpty(model.Username) || string.IsNullOrEmpty(model.RoleName))
@@ -98,7 +97,6 @@ namespace Shift_System.WebAPI.Controllers
         }
 
         [HttpGet]
-        [Authorize(Roles = "Manager,Admin")]
         [Route("api/get-users")]
         public IActionResult GetAllUsers()
         {
@@ -119,7 +117,6 @@ namespace Shift_System.WebAPI.Controllers
             return Ok(new { success = true, users = userList });
         }
 
-        [Authorize(Roles = "Manager,Admin")]
         [HttpGet]
         [Route("api/get-roles")]
         public IActionResult GetAllRoles()

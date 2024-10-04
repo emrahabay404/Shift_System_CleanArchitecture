@@ -69,12 +69,12 @@ namespace Shift_System_UI.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateUser(CreateUserViewModel model)
         {
-            if (!ModelState.IsValid)
-            {
-                model.Roles = _roleManager.Roles.ToList();
-                TempData["Message"] = Messages.Invalid_Input_TR;
-                return View(model);
-            }
+            //if (!ModelState.IsValid)
+            //{
+            //    model.Roles = _roleManager.Roles.ToList();
+            //    TempData["Message"] = Messages.Invalid_Input_TR;
+            //    return View(model);
+            //}
 
             var user = new AppUser
             {

@@ -8,18 +8,18 @@ using Shift_System.Shared.Helpers;
 
 namespace Shift_System.Application.Features.Teams.Commands
 {
-    public record DeleteTeamsCommand : IRequest<Result<int>>, IMapFrom<Team>
+    public record DeleteTeamsCommand : IRequest<Result<Guid>>, IMapFrom<Team>
     {
-        public int Id { get; set; }
+        public Guid Id { get; set; }
         public DeleteTeamsCommand()
         {
         }
-        public DeleteTeamsCommand(int id)
+        public DeleteTeamsCommand(Guid id)
         {
             Id = id;
         }
     }
-    internal class DeleteTeamsCommandHandler : IRequestHandler<DeleteTeamsCommand, Result<int>>
+    internal class DeleteTeamsCommandHandler : IRequestHandler<DeleteTeamsCommand, Result<Guid>>
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
@@ -29,7 +29,7 @@ namespace Shift_System.Application.Features.Teams.Commands
             _unitOfWork = unitOfWork;
             _mapper = mapper;
         }
-        public async Task<Result<int>> Handle(DeleteTeamsCommand command, CancellationToken cancellationToken)
+        public async Task<Result<Guid>> Handle(DeleteTeamsCommand command, CancellationToken cancellationToken)
         {
             var _Team = await _unitOfWork.Repository<Team>().GetByIdAsync(command.Id);
             if (_Team != null)
@@ -39,11 +39,11 @@ namespace Shift_System.Application.Features.Teams.Commands
 
                 await _unitOfWork.Save(cancellationToken);
 
-                return await Result<int>.SuccessAsync(_Team.Id, "Team_Deleted");
+                return await Result<Guid>.SuccessAsync(_Team.Id, "Team_Deleted");
             }
             else
             {
-                return await Result<int>.FailureAsync("Team_Not_Found");
+                return await Result<Guid>.FailureAsync("Team_Not_Found");
             }
         }
     }

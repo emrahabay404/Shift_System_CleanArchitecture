@@ -9,7 +9,7 @@ using Shift_System.Shared.Helpers;
 namespace Shift_System.Application.Features.Employees.Commands
 {
 
-   public record CreateEmployeeCommand : IRequest<Result<int>>, IMapFrom<Employee>
+   public record CreateEmployeeCommand : IRequest<Result<Guid>>, IMapFrom<Employee>
     {
         public int EmployeeCode { get; set; }
         public string Name { get; set; }
@@ -22,7 +22,7 @@ namespace Shift_System.Application.Features.Employees.Commands
         public bool Activity { get; set; }
     }
 
-    internal class CreateEmployeeCommandHandler : IRequestHandler<CreateEmployeeCommand, Result<int>>
+    internal class CreateEmployeeCommandHandler : IRequestHandler<CreateEmployeeCommand, Result<Guid>>
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
@@ -33,7 +33,7 @@ namespace Shift_System.Application.Features.Employees.Commands
             _mapper = mapper;
         }
 
-        public async Task<Result<int>> Handle(CreateEmployeeCommand command, CancellationToken cancellationToken)
+        public async Task<Result<Guid>> Handle(CreateEmployeeCommand command, CancellationToken cancellationToken)
         {
             var employee = new Employee()
             {
@@ -53,7 +53,7 @@ namespace Shift_System.Application.Features.Employees.Commands
 
             await _unitOfWork.Save(cancellationToken);
 
-            return await Result<int>.SuccessAsync(employee.Id, "Employee_Created");
+            return await Result<Guid>.SuccessAsync(employee.Id, "Employee_Created");
         }
     }
 

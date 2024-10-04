@@ -4,8 +4,8 @@ namespace Shift_System.Domain.Entities
 {
    public class AssignList : BaseAuditableEntity
    {
-      public int? ShiftId { get; set; }
-      public int? TeamId { get; set; }
+      public Guid? ShiftId { get; set; }
+      public Guid? TeamId { get; set; }
       public virtual ShiftList Shift { get; set; }
       public virtual Team Team { get; set; }
    }

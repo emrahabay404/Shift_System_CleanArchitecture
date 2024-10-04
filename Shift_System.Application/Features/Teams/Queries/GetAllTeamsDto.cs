@@ -6,7 +6,7 @@ namespace Shift_System.Application.Features.Teams.Queries
 {
     public class GetAllTeamsDto : IMapFrom<Team>
     {
-        public int Id { get; init; }
+        public Guid Id { get; init; }
         public string TeamName { get; set; } = string.Empty;
         [JsonIgnore]
         public string FileName { get; set; } = string.Empty;

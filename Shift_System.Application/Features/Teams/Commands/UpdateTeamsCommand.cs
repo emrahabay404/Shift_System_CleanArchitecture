@@ -7,12 +7,12 @@ using Shift_System.Shared.Helpers;
 
 namespace Shift_System.Application.Features.Teams.Commands
 {
-   public record UpdateTeamsCommand : IRequest<Result<int>>
+   public record UpdateTeamsCommand : IRequest<Result<Guid>>
     {
-        public int Id { get; set; }
+        public Guid Id { get; set; }
         public string TeamName { get; set; }
     }
-    internal class UpdateTeamsCommandHandler : IRequestHandler<UpdateTeamsCommand, Result<int>>
+    internal class UpdateTeamsCommandHandler : IRequestHandler<UpdateTeamsCommand, Result<Guid>>
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
@@ -22,7 +22,7 @@ namespace Shift_System.Application.Features.Teams.Commands
             _unitOfWork = unitOfWork;
             _mapper = mapper;
         }
-        public async Task<Result<int>> Handle(UpdateTeamsCommand command, CancellationToken cancellationToken)
+        public async Task<Result<Guid>> Handle(UpdateTeamsCommand command, CancellationToken cancellationToken)
         {
             var _team = await _unitOfWork.Repository<Team>().GetByIdAsync(command.Id);
             if (_team != null)
@@ -35,11 +35,11 @@ namespace Shift_System.Application.Features.Teams.Commands
 
                 await _unitOfWork.Save(cancellationToken);
 
-                return await Result<int>.SuccessAsync(_team.Id, "Team_Updated");
+                return await Result<Guid>.SuccessAsync(_team.Id, "Team_Updated");
             }
             else
             {
-                return await Result<int>.FailureAsync("Team_Not_Found");
+                return await Result<Guid>.FailureAsync("Team_Not_Found");
             }
         }
     }

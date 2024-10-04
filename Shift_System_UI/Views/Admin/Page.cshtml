@@ -66,17 +66,23 @@
             <th>Email</th>
             <th>Telefon Numarası</th>
             <th>Roller</th>
+            <th>İşlem</th>
         </tr>
     </thead>
     <tbody>
         @foreach (var userRole in Model.UserRoles)
         {
+            var user = Model.Users.FirstOrDefault(u => u.UserName == userRole.Username);
+            <!-- Kullanıcıyı bul -->
             <tr>
                 <td>@userRole.Username</td>
                 <td>@userRole.FullName</td> <!-- FullName burada gösteriliyor -->
                 <td>@userRole.Email</td> <!-- Email burada gösteriliyor -->
                 <td>@userRole.PhoneNumber</td> <!-- Telefon numarası burada gösteriliyor -->
                 <td>@string.Join(", ", userRole.Roles)</td> <!-- Roller burada gösteriliyor -->
+                <td>
+                    <a href="/Admin/UserDetails/@user?.Id" class="btn btn-info">Detay</a> <!-- Kullanıcı detayına yönlendiren buton -->
+                </td>
             </tr>
         }
     </tbody>

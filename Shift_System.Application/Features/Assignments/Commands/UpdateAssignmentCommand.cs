@@ -7,14 +7,14 @@ using Shift_System.Shared.Helpers;
 
 namespace Shift_System.Application.Features.Assignments.Commands
 {
-    public record UpdateAssignmentCommand : IRequest<Result<int>>
+    public record UpdateAssignmentCommand : IRequest<Result<Guid>>
     {
-        public int Id { get; set; }
-        public int? ShiftId { get; set; }
-        public int? TeamId { get; set; }
+        public Guid Id { get; set; }
+        public Guid? ShiftId { get; set; }
+        public Guid? TeamId { get; set; }
     }
 
-    internal class UpdateAssignmentCommandHandler : IRequestHandler<UpdateAssignmentCommand, Result<int>>
+    internal class UpdateAssignmentCommandHandler : IRequestHandler<UpdateAssignmentCommand, Result<Guid>>
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
@@ -25,7 +25,7 @@ namespace Shift_System.Application.Features.Assignments.Commands
             _mapper = mapper;
         }
 
-        public async Task<Result<int>> Handle(UpdateAssignmentCommand command, CancellationToken cancellationToken)
+        public async Task<Result<Guid>> Handle(UpdateAssignmentCommand command, CancellationToken cancellationToken)
         {
 
             var _assign = await _unitOfWork.Repository<AssignList>().GetByIdAsync(command.Id);
@@ -41,11 +41,11 @@ namespace Shift_System.Application.Features.Assignments.Commands
 
                 await _unitOfWork.Save(cancellationToken);
 
-                return await Result<int>.SuccessAsync(_assign.Id, "Assign_Updated");
+                return await Result<Guid>.SuccessAsync(_assign.Id, "Assign_Updated");
             }
             else
             {
-                return await Result<int>.FailureAsync("Assign_Not_Found");
+                return await Result<Guid>.FailureAsync("Assign_Not_Found");
             }
         }
     }

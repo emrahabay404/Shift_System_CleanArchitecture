@@ -8,6 +8,7 @@ using Shift_System.Shared.Helpers;
 
 namespace Micro.Teams.API.Controllers
 {
+    [AllowAnonymous]
     [Route("api/[controller]")]
     [ApiController]
     public class TeamsController : ControllerBase
@@ -41,13 +42,13 @@ namespace Micro.Teams.API.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<Result<int>>> Create(CreateTeamCommand command)
+        public async Task<ActionResult<Result<Guid>>> Create(CreateTeamCommand command)
         {
             return await _mediator.Send(command);
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult<Result<int>>> Update(int id, UpdateTeamsCommand command)
+        public async Task<ActionResult<Result<Guid>>> Update(Guid id, UpdateTeamsCommand command)
         {
             if (id != command.Id)
             {
@@ -57,7 +58,7 @@ namespace Micro.Teams.API.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<ActionResult<Result<int>>> Delete(int id)
+        public async Task<ActionResult<Result<Guid>>> Delete(Guid id)
         {
             return await _mediator.Send(new DeleteTeamsCommand(id));
         }

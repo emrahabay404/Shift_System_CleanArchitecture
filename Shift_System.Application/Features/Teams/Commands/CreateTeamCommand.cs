@@ -8,13 +8,13 @@ using Shift_System.Shared.Helpers;
 
 namespace Shift_System.Application.Features.Teams.Commands
 {
-    public record CreateTeamCommand : IRequest<Result<int>>, IMapFrom<Team>
+    public record CreateTeamCommand : IRequest<Result<Guid>>, IMapFrom<Team>
     {
         public string TeamName { get; set; } = string.Empty;
-        public string? FileName { get; set; }  
+        public string? FileName { get; set; }
     }
 
-    internal class CreateTeamCommandHandler : IRequestHandler<CreateTeamCommand, Result<int>>
+    internal class CreateTeamCommandHandler : IRequestHandler<CreateTeamCommand, Result<Guid>>
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
@@ -25,10 +25,11 @@ namespace Shift_System.Application.Features.Teams.Commands
             _mapper = mapper;
         }
 
-        public async Task<Result<int>> Handle(CreateTeamCommand command, CancellationToken cancellationToken)
+        public async Task<Result<Guid>> Handle(CreateTeamCommand command, CancellationToken cancellationToken)
         {
             var _team = new Team()
             {
+                Id = new Guid(),
                 TeamName = command.TeamName,
                 FileName = command.FileName, // Dosya adı burada kaydediliyor
                 CreatedDate = DateTime.Now,
@@ -36,7 +37,7 @@ namespace Shift_System.Application.Features.Teams.Commands
             await _unitOfWork.Repository<Team>().AddAsync(_team);
             _team.AddDomainEvent(new TeamCreatedEvent(_team));
             await _unitOfWork.Save(cancellationToken);
-            return await Result<int>.SuccessAsync(_team.Id, "Team_Created");
+            return await Result<Guid>.SuccessAsync(_team.Id, "Team_Created");
         }
 
     }

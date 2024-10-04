@@ -7,14 +7,14 @@ using Shift_System.Shared.Helpers;
 
 namespace Shift_System.Application.Features.Shifts.Commands
 {
-   public record UpdateShiftCommand : IRequest<Result<int>>
+   public record UpdateShiftCommand : IRequest<Result<Guid>>
     {
-        public int Id { get; set; }
+        public Guid Id { get; set; }
         public string Shift_Name { get; set; }
     }
 
 
-    internal class UpdateShiftCommandHandler : IRequestHandler<UpdateShiftCommand, Result<int>>
+    internal class UpdateShiftCommandHandler : IRequestHandler<UpdateShiftCommand, Result<Guid>>
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
@@ -24,7 +24,7 @@ namespace Shift_System.Application.Features.Shifts.Commands
             _unitOfWork = unitOfWork;
             _mapper = mapper;
         }
-        public async Task<Result<int>> Handle(UpdateShiftCommand command, CancellationToken cancellationToken)
+        public async Task<Result<Guid>> Handle(UpdateShiftCommand command, CancellationToken cancellationToken)
         {
             var _shift = await _unitOfWork.Repository<ShiftList>().GetByIdAsync(command.Id);
             if (_shift != null)
@@ -37,11 +37,11 @@ namespace Shift_System.Application.Features.Shifts.Commands
 
                 await _unitOfWork.Save(cancellationToken);
 
-                return await Result<int>.SuccessAsync(_shift.Id, "Shift_Updated");
+                return await Result<Guid>.SuccessAsync(_shift.Id, "Shift_Updated");
             }
             else
             {
-                return await Result<int>.FailureAsync("Shift_Not_Found");
+                return await Result<Guid>.FailureAsync("Shift_Not_Found");
             }
         }
     }

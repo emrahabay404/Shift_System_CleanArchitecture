@@ -8,18 +8,18 @@ using Shift_System.Shared.Helpers;
 
 namespace Shift_System.Application.Features.Shifts.Commands
 {
-   public record DeleteShiftCommand : IRequest<Result<int>>, IMapFrom<ShiftList>
+   public record DeleteShiftCommand : IRequest<Result<Guid>>, IMapFrom<ShiftList>
     {
-        public int Id { get; set; }
+        public Guid Id { get; set; }
         public DeleteShiftCommand()
         {
         }
-        public DeleteShiftCommand(int id)
+        public DeleteShiftCommand(Guid id)
         {
             Id = id;
         }
     }
-    internal class DeleteShiftCommandHandler : IRequestHandler<DeleteShiftCommand, Result<int>>
+    internal class DeleteShiftCommandHandler : IRequestHandler<DeleteShiftCommand, Result<Guid>>
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
@@ -29,7 +29,7 @@ namespace Shift_System.Application.Features.Shifts.Commands
             _unitOfWork = unitOfWork;
             _mapper = mapper;
         }
-        public async Task<Result<int>> Handle(DeleteShiftCommand command, CancellationToken cancellationToken)
+        public async Task<Result<Guid>> Handle(DeleteShiftCommand command, CancellationToken cancellationToken)
         {
             var _shiftList = await _unitOfWork.Repository<ShiftList>().GetByIdAsync(command.Id);
             if (_shiftList != null)
@@ -39,11 +39,11 @@ namespace Shift_System.Application.Features.Shifts.Commands
 
                 await _unitOfWork.Save(cancellationToken);
 
-                return await Result<int>.SuccessAsync(_shiftList.Id, "ShiftList_Deleted");
+                return await Result<Guid>.SuccessAsync(_shiftList.Id, "ShiftList_Deleted");
             }
             else
             {
-                return await Result<int>.FailureAsync("ShiftList_Not_Found");
+                return await Result<Guid>.FailureAsync("ShiftList_Not_Found");
             }
         }
     }

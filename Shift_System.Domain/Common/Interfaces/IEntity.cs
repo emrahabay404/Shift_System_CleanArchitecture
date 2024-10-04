@@ -1,7 +1,7 @@
 ﻿namespace Shift_System.Domain.Common.Interfaces
 {
-   public interface IEntity
-   {
-      public int Id { get; set; }
-   }
+    public interface IEntity
+    {
+        public Guid Id { get; set; }
+    }
 }

@@ -8,12 +8,12 @@ using Shift_System.Shared.Helpers;
 
 namespace Shift_System.Application.Features.Shifts.Commands
 {
-   public record CreateShiftCommand : IRequest<Result<int>>, IMapFrom<ShiftList>
+   public record CreateShiftCommand : IRequest<Result<Guid>>, IMapFrom<ShiftList>
    {
       public string Shift_Name { get; set; }
    }
 
-   internal class CreateShiftCommandHandler : IRequestHandler<CreateShiftCommand, Result<int>>
+   internal class CreateShiftCommandHandler : IRequestHandler<CreateShiftCommand, Result<Guid>>
    {
       private readonly IUnitOfWork _unitOfWork;
       private readonly IMapper _mapper;
@@ -24,7 +24,7 @@ namespace Shift_System.Application.Features.Shifts.Commands
          _mapper = mapper;
       }
 
-      public async Task<Result<int>> Handle(CreateShiftCommand command, CancellationToken cancellationToken)
+      public async Task<Result<Guid>> Handle(CreateShiftCommand command, CancellationToken cancellationToken)
       {
          var _shift = new ShiftList()
          {
@@ -37,7 +37,7 @@ namespace Shift_System.Application.Features.Shifts.Commands
 
          await _unitOfWork.Save(cancellationToken);
 
-         return await Result<int>.SuccessAsync(_shift.Id, "Shift_Created");
+         return await Result<Guid>.SuccessAsync(_shift.Id, "Shift_Created");
       }
    }
 }

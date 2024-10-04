@@ -7,9 +7,9 @@ using Shift_System.Shared.Helpers;
 
 namespace Shift_System.Application.Features.Employees.Commands
 {
-    public record UpdateEmployeeCommand : IRequest<Result<int>>
+    public record UpdateEmployeeCommand : IRequest<Result<Guid>>
     {
-        public int Id { get; set; }
+        public Guid Id { get; set; }
         public int EmployeeCode { get; set; }
         public string Name { get; set; }
         public string SurName { get; set; }
@@ -21,7 +21,7 @@ namespace Shift_System.Application.Features.Employees.Commands
         public bool Activity { get; set; }
     }
 
-    internal class UpdateEmployeeCommandHandler : IRequestHandler<UpdateEmployeeCommand, Result<int>>
+    internal class UpdateEmployeeCommandHandler : IRequestHandler<UpdateEmployeeCommand, Result<Guid>>
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
@@ -31,7 +31,7 @@ namespace Shift_System.Application.Features.Employees.Commands
             _unitOfWork = unitOfWork;
             _mapper = mapper;
         }
-        public async Task<Result<int>> Handle(UpdateEmployeeCommand command, CancellationToken cancellationToken)
+        public async Task<Result<Guid>> Handle(UpdateEmployeeCommand command, CancellationToken cancellationToken)
         {
             var _Employee = await _unitOfWork.Repository<Employee>().GetByIdAsync(command.Id);
             if (_Employee != null)
@@ -53,11 +53,11 @@ namespace Shift_System.Application.Features.Employees.Commands
 
                 await _unitOfWork.Save(cancellationToken);
 
-                return await Result<int>.SuccessAsync(_Employee.Id, "Employee_Updated");
+                return await Result<Guid>.SuccessAsync(_Employee.Id, "Employee_Updated");
             }
             else
             {
-                return await Result<int>.FailureAsync("Employee_Not_Found");
+                return await Result<Guid>.FailureAsync("Employee_Not_Found");
             }
         }
     }

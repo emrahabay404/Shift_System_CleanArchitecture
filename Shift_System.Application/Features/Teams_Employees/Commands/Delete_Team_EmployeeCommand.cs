@@ -8,19 +8,19 @@ using Shift_System.Shared.Helpers;
 
 namespace Shift_System.Application.Features.Teams_Employees.Commands
 {
-   public record Delete_Team_EmployeeCommand : IRequest<Result<int>>, IMapFrom<TeamEmployee>
+   public record Delete_Team_EmployeeCommand : IRequest<Result<Guid>>, IMapFrom<TeamEmployee>
     {
-        public int Id { get; set; }
+        public Guid Id { get; set; }
         public Delete_Team_EmployeeCommand()
         {
         }
-        public Delete_Team_EmployeeCommand(int id)
+        public Delete_Team_EmployeeCommand(Guid id)
         {
             Id = id;
         }
     }
 
-    internal class DeleteTeam_EmployeeCommandHandler : IRequestHandler<Delete_Team_EmployeeCommand, Result<int>>
+    internal class DeleteTeam_EmployeeCommandHandler : IRequestHandler<Delete_Team_EmployeeCommand, Result<Guid>>
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
@@ -32,7 +32,7 @@ namespace Shift_System.Application.Features.Teams_Employees.Commands
         }
 
 
-        public async Task<Result<int>> Handle(Delete_Team_EmployeeCommand command, CancellationToken cancellationToken)
+        public async Task<Result<Guid>> Handle(Delete_Team_EmployeeCommand command, CancellationToken cancellationToken)
         {
             var _Team_Employee = await _unitOfWork.Repository<TeamEmployee>().GetByIdAsync(command.Id);
             if (_Team_Employee != null)
@@ -42,11 +42,11 @@ namespace Shift_System.Application.Features.Teams_Employees.Commands
 
                 await _unitOfWork.Save(cancellationToken);
 
-                return await Result<int>.SuccessAsync(_Team_Employee.Id, "Team_Employee_Deleted");
+                return await Result<Guid>.SuccessAsync(_Team_Employee.Id, "Team_Employee_Deleted");
             }
             else
             {
-                return await Result<int>.FailureAsync("Team_Employee_Not_Found");
+                return await Result<Guid>.FailureAsync("Team_Employee_Not_Found");
             }
         }
     }
