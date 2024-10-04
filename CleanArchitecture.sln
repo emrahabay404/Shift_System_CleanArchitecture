@@ -29,12 +29,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Micro.Teams.API", "Micro.Te
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shift_System_UI", "Shift_System_UI\Shift_System_UI.csproj", "{BAA2A626-F3E4-45D9-8724-65D66884DC8F}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "forAPI", "forAPI", "{5404E2FC-9311-4139-A4D0-CA54A902E5C4}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "APIHelper", "APIHelper", "{5404E2FC-9311-4139-A4D0-CA54A902E5C4}"
 	ProjectSection(SolutionItems) = preProject
 		TextFile1.txt = TextFile1.txt
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "forWEB", "forWEB", "{D2A0E552-8B14-4ECC-9ADA-6B90C05D5D22}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "WebHelper", "WebHelper", "{D2A0E552-8B14-4ECC-9ADA-6B90C05D5D22}"
 	ProjectSection(SolutionItems) = preProject
 		Not1.txt = Not1.txt
 		Not2.txt = Not2.txt

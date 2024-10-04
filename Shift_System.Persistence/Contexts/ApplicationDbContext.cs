@@ -25,6 +25,7 @@ namespace Shift_System.Persistence.Contexts
         public DbSet<TeamEmployee> TeamEmployees => Set<TeamEmployee>();
         public DbSet<Product> Products => Set<Product>();
         public DbSet<MenuSearchBar> MenuSearchBars => Set<MenuSearchBar>();
+        public DbSet<DocumentInfo>  DocumentInfos => Set<DocumentInfo>();
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
