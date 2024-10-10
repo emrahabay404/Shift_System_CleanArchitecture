@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Shift_System.Infrastructure.Services;
+using System.Security.Claims;
 
 namespace Shift_System.WebAPI.Controllers
 {
@@ -13,7 +14,6 @@ namespace Shift_System.WebAPI.Controllers
             _loggedUserService = loggedUserService;
         }
 
-
         [HttpGet]
         public IActionResult Getuser()
         {
@@ -21,7 +21,11 @@ namespace Shift_System.WebAPI.Controllers
             var b = _loggedUserService.GetUserIdApi();
             var c = _loggedUserService.GetUserEmailApi();
             var d = _loggedUserService.GetUserFullNameApi();
-            return Ok(new { a, b, c,d });
+            //return Ok(new { a, b, c,d });
+
+            var userId = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            return Ok(userId);
         }
 
     }

@@ -118,6 +118,7 @@ $("#apiBtn").click(function () {
 });
 
 $(document).ready(function () {
+
     //// Sayfa yüklendiğinde AJAX isteği yap
     //$.ajax({
     //    type: "GET",
@@ -147,17 +148,17 @@ $(document).ready(function () {
     //    }
     //});
 
-    $(".changeSideBarColor").on("click", function () {
-        if ($(this).attr("data-color") == "default") {
-            $(".sidebar").removeAttr("data-background-color");
-        } else {
-            $(".sidebar").attr("data-background-color", $(this).attr("data-color"));
-        }
-        $(this).parent().find(".changeSideBarColor").removeClass("selected");
-        $(this).addClass("selected");
-        layoutsColors();
-        getCheckmark();
-    });
+    //$(".changeSideBarColor").on("click", function () {
+    //    if ($(this).attr("data-color") == "default") {
+    //        $(".sidebar").removeAttr("data-background-color");
+    //    } else {
+    //        $(".sidebar").attr("data-background-color", $(this).attr("data-color"));
+    //    }
+    //    $(this).parent().find(".changeSideBarColor").removeClass("selected");
+    //    $(this).addClass("selected");
+    //    layoutsColors();
+    //    getCheckmark();
+    //});
 
 });
 

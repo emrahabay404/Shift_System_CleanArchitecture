@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Shift_System_UI.Models;
 using System.Diagnostics;
 
@@ -9,14 +8,7 @@ namespace Shift_System_UI.Controllers
     {
         public IActionResult Index()
         {
-
             return View();
-        }
-
-        [AllowAnonymous]
-        public IActionResult Deneme()
-        {
-            return Json("örnek veri geldii");
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

@@ -53,8 +53,8 @@ namespace Shift_System_UI.Controllers
             var roles = _roleManager.Roles.ToList();
             if (roles == null || roles.Count == 0)
             {
-                // Eğer rol yoksa uyarı mesajı
-                TempData["Message"] = "Hiç rol bulunamadı. Lütfen önce rol ekleyin.";
+                // Eğer rol yoksa uyarı mesajı 
+                TempData["Message"] = Messages.Role_Not_Found_TR;
                 return RedirectToAction("Page");
             }
 
@@ -94,7 +94,7 @@ namespace Shift_System_UI.Controllers
                     if (roleExists)
                     {
                         await _userManager.AddToRoleAsync(user, model.RoleName);
-                        TempData["Message"] = Messages.User_Registered_Successfully_TR + " ve rol başarıyla atandı.";
+                        TempData["Message"] = Messages.User_Registered_Successfully_TR + Messages.Role_Assigned_Successfully_TR;
                     }
                     else
                     {

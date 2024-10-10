@@ -142,7 +142,7 @@ namespace Shift_System_UI.Controllers
             var testToken = _httpContextAccessor.HttpContext.Session.GetString("JWTToken");
             if (string.IsNullOrEmpty(testToken))
             {
-                return Json(new { success = false, message = "JWT Token saklama başarısız!" });
+                return Json(new { success = false, message = Messages.Jwt_Token_Storage_Failed_TR });
             }
             return Json(new { success = true });
         }

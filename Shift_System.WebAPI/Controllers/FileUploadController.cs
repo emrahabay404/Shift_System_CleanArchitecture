@@ -9,12 +9,12 @@ namespace Shift_System.WebAPI.Controllers
     [ApiController]
     public class FileUploadController : ControllerBase
     {
-        private readonly IFileUploadService _fileUploadService;
+        //private readonly IFileUploadService _fileUploadService;
         private readonly IMediator _mediator;
 
         public FileUploadController(IFileUploadService fileUploadService, IMediator mediator)
         {
-            _fileUploadService = fileUploadService;
+            //_fileUploadService = fileUploadService;
             _mediator = mediator;
         }
 
