@@ -1,194 +1,29 @@
-﻿
-<style>
-    table {
-        width: 100%;
-        border-collapse: collapse;
-    }
+﻿<div class="col-md-2">
+    <label for="pageSize">Gösterilen Kayıt Sayısı:</label>
+    <select class="form-control" id="pageSize" onchange="updatePageSize('/Home/GetShiftsWithPagination', 'pageSize', 'pageInfo', 'prevPageBtn', 'nextPageBtn', 'shiftsTable')">
+        <option value="250">250</option>
+    </select>
+</div>
 
-    th, td {
-        padding: 8px;
-        text-align: left;
-        border: 1px solid #ddd;
-    }
+<div class="container">
 
-    th {
-        background-color: #f2f2f2;
-    }
-</style>
+    <button class="btn btn-primary" id="prevPageBtn" disabled onclick="prevPage('/Home/GetShiftsWithPagination', 'pageSize', 'pageInfo', 'prevPageBtn', 'nextPageBtn', 'shiftsTable')">Önceki</button>
 
+    <button class="btn btn-primary" id="nextPageBtn" disabled onclick="nextPage('/Home/GetShiftsWithPagination', 'pageSize', 'pageInfo', 'prevPageBtn', 'nextPageBtn', 'shiftsTable')">Sonraki</button>
 
-<h2>Tablo Filtreleme Örneği</h2>
+    <span id="pageInfo">Sayfa 1 / 1</span>
+</div>
 
-<input type="text" class="form-control" id="table1searchInput" placeholder="Tabloda arayın..." />
-
-<table id="dataTable">
-    <thead>
-        <tr>
-            <th>İsim</th>
-            <th>Yaş</th>
-            <th>Şehir</th>
-        </tr>
-    </thead>
+<table id="shiftsTable" class="table table-hover">
+    <thead></thead>
     <tbody>
-        <tr>
-            <td>Ali Veli</td>
-            <td>28</td>
-            <td>İstanbul</td>
-        </tr>
-        <tr>
-            <td>Ayşe Yılmaz</td>
-            <td>34</td>
-            <td>Ankara</td>
-        </tr>
-        <tr>
-            <td>Mehmet Kaya</td>
-            <td>22</td>
-            <td>İzmir</td>
-        </tr>
-        <tr>
-            <td>Zeynep Öztürk</td>
-            <td>29</td>
-            <td>Bursa</td>
-        </tr>
-        <tr>
-            <td>Cem Karaca</td>
-            <td>45</td>
-            <td>Adana</td>
-        </tr>
-        <tr>
-            <td>Fatma Gül</td>
-            <td>30</td>
-            <td>Konya</td>
-        </tr>
-        <tr>
-            <td>Ahmet Öz</td>
-            <td>27</td>
-            <td>Kayseri</td>
-        </tr>
-        <tr>
-            <td>Serhat Yıldırım</td>
-            <td>33</td>
-            <td>Eskişehir</td>
-        </tr>
-        <tr>
-            <td>Elif Demir</td>
-            <td>41</td>
-            <td>Antalya</td>
-        </tr>
-        <tr>
-            <td>Canan Kaya</td>
-            <td>25</td>
-            <td>Gaziantep</td>
-        </tr>
-        <tr>
-            <td>Metin Arslan</td>
-            <td>39</td>
-            <td>Şanlıurfa</td>
-        </tr>
-        <tr>
-            <td>Esra Öztürk</td>
-            <td>32</td>
-            <td>Diyarbakır</td>
-        </tr>
-        <tr>
-            <td>Eren Yılmaz</td>
-            <td>26</td>
-            <td>Samsun</td>
-        </tr>
-        <tr>
-            <td>Berna Aksoy</td>
-            <td>24</td>
-            <td>Trabzon</td>
-        </tr>
-        <tr>
-            <td>Furkan Çelik</td>
-            <td>38</td>
-            <td>Mardin</td>
-        </tr>
-        <tr>
-            <td>Gizem Aksu</td>
-            <td>31</td>
-            <td>Sivas</td>
-        </tr>
-        <tr>
-            <td>Hasan Kılıç</td>
-            <td>42</td>
-            <td>Çanakkale</td>
-        </tr>
-        <tr>
-            <td>Necla Şahin</td>
-            <td>28</td>
-            <td>Adıyaman</td>
-        </tr>
-        <tr>
-            <td>Hakan Bulut</td>
-            <td>29</td>
-            <td>Manisa</td>
-        </tr>
-        <tr>
-            <td>Demet Aydın</td>
-            <td>40</td>
-            <td>Muğla</td>
-        </tr>
-        <tr>
-            <td>Murat Kaplan</td>
-            <td>21</td>
-            <td>Kocaeli</td>
-        </tr>
-        <tr>
-            <td>Sibel Yıldız</td>
-            <td>36</td>
-            <td>Denizli</td>
-        </tr>
-        <tr>
-            <td>Engin Aslan</td>
-            <td>23</td>
-            <td>Aydın</td>
-        </tr>
-        <tr>
-            <td>Melike Çiftçi</td>
-            <td>35</td>
-            <td>Kahramanmaraş</td>
-        </tr>
-        <tr>
-            <td>Kerem Aktaş</td>
-            <td>26</td>
-            <td>Tekirdağ</td>
-        </tr>
-        <tr>
-            <td>Emre Şimşek</td>
-            <td>28</td>
-            <td>Edirne</td>
-        </tr>
-        <tr>
-            <td>Ozan Ekinci</td>
-            <td>30</td>
-            <td>Amasya</td>
-        </tr>
-        <tr>
-            <td>Selin Demirel</td>
-            <td>37</td>
-            <td>Zonguldak</td>
-        </tr>
-        <tr>
-            <td>Veli Yıldız</td>
-            <td>34</td>
-            <td>Bolu</td>
-        </tr>
-        <tr>
-            <td>Betül Toprak</td>
-            <td>27</td>
-            <td>Artvin</td>
-        </tr>
     </tbody>
 </table>
-<br />
-<p id="noResultsMessage" style="display:none; color: gray;">Kayıt bulunamadı.</p>
-
 
 @section Scripts {
-    <script>
-        // Tablo filtreleme işlevini başlat
-        TableFilter('dataTable', 'table1searchInput');
-    </script>
+    <script src="~/home/index.js"></script>
 }
+
+
+<button id="openModalButton" class="btn btn-primary">Verileri Göster</button>
+
