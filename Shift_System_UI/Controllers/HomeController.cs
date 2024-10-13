@@ -1,6 +1,8 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Shift_System.Application.Features.Shifts.Commands;
 using Shift_System.Application.Features.Shifts.Queries;
+using Shift_System.Application.Features.Teams.Commands;
 using Shift_System.Shared.Helpers;
 using Shift_System_UI.Models;
 using System.Diagnostics;
@@ -22,6 +24,18 @@ namespace Shift_System_UI.Controllers
         }
 
 
+        //[HttpGet]
+        //public IActionResult deleteshift(Guid id)
+        //{
+        //    return Json(false);
+        //}
+
+        [HttpGet]
+        public async Task<ActionResult> Deleteshift(Guid id)
+        {
+            var result = await _mediator.Send(new DeleteShiftCommand(id));
+            return Json(result);
+        }
 
         [HttpGet]
         public async Task<ActionResult<PaginatedResult<GetAllShiftsDto>>> GetShiftsWithPagination([FromQuery] GetShiftsWithPaginationQuery query)
@@ -30,7 +44,8 @@ namespace Shift_System_UI.Controllers
             var result = validator.Validate(query);
             if (result.IsValid)
             {
-                return await _mediator.Send(query);
+                var resultdata = await _mediator.Send(query);
+                return Json(resultdata);
             }
             var errorMessages = result.Errors.Select(x => x.ErrorMessage).ToList();
             return BadRequest(errorMessages);

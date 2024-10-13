@@ -1,6 +1,4 @@
 ﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
-using Shift_System.Domain.Entities;
 using System.Security.Claims;
 
 namespace Shift_System.Infrastructure.Services

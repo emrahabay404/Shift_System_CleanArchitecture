@@ -36,6 +36,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "APIHelper", "APIHelper", "{
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "WebHelper", "WebHelper", "{D2A0E552-8B14-4ECC-9ADA-6B90C05D5D22}"
 	ProjectSection(SolutionItems) = preProject
+		fulldinamikDeneme.txt = fulldinamikDeneme.txt
 		Not1.txt = Not1.txt
 		Not2.txt = Not2.txt
 		Not3.txt = Not3.txt

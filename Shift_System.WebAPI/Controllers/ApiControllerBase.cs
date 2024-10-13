@@ -2,7 +2,7 @@
 
 namespace Shift_System.WebAPI.Controllers
 {
-   [Route("api/[controller]")]
+    [Route("api/[controller]")]
    [ApiController]
    public class ApiControllerBase : ControllerBase
    {

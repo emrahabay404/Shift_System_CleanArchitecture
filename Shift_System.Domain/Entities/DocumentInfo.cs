@@ -5,7 +5,7 @@ namespace Shift_System.Domain.Entities
     public class DocumentInfo : BaseAuditableEntity
     {
         public Guid DataId { get; set; }
-        public int TableId { get; set; }
+        public string TableName { get; set; }
         public string? FileName { get; set; }
         public string? FileType { get; set; }
         public long FileSize { get; set; }
