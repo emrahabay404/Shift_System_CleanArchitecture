@@ -4,89 +4,66 @@ namespace Shift_System.Shared.Helpers
 {
     public static class FileConverter
     {
+        private const long MaxFileSize = 15 * 1024 * 1024; // 15 MB
+
         // Dosyayı Base64'e dönüştür
         public static string ConvertFileToBase64(string filePath)
         {
             if (string.IsNullOrEmpty(filePath) || !File.Exists(filePath))
-            {
                 throw new FileNotFoundException("Belirtilen dosya bulunamadı.");
-            }
 
             byte[] fileBytes = File.ReadAllBytes(filePath);
             return Convert.ToBase64String(fileBytes);
         }
 
-        public static long GetFileSize(string filePath)
-        {
-            if (string.IsNullOrEmpty(filePath) || !File.Exists(filePath))
-            {
-                throw new FileNotFoundException("Belirtilen dosya bulunamadı.");
-            }
-
-            FileInfo fileInfo = new FileInfo(filePath);
-            return fileInfo.Length;
-        }
-
+        // Dosyanın geçerliliğini kontrol et
         public static bool IsValidFile(IFormFile file)
         {
-            var extension = Path.GetExtension(file.FileName).ToLower();
-            var mimeType = file.ContentType.ToLower();
-
-            return AllowedExtensions.Contains(extension) && AllowedMimeTypes.Contains(mimeType);
+            return file.Length <= MaxFileSize && HasAllowedExtension(file);
         }
 
-        // İzin verilen MIME türleri listesi (Tüm popüler resim ve ofis dosyaları)
-        private static readonly HashSet<string> AllowedMimeTypes = new HashSet<string>
+        // Desteklenen dosya uzantıları kontrolü
+        private static bool HasAllowedExtension(IFormFile file)
         {
-            "image/jpeg", // JPEG
-            "image/png",  // PNG
-            "image/gif",  // GIF
-            "image/webp", // WEBP
-            "application/pdf", // PDF
-            "application/msword", // DOC
-            "application/vnd.openxmlformats-officedocument.wordprocessingml.document", // DOCX
-            "application/vnd.ms-excel", // XLS
-            "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" // XLSX
-        };
+            var extension = Path.GetExtension(file.FileName).ToLower();
+            var allowedExtensions = new HashSet<string>
+            {
+                ".jpg", ".jpeg", ".png", ".pdf", ".docx", ".xlsx", ".gif", ".bmp", ".tiff", ".webp",
+                ".txt", ".csv", ".ppt", ".pptx", ".xls", ".mp4", ".mov", ".avi", ".mp3", ".wav", ".ogg"
+            };
+            return allowedExtensions.Contains(extension);
+        }
 
-        // İzin verilen dosya uzantıları listesi
-        private static readonly HashSet<string> AllowedExtensions = new HashSet<string>
-        {
-            ".jpg", ".jpeg", ".png", ".gif", ".webp", // Resim dosyaları
-            ".pdf", ".doc", ".docx", ".xls", ".xlsx" // Ofis dosyaları
-        };
-
+        // Dosya türünü belirlemek için kullanılır
         public static string GetFileType(string fileName)
         {
-            if (string.IsNullOrEmpty(fileName))
+            var extension = Path.GetExtension(fileName).ToLower();
+            var mimeTypes = new Dictionary<string, string>
             {
-                throw new ArgumentException("Dosya adı boş olamaz.");
-            }
+                { ".jpg", "image/jpeg" },
+                { ".jpeg", "image/jpeg" },
+                { ".png", "image/png" },
+                { ".gif", "image/gif" },
+                { ".bmp", "image/bmp" },
+                { ".tiff", "image/tiff" },
+                { ".webp", "image/webp" },
+                { ".pdf", "application/pdf" },
+                { ".docx", "application/vnd.openxmlformats-officedocument.wordprocessingml.document" },
+                { ".xlsx", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" },
+                { ".txt", "text/plain" },
+                { ".csv", "text/csv" },
+                { ".ppt", "application/vnd.ms-powerpoint" },
+                { ".pptx", "application/vnd.openxmlformats-officedocument.presentationml.presentation" },
+                { ".xls", "application/vnd.ms-excel" },
+                { ".mp4", "video/mp4" },
+                { ".mov", "video/quicktime" },
+                { ".avi", "video/x-msvideo" },
+                { ".mp3", "audio/mpeg" },
+                { ".wav", "audio/wav" },
+                { ".ogg", "audio/ogg" }
+            };
 
-            string extension = Path.GetExtension(fileName).ToLower();
-
-            if (MimeTypes.TryGetValue(extension, out string mimeType))
-            {
-                return mimeType;
-            }
-
-            return "application/octet-stream"; // Bilinmeyen dosya türleri için varsayılan MIME türü
+            return mimeTypes.ContainsKey(extension) ? mimeTypes[extension] : "application/octet-stream";
         }
-
-        // MIME türlerini içeren statik Dictionary
-        private static readonly Dictionary<string, string> MimeTypes = new Dictionary<string, string>(StringComparer.InvariantCultureIgnoreCase)
-        {
-            { ".txt", "text/plain" },
-            { ".pdf", "application/pdf" },
-            { ".doc", "application/msword" },
-            { ".docx", "application/vnd.openxmlformats-officedocument.wordprocessingml.document" },
-            { ".xls", "application/vnd.ms-excel" },
-            { ".xlsx", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" },
-            { ".png", "image/png" },
-            { ".jpg", "image/jpeg" },
-            { ".jpeg", "image/jpeg" },
-            { ".gif", "image/gif" },
-            { ".webp", "image/webp" }
-        };
     }
 }

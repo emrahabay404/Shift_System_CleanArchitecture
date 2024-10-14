@@ -2,6 +2,12 @@
 {
     public static class Messages
     {
+        public const string File_Not_Found_TR = "Dosya bulunamadı.";
+        public const string File_Size_Exceeded_TR = "Dosya boyutu aşıldı.";
+        public const string Invalid_File_Type_TR = "Geçersiz dosya türü.";
+        public const string Invalid_File_Type_OR_Size_TR = "Geçersiz dosya türü veya boyutu.";
+        public const string File_Not_Save_TR = "Dosya kaydedilemedi.";
+        public const string File_Upload_Success_TR = "Dosya başarıyla yüklendi.";
         // Role creation
         public static string Role_Created_Successfully_TR => "Rol başarıyla oluşturuldu.";
         public static string Role_Created_Successfully_EN => "Role created successfully.";
@@ -10,12 +16,8 @@
         public static string Role_Creation_Failed_TR => "Rol oluşturma başarısız.";
         public static string Role_Creation_Failed_EN => "Role creation failed.";
 
-        // File Upload Specific Messages
-        public static string File_Upload_Success_TR => "Dosya başarıyla yüklendi.";
+        // File Upload Specific Messages 
         public static string File_Upload_Failed_TR => "Dosya yükleme başarısız oldu.";
-        public static string File_Size_Exceeded_TR => "Dosya boyutu {0} MB'ı aşıyor.";
-        public static string File_Not_Found_TR => "Dosya bulunamadı.";
-        public static string File_Not_Save_TR => "Dosya Kaydedilemedi.";
         public static string File_Deleted_Success_TR => "Dosya başarıyla silindi.";
         public static string No_Files_Uploaded_TR => "Hiçbir dosya yüklenemedi.";
         public static string All_Files_Uploaded_Success_TR => "Tüm dosyalar başarıyla yüklendi.";
@@ -132,8 +134,7 @@
         // File Upload 
         public static string File_Upload_Success_EN => "File uploaded successfully.";
 
-        public static string File_Upload_Failed_EN => "File upload failed.";
-        public static string Invalid_File_Type_TR => "Invalid_File_Type_TR.";
+        public static string File_Upload_Failed_EN => "File upload failed."; 
 
         // Email Sending
         public static string Email_Sent_Success_TR => "E-posta başarıyla gönderildi.";

@@ -38,6 +38,7 @@ namespace Shift_System.WebAPI.Controllers
                 return BadRequest("Dosya eklenmedi.");
             }
             command.CreatedBy = Guid.Parse("11be013a-eba2-4d40-8cb3-12c07e345d69");
+            command.TableName = "Deneme";
             var result = await _mediator.Send(command);
             return Ok(result);
         }

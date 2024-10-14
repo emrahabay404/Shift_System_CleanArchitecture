@@ -10,20 +10,23 @@ using Shift_System.Shared.Helpers;
 
 namespace Shift_System.Application.Features.Documents.Commands
 {
-    public record CreateDocumentCommand : IRequest<Result<Guid>>, IMapFrom<DocumentInfo>
+    public record CreateDocumentCommand : IRequest<Result<List<FileUploadResult>>>, IMapFrom<DocumentInfo>
     {
-        public Guid? DataId { get; set; }
-        public string? TableName { get; set; }
-        public string? FileName { get; set; }
-        public string? FileType { get; set; }
-        public long? FileSize { get; set; }
-        public string? FilePath { get; set; }
-        public string? FileBase64Data { get; set; }
-        public Guid? CreatedBy { get; set; }
-        public List<IFormFile>? Files { get; set; } // Dosya listesi
+        public Guid? DataId { get; set; }           // İlgili veri ID'si
+        public string? TableName { get; set; }       // Dosyanın hangi tabloya ait olduğunu belirten alan
+        public List<IFormFile>? Files { get; set; }  // Dosya listesi
+        public string? FileName { get; set; }        // Dosyanın adı
+        public string? FileType { get; set; }        // Dosyanın türü (örneğin, pdf, jpg)
+        public long? FileSize { get; set; }          // Dosyanın boyutu (byte cinsinden)
+        public string? FilePath { get; set; }        // Dosyanın sunucuda kaydedileceği yol
+        public string? FileBase64Data { get; set; }  // Dosyanın Base64 formatında veri olarak tutulması
+        public Guid? CreatedBy { get; set; }         // Dosyayı oluşturan/kaydeden kullanıcının ID'si
+        public DateTime? CreatedDate { get; set; }   // Dosyanın oluşturulduğu tarih
+        public bool? IsDeleted { get; set; }         // Silinmiş olup olmadığını kontrol eden alan
+        public bool? Status { get; set; }            // Dosyanın durumunu gösteren alan (aktif/pasif)
     }
 
-    internal class CreateDocumentCommandHandler : IRequestHandler<CreateDocumentCommand, Result<Guid>>
+    internal class CreateDocumentCommandHandler : IRequestHandler<CreateDocumentCommand, Result<List<FileUploadResult>>>
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
@@ -35,75 +38,66 @@ namespace Shift_System.Application.Features.Documents.Commands
             _mapper = mapper;
             _fileUploadService = fileUploadService;
         }
-        public async Task<Result<Guid>> Handle(CreateDocumentCommand command, CancellationToken cancellationToken)
+
+        public async Task<Result<List<FileUploadResult>>> Handle(CreateDocumentCommand command, CancellationToken cancellationToken)
         {
-            const long maxFileSize = 5 * 1024 * 1024; // 5 MB
+            var uploadResults = new List<FileUploadResult>();
             var baseDirectory = Directory.GetParent(Directory.GetCurrentDirectory()).FullName;
             var uploadFolderPath = Path.Combine(baseDirectory, "Shift_System_UI", "wwwroot", "Uploads");
 
             if (command.Files == null || !command.Files.Any())
             {
-                return await Result<Guid>.FailureAsync(Messages.File_Not_Found_TR);
+                return await Result<List<FileUploadResult>>.FailureAsync("Dosya bulunamadı.");
             }
 
             foreach (var file in command.Files)
             {
-                if (file.Length > maxFileSize)
-                {
-                    return await Result<Guid>.FailureAsync(Messages.File_Size_Exceeded_TR);
-                }
+                var fileResult = new FileUploadResult { FileName = file.FileName };
 
+                // Geçerli dosya kontrolü
                 if (!FileConverter.IsValidFile(file))
                 {
-                    return await Result<Guid>.FailureAsync(Messages.Invalid_File_Type_TR);
+                    fileResult.Message = "Geçersiz dosya türü veya boyutu.";
+                    uploadResults.Add(fileResult);
+                    continue;
                 }
 
-                // Dosya adı oluştur ve kaydet
+                // Dosya yolu oluşturma
                 var uniqueFileName = $"{Guid.NewGuid()}_{file.FileName}";
                 var filePath = Path.Combine(uploadFolderPath, uniqueFileName);
+                fileResult.FilePath = filePath;
 
                 try
                 {
-                    // Dosyayı kaydet
+                    // Dosyayı kaydetme
                     using (var stream = new FileStream(filePath, FileMode.Create))
                     {
-                        await file.CopyToAsync(stream);
+                        await file.CopyToAsync(stream, cancellationToken);
                     }
 
                     // Dosyanın başarıyla kaydedildiğini kontrol et
                     if (!File.Exists(filePath))
                     {
-                        return await Result<Guid>.FailureAsync(Messages.File_Not_Save_TR);
+                        fileResult.Message = "Dosya kaydedilemedi.";
+                        uploadResults.Add(fileResult);
+                        continue;
                     }
-                    Console.WriteLine($"Dosya başarıyla kaydedildi: {filePath}");
 
-                    // Dosyayı oku ve Base64'e dönüştür
-                    byte[] fileBytes;
-                    string base64Data = null;
+                    // Dosyanın Base64'e dönüştürülmesi
+                    string base64Data;
                     try
                     {
-                        fileBytes = await File.ReadAllBytesAsync(filePath);
-                        Console.WriteLine($"Base64'e dönüştürülmeden önce dosya boyutu: {fileBytes.Length}");
-
-                        // Base64 dönüşüm
-                        base64Data = Convert.ToBase64String(fileBytes);
-                        Console.WriteLine($"Base64 veri uzunluğu: {base64Data.Length}");
+                        base64Data = FileConverter.ConvertFileToBase64(filePath);
                     }
                     catch (Exception ex)
                     {
-                        Console.WriteLine($"Dosya okuma hatası: {ex.Message}");
-                        return await Result<Guid>.FailureAsync($"Dosya okuma hatası (jpg/png/etc): {ex.Message}");
+                        fileResult.Message = $"Dosya okuma hatası: {ex.Message}";
+                        uploadResults.Add(fileResult);
+                        continue;
                     }
 
-                    if (base64Data == null)
-                    {
-                        return await Result<Guid>.FailureAsync("Base64 dönüşüm işlemi başarısız oldu.");
-                    }
-
-                    // Base64 verisi loglama
-                    Console.WriteLine($"Veritabanına kaydedilmeden önce Base64 veri uzunluğu: {base64Data.Length}");
-
-                    var _doc = new DocumentInfo
+                    // Veritabanına kaydetme
+                    var document = new DocumentInfo
                     {
                         Id = Guid.NewGuid(),
                         DataId = command.DataId ?? Guid.NewGuid(),
@@ -114,25 +108,34 @@ namespace Shift_System.Application.Features.Documents.Commands
                         FileType = FileConverter.GetFileType(file.FileName),
                         FileSize = file.Length,
                         FilePath = filePath,
-                        FileBase64Data = base64Data, // Base64 verisi burada set ediliyor
+                        FileBase64Data = base64Data,
                         IsDeleted = false,
                         Status = true
                     };
 
-                    // Veritabanına kaydet
-                    await _unitOfWork.Repository<DocumentInfo>().AddAsync(_doc);
-                    _doc.AddDomainEvent(new DocumentCreatedEvent(_doc));
+                    await _unitOfWork.Repository<DocumentInfo>().AddAsync(document);
+                    document.AddDomainEvent(new DocumentCreatedEvent(document));
+
+                    fileResult.Message = "Dosya başarıyla yüklendi.";
                 }
                 catch (Exception ex)
                 {
-                    return await Result<Guid>.FailureAsync($"Dosya işlenirken hata oluştu: {ex.Message}");
+                    fileResult.Message = $"Dosya işlenirken hata oluştu: {ex.Message}";
                 }
+
+                uploadResults.Add(fileResult);
             }
 
             await _unitOfWork.Save(cancellationToken);
-            return await Result<Guid>.SuccessAsync(Messages.File_Upload_Success_TR);
-        }
 
+            return Result<List<FileUploadResult>>.Success(uploadResults, "Dosya yükleme işlemi tamamlandı.");
+        }
     }
 
+    public class FileUploadResult
+    {
+        public string FileName { get; set; }
+        public string FilePath { get; set; }
+        public string Message { get; set; }
+    }
 }
