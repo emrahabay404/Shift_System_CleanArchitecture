@@ -32,6 +32,12 @@ namespace Shift_System.Persistence.Contexts
         {
             modelBuilder.HasAnnotation("Relational:Collation", "Turkish_CI_AS");
 
+
+            modelBuilder.Entity<PaymentHistory>()
+                .HasOne(p => p.User) // Her PaymentHistory'nin bir kullanıcısı var
+                .WithMany(u => u.Payments) // Her AppUser'in birçok ödeme geçmişi olabilir
+                .HasForeignKey(p => p.UserId); // Foreign key olarak UserId kullanıyoruz (string türünde)
+
             modelBuilder.Entity<AssignList>(entity =>
             {
                 entity.Property(e => e.ShiftId).HasColumnName("Shift_Id");

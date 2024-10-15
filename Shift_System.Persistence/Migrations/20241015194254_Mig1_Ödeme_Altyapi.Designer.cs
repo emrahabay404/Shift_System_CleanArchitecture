@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Shift_System.Persistence.Contexts;
 
@@ -11,9 +12,11 @@ using Shift_System.Persistence.Contexts;
 namespace Shift_System.Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241015194254_Mig1_Ödeme_Altyapi")]
+    partial class Mig1_Ödeme_Altyapi
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -478,13 +481,10 @@ namespace Shift_System.Persistence.Migrations
                     b.Property<DateTime?>("UpdatedDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("PaymentHistories");
                 });
@@ -722,17 +722,6 @@ namespace Shift_System.Persistence.Migrations
                     b.Navigation("Team");
                 });
 
-            modelBuilder.Entity("Shift_System.Domain.Entities.Tables.PaymentHistory", b =>
-                {
-                    b.HasOne("Shift_System.Domain.Entities.Tables.AppUser", "User")
-                        .WithMany("Payments")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("Shift_System.Domain.Entities.Tables.TeamEmployee", b =>
                 {
                     b.HasOne("Shift_System.Domain.Entities.Tables.Employee", "Employee")
@@ -752,11 +741,6 @@ namespace Shift_System.Persistence.Migrations
                     b.Navigation("Employee");
 
                     b.Navigation("Team");
-                });
-
-            modelBuilder.Entity("Shift_System.Domain.Entities.Tables.AppUser", b =>
-                {
-                    b.Navigation("Payments");
                 });
 
             modelBuilder.Entity("Shift_System.Domain.Entities.Tables.Employee", b =>

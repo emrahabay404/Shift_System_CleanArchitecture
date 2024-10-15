@@ -2,6 +2,8 @@
 {
     public class DynamicQuery
     {
+        public int Page { get; set; } = 1; // Varsayılan olarak 1. sayfa
+        public int PageSize { get; set; } = 250; // Varsayılan olarak 10 kayıt
         public IEnumerable<Sort>? Sort { get; set; }
         public Filter? Filter { get; set; }
 

@@ -5,10 +5,13 @@ using Microsoft.EntityFrameworkCore;
 using Shift_System.Application.Interfaces.Repositories;
 using Shift_System.Domain.Entities.Tables;
 using Shift_System.Shared.Helpers;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Shift_System.Application.Features.Assignments.Queries
 {
-
     // Query kaydını tanımlıyoruz
     public record GetAllAssignsQueryDynamic(DynamicQuery Query) : IRequest<Result<List<GetAllAssignsDto>>>;
 
@@ -41,12 +44,18 @@ namespace Shift_System.Application.Features.Assignments.Queries
                 query = ApplySorting(query, request.Query.Sort);
             }
 
-            // Sonuçları DTO'ya projekte ediyoruz
-            var assigns = await query
+            // Pagination işlemi
+            var skip = (request.Query.Page - 1) * request.Query.PageSize;
+            var take = request.Query.PageSize;
+
+            // Sonuçlara pagination uyguluyoruz
+            var paginatedResult = await query
+                .Skip(skip)    // Kaç kayıt atlanacak
+                .Take(take)    // Kaç kayıt alınacak
                 .ProjectTo<GetAllAssignsDto>(_mapper.ConfigurationProvider)
                 .ToListAsync(cancellationToken);
 
-            return await Result<List<GetAllAssignsDto>>.SuccessAsync(assigns, "AssignList_Listed");
+            return await Result<List<GetAllAssignsDto>>.SuccessAsync(paginatedResult, "AssignList_Listed");
         }
 
         // Filtreleme işlemi

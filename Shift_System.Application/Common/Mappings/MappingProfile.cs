@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Shift_System.Application.Features.Assignments.Queries;
 using Shift_System.Domain.Entities.Tables;
 using System.Reflection;
 
@@ -8,7 +9,9 @@ namespace Shift_System.Application.Common.Mappings
     {
         public MappingProfile()
         {
-            CreateMap<AssignList, AssignList>();
+            //CreateMap<AssignList, AssignList>();
+            //CreateMap<AssignList, GetAllAssignsDto>();
+            //CreateMap<GetAllAssignsDto, AssignList>();
             ApplyMappingsFromAssembly(Assembly.GetExecutingAssembly());
         }
 

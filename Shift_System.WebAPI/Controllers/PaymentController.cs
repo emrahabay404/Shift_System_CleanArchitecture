@@ -2,6 +2,8 @@
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Shift_System.Application.Features.Assignments.Queries;
+using Shift_System.Shared.Helpers;
 using System.Security.Claims;
 
 namespace Shift_System.WebAPI.Controllers
@@ -25,6 +27,27 @@ namespace Shift_System.WebAPI.Controllers
             var response = await _Mediator.Send(command);
             return Ok(response);
         }
+
+
+
+        [AllowAnonymous]
+        [HttpPost("Dinamik")]
+        public async Task<IActionResult> Dinamik([FromBody] DynamicQuery query)
+        {
+            query ??= new DynamicQuery();
+
+            var result = await _Mediator.Send(new GetAllAssignsQueryDynamic(query));
+
+            if (result.Succeeded)
+            {
+                return Ok(result.Data);
+            }
+
+            return BadRequest(result.Message);
+        }
+
+
+
 
     }
 }

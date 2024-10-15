@@ -29,10 +29,10 @@ public class PaymentCommand : IRequest<PayResponse>
         public async Task<PayResponse> Handle(PaymentCommand request, CancellationToken cancellationToken)
         {
             int price = request.Price * 100; // Kuruşa çevriliyor
-            string merchant_id = _configuration["PayTR:MerchantId"];
-            string merchant_key = _configuration["PayTR:MerchantKey"];
-            string merchant_salt = _configuration["PayTR:MerchantSalt"];
-            string emailstr = _configuration["PayTR:Email"];
+            string merchant_id = _configuration["PaymentConfig:MerchantId"];
+            string merchant_key = _configuration["PaymentConfig:MerchantKey"];
+            string merchant_salt = _configuration["PaymentConfig:MerchantSalt"];
+            string emailstr = _configuration["PaymentConfig:Email"];
             string merchant_oid = GenerateUniqueOrderNumber();
             string merchant_ok_url = "http://yourdomain.com/PaymentSuccess";
             string merchant_fail_url = "http://yourdomain.com/PaymentError";
@@ -70,7 +70,7 @@ public class PaymentCommand : IRequest<PayResponse>
             string _compare = string.Concat(merchant_id, user_ip, merchant_oid, emailstr, price.ToString(), user_basketstr, "1", "0", "TL", "1", merchant_salt);
             HMACSHA256 hmac = new(Encoding.UTF8.GetBytes(merchant_key));
             byte[] tokenBytes = hmac.ComputeHash(Encoding.UTF8.GetBytes(_compare));
-            data["paytr_token"] = Convert.ToBase64String(tokenBytes);
+            data["Payment_token"] = Convert.ToBase64String(tokenBytes);
 
             using (WebClient client = new())
             {
@@ -88,7 +88,7 @@ public class PaymentCommand : IRequest<PayResponse>
                 }
                 else
                 {
-                    throw new Exception("PAYTR IFRAME failed. reason: " + json.reason);
+                    throw new Exception("Payment IFRAME failed. reason: " + json.reason);
                 }
             }
         }
@@ -105,5 +105,5 @@ public class PaymentCommand : IRequest<PayResponse>
 
 public class PayResponse
 {
-    public string IframeSrc { get; set; }
+    public string IframeSrc { get; set; } = string.Empty;
 }
