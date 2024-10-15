@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 using Shift_System.Application.Interfaces;
-using Shift_System.Domain.Entities;
 using Shift_System.Domain.Entities.Models;
+using Shift_System.Domain.Entities.Tables;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;

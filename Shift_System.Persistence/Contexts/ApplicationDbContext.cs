@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Shift_System.Domain.Common;
 using Shift_System.Domain.Common.Interfaces;
-using Shift_System.Domain.Entities;
+using Shift_System.Domain.Entities.Tables;
 using System.Reflection;
 
 namespace Shift_System.Persistence.Contexts
@@ -25,7 +25,8 @@ namespace Shift_System.Persistence.Contexts
         public DbSet<TeamEmployee> TeamEmployees => Set<TeamEmployee>();
         public DbSet<Product> Products => Set<Product>();
         public DbSet<MenuSearchBar> MenuSearchBars => Set<MenuSearchBar>();
-        public DbSet<DocumentInfo>  DocumentInfos => Set<DocumentInfo>();
+        public DbSet<DocumentInfo> DocumentInfos => Set<DocumentInfo>();
+        public DbSet<PaymentHistory> PaymentHistories => Set<PaymentHistory>();
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

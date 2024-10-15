@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Shift_System.Domain.Entities;
+using Shift_System.Domain.Entities.Models;
+using Shift_System.Domain.Entities.Tables;
 using Shift_System.Shared.Helpers; // Messages sınıfını kullanmak için ekliyoruz
-using Shift_System_UI.Models;
 
 namespace Shift_System_UI.Controllers
 {
@@ -75,7 +75,6 @@ namespace Shift_System_UI.Controllers
             //    TempData["Message"] = Messages.Invalid_Input_TR;
             //    return View(model);
             //}
-
             var user = new AppUser
             {
                 UserName = model.Username,
@@ -83,9 +82,7 @@ namespace Shift_System_UI.Controllers
                 PhoneNumber = model.PhoneNumber,  // Cep telefonu bilgisi burada ekleniyor
                 FullName = model.FullName // Önceki eklemede FullName de var
             };
-
             var result = await _userManager.CreateAsync(user, model.Password);
-
             if (result.Succeeded)
             {
                 if (!string.IsNullOrEmpty(model.RoleName))
@@ -105,7 +102,6 @@ namespace Shift_System_UI.Controllers
                 {
                     TempData["Message"] = Messages.User_Registered_Successfully_TR;
                 }
-
                 return RedirectToAction("Page");
             }
             else

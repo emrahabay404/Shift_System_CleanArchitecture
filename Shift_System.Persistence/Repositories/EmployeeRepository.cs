@@ -1,10 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Shift_System.Application.Interfaces.Repositories;
-using Shift_System.Domain.Entities;
+using Shift_System.Domain.Entities.Tables;
 
 namespace Shift_System.Persistence.Repositories
 {
-   public class EmployeeRepository : IEmployeeRepository
+    public class EmployeeRepository : IEmployeeRepository
    {
       private readonly IGenericRepository<Employee> _repository;
 

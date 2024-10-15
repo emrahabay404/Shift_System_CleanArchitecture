@@ -1,6 +1,6 @@
 ﻿using Shift_System.Domain.Common;
 
-namespace Shift_System.Domain.Entities
+namespace Shift_System.Domain.Entities.Tables
 {
     public class MenuSearchBar : BaseAuditableEntity
     {

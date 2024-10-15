@@ -1,5 +1,5 @@
 ﻿using Shift_System.Domain.Common;
-using Shift_System.Domain.Entities;
+using Shift_System.Domain.Entities.Tables;
 
 namespace Shift_System.Application.Features.Teams.Events
 {

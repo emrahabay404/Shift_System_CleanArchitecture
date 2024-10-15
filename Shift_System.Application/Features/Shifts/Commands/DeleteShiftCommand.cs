@@ -3,12 +3,12 @@ using MediatR;
 using Shift_System.Application.Common.Mappings;
 using Shift_System.Application.Features.Shifts.Events;
 using Shift_System.Application.Interfaces.Repositories;
-using Shift_System.Domain.Entities;
+using Shift_System.Domain.Entities.Tables;
 using Shift_System.Shared.Helpers;
 
 namespace Shift_System.Application.Features.Shifts.Commands
 {
-   public record DeleteShiftCommand : IRequest<Result<Guid>>, IMapFrom<ShiftList>
+    public record DeleteShiftCommand : IRequest<Result<Guid>>, IMapFrom<ShiftList>
     {
         public Guid Id { get; set; }
         public DeleteShiftCommand()

@@ -3,12 +3,12 @@ using AutoMapper.QueryableExtensions;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Shift_System.Application.Interfaces.Repositories;
-using Shift_System.Domain.Entities;
+using Shift_System.Domain.Entities.Tables;
 using Shift_System.Shared.Helpers;
 
 namespace Shift_System.Application.Features.Products.Queries
 {
-   public record GetAllProductsQuery : IRequest<Result<List<GetAllProductsDto>>>;
+    public record GetAllProductsQuery : IRequest<Result<List<GetAllProductsDto>>>;
 
    internal class GetAllProductsQueryHandler : IRequestHandler<GetAllProductsQuery, Result<List<GetAllProductsDto>>>
    {

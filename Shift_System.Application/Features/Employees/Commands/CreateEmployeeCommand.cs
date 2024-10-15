@@ -3,13 +3,13 @@ using MediatR;
 using Shift_System.Application.Common.Mappings;
 using Shift_System.Application.Features.Employees.Events;
 using Shift_System.Application.Interfaces.Repositories;
-using Shift_System.Domain.Entities;
+using Shift_System.Domain.Entities.Tables;
 using Shift_System.Shared.Helpers;
 
 namespace Shift_System.Application.Features.Employees.Commands
 {
 
-   public record CreateEmployeeCommand : IRequest<Result<Guid>>, IMapFrom<Employee>
+    public record CreateEmployeeCommand : IRequest<Result<Guid>>, IMapFrom<Employee>
     {
         public int EmployeeCode { get; set; }
         public string Name { get; set; }

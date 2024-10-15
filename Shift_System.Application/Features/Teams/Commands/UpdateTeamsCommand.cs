@@ -2,12 +2,12 @@
 using MediatR;
 using Shift_System.Application.Features.Teams.Events;
 using Shift_System.Application.Interfaces.Repositories;
-using Shift_System.Domain.Entities;
+using Shift_System.Domain.Entities.Tables;
 using Shift_System.Shared.Helpers;
 
 namespace Shift_System.Application.Features.Teams.Commands
 {
-   public record UpdateTeamsCommand : IRequest<Result<Guid>>
+    public record UpdateTeamsCommand : IRequest<Result<Guid>>
     {
         public Guid Id { get; set; }
         public string TeamName { get; set; }

@@ -1,6 +1,6 @@
 ﻿using Shift_System.Application.Features.Teams_Employees.Commands;
 using Shift_System.Application.Interfaces.Repositories;
-using Shift_System.Domain.Entities;
+using Shift_System.Domain.Entities.Tables;
 
 namespace Shift_System.Persistence.Repositories
 {

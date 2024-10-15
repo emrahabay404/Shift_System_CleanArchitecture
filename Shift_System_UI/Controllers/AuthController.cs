@@ -2,14 +2,13 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
-using Shift_System.Domain.Entities;
 using Shift_System.Domain.Entities.Models;
+using Shift_System.Domain.Entities.Tables;
 using Shift_System.Shared.Helpers;
 using System.Text;
 
 namespace Shift_System_UI.Controllers
 {
-    [AllowAnonymous]
     public class AuthController : Controller
     {
         private readonly SignInManager<AppUser> _signInManager;
@@ -26,13 +25,12 @@ namespace Shift_System_UI.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         [Route("/Account/Login/")]
         public IActionResult Login(string returnUrl = null)
         {
-            // ReturnUrl uzun ve güvensizse, geçerli bir yerel URL değilse bunu kontrol edelim
             if (!string.IsNullOrEmpty(returnUrl) && returnUrl.Length > 2000)
             {
-                // Eğer URL aşırı uzun ve güvenli değilse ana sayfaya yönlendirelim
                 return RedirectToAction("Index", "Home");
             }
             ViewData["ReturnUrl"] = returnUrl;
@@ -40,9 +38,9 @@ namespace Shift_System_UI.Controllers
         }
 
         [HttpPost]
+        [AllowAnonymous]
         public async Task<JsonResult> Login(string username, string password)
         {
-            // Kullanıcı adı ve şifre ile kimlik doğrulama yap
             var result = await _signInManager.PasswordSignInAsync(username, password, true, true);
             if (!result.Succeeded)
             {
@@ -59,7 +57,6 @@ namespace Shift_System_UI.Controllers
         }
 
         [HttpPost]
-        [AllowAnonymous]
         public async Task<JsonResult> Register(RegistrationModel model)
         {
             // Yeni bir kullanıcı oluşturuyoruz

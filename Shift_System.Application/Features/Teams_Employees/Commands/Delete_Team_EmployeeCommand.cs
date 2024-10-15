@@ -3,12 +3,12 @@ using MediatR;
 using Shift_System.Application.Common.Mappings;
 using Shift_System.Application.Features.Teams_Employees.Events;
 using Shift_System.Application.Interfaces.Repositories;
-using Shift_System.Domain.Entities;
+using Shift_System.Domain.Entities.Tables;
 using Shift_System.Shared.Helpers;
 
 namespace Shift_System.Application.Features.Teams_Employees.Commands
 {
-   public record Delete_Team_EmployeeCommand : IRequest<Result<Guid>>, IMapFrom<TeamEmployee>
+    public record Delete_Team_EmployeeCommand : IRequest<Result<Guid>>, IMapFrom<TeamEmployee>
     {
         public Guid Id { get; set; }
         public Delete_Team_EmployeeCommand()

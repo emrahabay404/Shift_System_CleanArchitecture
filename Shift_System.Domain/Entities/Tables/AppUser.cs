@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 
-namespace Shift_System.Domain.Entities
+namespace Shift_System.Domain.Entities.Tables
 {
     public class AppUser : IdentityUser
     {

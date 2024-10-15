@@ -4,13 +4,13 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Shift_System.Application.Features.Teams.Queries;
 using Shift_System.Application.Interfaces.Repositories;
-using Shift_System.Domain.Entities;
+using Shift_System.Domain.Entities.Tables;
 using Shift_System.Shared.Helpers;
 
 namespace Shift_System.Application.Features.Teams_Employees.Queries
 {
 
-   public record GetAllTeams_EmployeesQuery : IRequest<Result<List<GetAllTeams_EmployeesDto>>>;
+    public record GetAllTeams_EmployeesQuery : IRequest<Result<List<GetAllTeams_EmployeesDto>>>;
 
    internal class GetAllTeams_EmployeesQueryHandler : IRequestHandler<GetAllTeams_EmployeesQuery, Result<List<GetAllTeams_EmployeesDto>>>
    {

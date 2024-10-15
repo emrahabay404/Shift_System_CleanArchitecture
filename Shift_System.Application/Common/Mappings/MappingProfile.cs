@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using Shift_System.Domain.Entities;
+using Shift_System.Domain.Entities.Tables;
 using System.Reflection;
 
 namespace Shift_System.Application.Common.Mappings

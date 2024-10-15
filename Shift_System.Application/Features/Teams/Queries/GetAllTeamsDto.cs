@@ -1,5 +1,5 @@
 ﻿using Shift_System.Application.Common.Mappings;
-using Shift_System.Domain.Entities;
+using Shift_System.Domain.Entities.Tables;
 using System.Text.Json.Serialization;
 
 namespace Shift_System.Application.Features.Teams.Queries

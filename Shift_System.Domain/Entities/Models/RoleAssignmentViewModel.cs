@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using Shift_System.Domain.Entities;
+using Shift_System.Domain.Entities.Tables;
 
-namespace Shift_System_UI.Models
+namespace Shift_System.Domain.Entities.Models
 {
     public class RoleAssignmentViewModel
     {

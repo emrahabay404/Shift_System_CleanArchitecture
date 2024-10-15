@@ -1,5 +1,5 @@
 ﻿using Shift_System.Application.Common.Mappings;
-using Shift_System.Domain.Entities;
+using Shift_System.Domain.Entities.Tables;
 
 namespace Shift_System.Application.Features.Employees.Queries
 {

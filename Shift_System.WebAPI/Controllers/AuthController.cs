@@ -2,14 +2,14 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Shift_System.Application.Interfaces;
-using Shift_System.Domain.Entities;
 using Shift_System.Domain.Entities.Models;
+using Shift_System.Domain.Entities.Tables;
 using Shift_System.Shared.Helpers;
 
 namespace Shift_System.WebAPI.Controllers
 {
     [Route("api/[controller]")]
-    [Authorize(Roles = "Manager,Admin")]
+
     [ApiController]
     public class AuthController : ApiControllerBase
     {
@@ -47,6 +47,7 @@ namespace Shift_System.WebAPI.Controllers
 
         [HttpPost]
         [Route("Register")]
+        [AllowAnonymous]
         public async Task<IActionResult> Register(RegistrationModel model)
         {
             try

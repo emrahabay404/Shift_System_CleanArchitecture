@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Shift_System.Domain.Entities;
+using Shift_System.Domain.Entities.Tables;
 
 namespace Shift_System.Infrastructure.Services
 {

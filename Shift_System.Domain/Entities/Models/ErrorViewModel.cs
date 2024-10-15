@@ -1,4 +1,4 @@
-namespace Shift_System_UI.Models
+namespace Shift_System.Domain.Entities.Models
 {
     public class ErrorViewModel
     {
