@@ -29,12 +29,6 @@ namespace Shift_System_UI.Controllers
         }
 
 
-        //[HttpGet]
-        //public IActionResult deleteshift(Guid id)
-        //{
-        //    return Json(false);
-        //}
-
         [HttpGet]
         public async Task<ActionResult> Deleteshift(Guid id)
         {

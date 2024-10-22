@@ -29,7 +29,6 @@ namespace Shift_System.WebAPI.Controllers
         }
 
 
-
         [AllowAnonymous]
         [HttpPost("Dinamik")]
         public async Task<IActionResult> Dinamik([FromBody] DynamicQuery query)
