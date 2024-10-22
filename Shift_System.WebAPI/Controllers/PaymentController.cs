@@ -42,9 +42,5 @@ namespace Shift_System.WebAPI.Controllers
             return BadRequest(result.Message);
         }
 
-
-
-
-
     }
 }
