@@ -10,6 +10,7 @@ namespace Shift_System.Application.Features.Assignments.Queries
         public Guid? ShiftId { get; set; }
         public Guid? TeamId { get; set; }
         public DateTime CreatedDate { get; set; }
+        public bool Status{ get; set; }
 
     }
 }

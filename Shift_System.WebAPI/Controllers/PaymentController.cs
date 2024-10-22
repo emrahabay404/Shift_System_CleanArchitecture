@@ -35,16 +35,14 @@ namespace Shift_System.WebAPI.Controllers
         public async Task<IActionResult> Dinamik([FromBody] DynamicQuery query)
         {
             query ??= new DynamicQuery();
-
             var result = await _Mediator.Send(new GetAllAssignsQueryDynamic(query));
-
             if (result.Succeeded)
             {
-                return Ok(result.Data);
+                return Ok(result);
             }
-
             return BadRequest(result.Message);
         }
+
 
 
 

@@ -2,12 +2,11 @@
 {
     public class Filter
     {
-        public string Field { get; set; }
-        public string? Value { get; set; }
-        public string Operator { get; set; }
-        public string? Logic { get; set; }
-
-        public IEnumerable<Filter>? Filters { get; set; }
+        public string Field { get; set; } // Filtrelenecek alan adı
+        public object? Value { get; set; } // Dinamik veri tipi desteği
+        public string Operator { get; set; } // Operatör: eq, contains, vb.
+        public string? Logic { get; set; } = "and"; // Mantıksal Operatör: "and" veya "or"
+        public IEnumerable<Filter>? Filters { get; set; } // Alt filtreler desteği
 
         public Filter()
         {

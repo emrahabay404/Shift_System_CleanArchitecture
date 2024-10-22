@@ -2,8 +2,8 @@
 {
     public class Sort
     {
-        public string Field { get; set; }
-        public string Dir { get; set; }
+        public string Field { get; set; } // Sıralanacak alan adı
+        public string Dir { get; set; } // Sıralama yönü: "asc" veya "desc"
 
         public Sort()
         {
