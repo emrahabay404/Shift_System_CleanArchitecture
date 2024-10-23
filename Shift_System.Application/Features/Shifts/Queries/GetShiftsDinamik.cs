@@ -34,10 +34,10 @@ namespace Shift_System.Application.Features.Shifts.Queries
         {
             var shiftsQuery = _unitOfWork.Repository<ShiftList>().Entities.AsQueryable();
 
-            // Filtreleme uygulama
+            // Generic filtreleme helper sınıfını kullanarak filtre uygula
             if (request.Query.Filter != null)
             {
-                shiftsQuery = ApplyFilter(shiftsQuery, request.Query.Filter);
+                shiftsQuery = QueryFilterHelper.ApplyFilter(shiftsQuery, request.Query.Filter);
             }
 
             // Sıralama uygulama
@@ -69,37 +69,5 @@ namespace Shift_System.Application.Features.Shifts.Queries
             );
         }
 
-        private IQueryable<ShiftList> ApplyFilter(IQueryable<ShiftList> query, Filter filter)
-        {
-            // IsDeleted = false filtresi her zaman uygulanır
-            query = query.Where(e => e.IsDeleted == false);
-
-            // Ana filtreyi uygulama
-            query = ProcessFilter(query, filter);
-            return query;
-        }
-
-        private IQueryable<ShiftList> ProcessFilter(IQueryable<ShiftList> query, Filter filter)
-        {
-            if (filter.Logic == "and")
-            {
-                query = query.Where(e => EF.Property<object>(e, filter.Field).ToString() == filter.Value.ToString());
-            }
-            else if (filter.Logic == "or")
-            {
-                // "or" mantığını ekleyebilirsiniz
-            }
-
-            // Alt filtreleri kontrol et
-            if (filter.Filters != null && filter.Filters.Any())
-            {
-                foreach (var subFilter in filter.Filters)
-                {
-                    query = ProcessFilter(query, subFilter);
-                }
-            }
-
-            return query;
-        }
     }
 }
