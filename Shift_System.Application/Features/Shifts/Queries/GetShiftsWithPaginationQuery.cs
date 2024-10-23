@@ -33,14 +33,6 @@ namespace Shift_System.Application.Features.Shifts.Queries
             _mapper = mapper;
         }
 
-        //public async Task<PaginatedResult<GetAllShiftsDto>> Handle(GetShiftsWithPaginationQuery query, CancellationToken cancellationToken)
-        //{
-        //    return await _unitOfWork.Repository<ShiftList>().Entities
-        //           .OrderBy(x => x.Shift_Name)
-        //           .ProjectTo<GetAllShiftsDto>(_mapper.ConfigurationProvider)
-        //           .ToPaginatedListAsync(query.PageNumber, query.PageSize, cancellationToken);
-        //}
-
         public async Task<PaginatedResult<GetAllShiftsDto>> Handle(GetShiftsWithPaginationQuery query, CancellationToken cancellationToken)
         {
             var _shifts = await _unitOfWork.Repository<ShiftList>().Entities
