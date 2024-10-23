@@ -30,13 +30,13 @@ namespace Shift_System.Application.Features.Documents.Commands
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
-        private readonly IFileUploadService _fileUploadService;
+        //private readonly IFileUploadService _fileUploadService;
 
         public CreateDocumentCommandHandler(IUnitOfWork unitOfWork, IMapper mapper, IFileUploadService fileUploadService)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
-            _fileUploadService = fileUploadService;
+            //_fileUploadService = fileUploadService;
         }
 
         public async Task<Result<List<FileUploadResult>>> Handle(CreateDocumentCommand command, CancellationToken cancellationToken)
