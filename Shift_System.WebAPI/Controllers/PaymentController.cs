@@ -28,19 +28,5 @@ namespace Shift_System.WebAPI.Controllers
             return Ok(response);
         }
 
-
-        [AllowAnonymous]
-        [HttpPost("Dinamik")]
-        public async Task<IActionResult> Dinamik([FromBody] DynamicQuery query)
-        {
-            query ??= new DynamicQuery();
-            var result = await _Mediator.Send(new GetAllAssignsQueryDynamic(query));
-            if (result.Succeeded)
-            {
-                return Ok(result);
-            }
-            return BadRequest(result.Message);
-        }
-
     }
 }
