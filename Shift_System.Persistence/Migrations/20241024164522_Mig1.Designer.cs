@@ -12,8 +12,8 @@ using Shift_System.Persistence.Contexts;
 namespace Shift_System.Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241004205925_Mig4354765")]
-    partial class Mig4354765
+    [Migration("20241024164522_Mig1")]
+    partial class Mig1
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -21,7 +21,7 @@ namespace Shift_System.Persistence.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .UseCollation("Turkish_CI_AS")
-                .HasAnnotation("ProductVersion", "7.0.20")
+                .HasAnnotation("ProductVersion", "7.0.17")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -159,7 +159,7 @@ namespace Shift_System.Persistence.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("Shift_System.Domain.Entities.AppUser", b =>
+            modelBuilder.Entity("Shift_System.Domain.Entities.Tables.AppUser", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
@@ -246,7 +246,7 @@ namespace Shift_System.Persistence.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
-            modelBuilder.Entity("Shift_System.Domain.Entities.AssignList", b =>
+            modelBuilder.Entity("Shift_System.Domain.Entities.Tables.AssignList", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -289,7 +289,7 @@ namespace Shift_System.Persistence.Migrations
                     b.ToTable("AssignLists");
                 });
 
-            modelBuilder.Entity("Shift_System.Domain.Entities.DocumentInfo", b =>
+            modelBuilder.Entity("Shift_System.Domain.Entities.Tables.DocumentInfo", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -325,8 +325,9 @@ namespace Shift_System.Persistence.Migrations
                     b.Property<bool?>("Status")
                         .HasColumnType("bit");
 
-                    b.Property<int>("TableId")
-                        .HasColumnType("int");
+                    b.Property<string>("TableName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<Guid?>("UpdatedBy")
                         .HasColumnType("uniqueidentifier");
@@ -339,7 +340,7 @@ namespace Shift_System.Persistence.Migrations
                     b.ToTable("DocumentInfos");
                 });
 
-            modelBuilder.Entity("Shift_System.Domain.Entities.Employee", b =>
+            modelBuilder.Entity("Shift_System.Domain.Entities.Tables.Employee", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -402,7 +403,7 @@ namespace Shift_System.Persistence.Migrations
                     b.ToTable("Employees");
                 });
 
-            modelBuilder.Entity("Shift_System.Domain.Entities.MenuSearchBar", b =>
+            modelBuilder.Entity("Shift_System.Domain.Entities.Tables.MenuSearchBar", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -443,7 +444,55 @@ namespace Shift_System.Persistence.Migrations
                     b.ToTable("MenuSearchBars");
                 });
 
-            modelBuilder.Entity("Shift_System.Domain.Entities.Product", b =>
+            modelBuilder.Entity("Shift_System.Domain.Entities.Tables.PaymentHistory", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("CreatedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime?>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("DataId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool?>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsPaid")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("PayMethod")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal>("Price")
+                        .HasColumnType("decimal(18, 2)");
+
+                    b.Property<bool?>("Status")
+                        .HasColumnType("bit");
+
+                    b.Property<Guid?>("UpdatedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime?>("UpdatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("PaymentHistories");
+                });
+
+            modelBuilder.Entity("Shift_System.Domain.Entities.Tables.Product", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -486,7 +535,7 @@ namespace Shift_System.Persistence.Migrations
                     b.ToTable("Products");
                 });
 
-            modelBuilder.Entity("Shift_System.Domain.Entities.ShiftList", b =>
+            modelBuilder.Entity("Shift_System.Domain.Entities.Tables.ShiftList", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -520,7 +569,7 @@ namespace Shift_System.Persistence.Migrations
                     b.ToTable("ShiftLists");
                 });
 
-            modelBuilder.Entity("Shift_System.Domain.Entities.Team", b =>
+            modelBuilder.Entity("Shift_System.Domain.Entities.Tables.Team", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -557,7 +606,7 @@ namespace Shift_System.Persistence.Migrations
                     b.ToTable("Teams");
                 });
 
-            modelBuilder.Entity("Shift_System.Domain.Entities.TeamEmployee", b =>
+            modelBuilder.Entity("Shift_System.Domain.Entities.Tables.TeamEmployee", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -615,7 +664,7 @@ namespace Shift_System.Persistence.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("Shift_System.Domain.Entities.AppUser", null)
+                    b.HasOne("Shift_System.Domain.Entities.Tables.AppUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -624,7 +673,7 @@ namespace Shift_System.Persistence.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("Shift_System.Domain.Entities.AppUser", null)
+                    b.HasOne("Shift_System.Domain.Entities.Tables.AppUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -639,7 +688,7 @@ namespace Shift_System.Persistence.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Shift_System.Domain.Entities.AppUser", null)
+                    b.HasOne("Shift_System.Domain.Entities.Tables.AppUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -648,23 +697,23 @@ namespace Shift_System.Persistence.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("Shift_System.Domain.Entities.AppUser", null)
+                    b.HasOne("Shift_System.Domain.Entities.Tables.AppUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Shift_System.Domain.Entities.AssignList", b =>
+            modelBuilder.Entity("Shift_System.Domain.Entities.Tables.AssignList", b =>
                 {
-                    b.HasOne("Shift_System.Domain.Entities.ShiftList", "Shift")
+                    b.HasOne("Shift_System.Domain.Entities.Tables.ShiftList", "Shift")
                         .WithMany("_Assignments")
                         .HasForeignKey("ShiftId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
                         .HasConstraintName("FK_Assignments_Shifts");
 
-                    b.HasOne("Shift_System.Domain.Entities.Team", "Team")
+                    b.HasOne("Shift_System.Domain.Entities.Tables.Team", "Team")
                         .WithMany("_Assignments")
                         .HasForeignKey("TeamId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -676,16 +725,27 @@ namespace Shift_System.Persistence.Migrations
                     b.Navigation("Team");
                 });
 
-            modelBuilder.Entity("Shift_System.Domain.Entities.TeamEmployee", b =>
+            modelBuilder.Entity("Shift_System.Domain.Entities.Tables.PaymentHistory", b =>
                 {
-                    b.HasOne("Shift_System.Domain.Entities.Employee", "Employee")
+                    b.HasOne("Shift_System.Domain.Entities.Tables.AppUser", "User")
+                        .WithMany("Payments")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Shift_System.Domain.Entities.Tables.TeamEmployee", b =>
+                {
+                    b.HasOne("Shift_System.Domain.Entities.Tables.Employee", "Employee")
                         .WithMany("_TeamEmployees")
                         .HasForeignKey("EmployeeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
                         .HasConstraintName("FK_TeamEmployees_Employees");
 
-                    b.HasOne("Shift_System.Domain.Entities.Team", "Team")
+                    b.HasOne("Shift_System.Domain.Entities.Tables.Team", "Team")
                         .WithMany("_TeamEmployees")
                         .HasForeignKey("TeamId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -697,17 +757,22 @@ namespace Shift_System.Persistence.Migrations
                     b.Navigation("Team");
                 });
 
-            modelBuilder.Entity("Shift_System.Domain.Entities.Employee", b =>
+            modelBuilder.Entity("Shift_System.Domain.Entities.Tables.AppUser", b =>
+                {
+                    b.Navigation("Payments");
+                });
+
+            modelBuilder.Entity("Shift_System.Domain.Entities.Tables.Employee", b =>
                 {
                     b.Navigation("_TeamEmployees");
                 });
 
-            modelBuilder.Entity("Shift_System.Domain.Entities.ShiftList", b =>
+            modelBuilder.Entity("Shift_System.Domain.Entities.Tables.ShiftList", b =>
                 {
                     b.Navigation("_Assignments");
                 });
 
-            modelBuilder.Entity("Shift_System.Domain.Entities.Team", b =>
+            modelBuilder.Entity("Shift_System.Domain.Entities.Tables.Team", b =>
                 {
                     b.Navigation("_Assignments");
 

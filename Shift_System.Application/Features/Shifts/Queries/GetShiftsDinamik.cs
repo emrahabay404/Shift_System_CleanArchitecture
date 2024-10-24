@@ -9,15 +9,8 @@ using Shift_System.Shared.Helpers;
 
 namespace Shift_System.Application.Features.Shifts.Queries
 {
-    public record GetShiftsDinamik : IRequest<PaginatedResult<GetAllShiftsDto>>
-    {
-        public DynamicQuery Query { get; }
-
-        public GetShiftsDinamik(DynamicQuery query)
-        {
-            Query = query;
-        }
-    }
+    // GetShiftsDinamik sorgusu
+    public record GetShiftsDinamik(DynamicQuery Query) : IRequest<PaginatedResult<GetAllShiftsDto>>;
 
     internal class GetShiftsDinamikHandler : IRequestHandler<GetShiftsDinamik, PaginatedResult<GetAllShiftsDto>>
     {
@@ -32,34 +25,41 @@ namespace Shift_System.Application.Features.Shifts.Queries
 
         public async Task<PaginatedResult<GetAllShiftsDto>> Handle(GetShiftsDinamik request, CancellationToken cancellationToken)
         {
-            var shiftsQuery = _unitOfWork.Repository<ShiftList>().Entities.AsQueryable();
+            var query = BuildFilteredQuery(request);
+            var paginatedList = await ApplyPagingAndProjection(query, request.Query, cancellationToken);
 
-            // Generic filtreleme helper sınıfını kullanarak filtre uygula
-            if (request.Query.Filter != null)
-            {
-                shiftsQuery = QueryFilterHelper.ApplyFilter(shiftsQuery, request.Query.Filter);
-            }
+            return CreatePaginatedResult(paginatedList);
+        }
 
-            // Sıralama uygulama
-            if (request.Query.Sort != null && request.Query.Sort.Any())
-            {
-                foreach (var sort in request.Query.Sort)
-                {
-                    if (sort.Dir.ToLower() == "desc")
-                    {
-                        shiftsQuery = shiftsQuery.OrderByDescending(e => EF.Property<object>(e, sort.Field));
-                    }
-                    else
-                    {
-                        shiftsQuery = shiftsQuery.OrderBy(e => EF.Property<object>(e, sort.Field));
-                    }
-                }
-            }
+        // Filtreli ve sıralı sorgu oluştur
+        private IQueryable<ShiftList> BuildFilteredQuery(GetShiftsDinamik request)
+        {
+            var query = _unitOfWork.Repository<ShiftList>().Entities.AsQueryable();
 
-            var paginatedList = await shiftsQuery
+            if (request.Query.Filter?.Any() == true)
+                query = QueryFilterHelper.ApplyFilter(query, request.Query.Filter);
+
+            if (request.Query.Sort?.Any() == true)
+                query = request.Query.Sort.Aggregate(query, (current, sort) =>
+                    sort.Dir.ToLower() == "desc"
+                        ? current.OrderByDescending(e => EF.Property<object>(e, sort.Field))
+                        : current.OrderBy(e => EF.Property<object>(e, sort.Field)));
+
+            return query;
+        }
+
+        // Sayfalama ve dönüşüm işlemi
+        private async Task<PaginatedResult<GetAllShiftsDto>> ApplyPagingAndProjection(
+            IQueryable<ShiftList> query, DynamicQuery dynamicQuery, CancellationToken cancellationToken)
+        {
+            return await query
                 .ProjectTo<GetAllShiftsDto>(_mapper.ConfigurationProvider)
-                .ToPaginatedListAsync(request.Query.Page, request.Query.PageSize, cancellationToken);
+                .ToPaginatedListAsync(dynamicQuery.PageIndex, dynamicQuery.PageSize, cancellationToken);
+        }
 
+        // PaginatedResult oluştur
+        private PaginatedResult<GetAllShiftsDto> CreatePaginatedResult(PaginatedResult<GetAllShiftsDto> paginatedList)
+        {
             return PaginatedResult<GetAllShiftsDto>.SuccessAsync(
                 paginatedList.Data,
                 paginatedList.TotalCount,
@@ -68,6 +68,5 @@ namespace Shift_System.Application.Features.Shifts.Queries
                 Messages.Teams_Listed_TR
             );
         }
-
     }
 }

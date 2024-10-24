@@ -467,7 +467,7 @@ namespace Shift_System.Persistence.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal>("Price")
-                        .HasColumnType("decimal(18,2)");
+                        .HasColumnType("decimal(18, 2)");
 
                     b.Property<bool?>("Status")
                         .HasColumnType("bit");

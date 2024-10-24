@@ -21,12 +21,8 @@ namespace Shift_System.WebAPI.Controllers
 
         [HttpPost("GetShiftsWithPagination")]
         [AllowAnonymous]
-        public async Task<ActionResult<PaginatedResult<GetAllShiftsDto>>> GetShiftsWithPagination([FromBody] DynamicQuery query)
-        {
-            var request = new GetShiftsDinamik(query);
-            var resultData = await _mediator.Send(request);
-            return Ok(resultData);
-        }
+        public async Task<IActionResult> GetShiftsWithPagination([FromBody] DynamicQuery query) =>
+   Ok(await _mediator.Send(new GetShiftsDinamik(query)));
 
 
     }

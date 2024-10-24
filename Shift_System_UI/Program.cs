@@ -47,17 +47,29 @@ builder.Services.AddApplicationLayer();
 builder.Services.AddInfrastructureLayer();
 builder.Services.AddPersistenceLayer(builder.Configuration);
 
-// Configure cookie settings for authentication
+//// Configure cookie settings for authentication
+//builder.Services.ConfigureApplicationCookie(options =>
+//{
+//    options.Cookie.SameSite = SameSiteMode.Strict; // CSRF saldýrýlarýna karþý koruma
+//    options.Cookie.HttpOnly = true; // XSS saldýrýlarýna karþý koruma
+//    options.Cookie.SecurePolicy = CookieSecurePolicy.Always; // Sadece HTTPS üzerinden gönder
+//    options.ExpireTimeSpan = TimeSpan.FromMinutes(30); // Kýsa tutmak test amaçlýdýr
+//    options.LoginPath = "/Account/Login/"; // Giriþ yolu
+//    options.AccessDeniedPath = "/Auth/AccessDenied/"; // Eriþim engellendiði durumda yönlendirilecek yol
+//    options.SlidingExpiration = true; // Her istekle birlikte süresini uzat
+//});
 builder.Services.ConfigureApplicationCookie(options =>
 {
-    options.Cookie.SameSite = SameSiteMode.Strict; // CSRF saldýrýlarýna karþý koruma
-    options.Cookie.HttpOnly = true; // XSS saldýrýlarýna karþý koruma
-    options.Cookie.SecurePolicy = CookieSecurePolicy.Always; // Sadece HTTPS üzerinden gönder
-    options.ExpireTimeSpan = TimeSpan.FromMinutes(30); // Kýsa tutmak test amaçlýdýr
-    options.LoginPath = "/Account/Login/"; // Giriþ yolu
-    options.AccessDeniedPath = "/Auth/AccessDenied/"; // Eriþim engellendiði durumda yönlendirilecek yol
-    options.SlidingExpiration = true; // Her istekle birlikte süresini uzat
+    options.Cookie.SameSite = SameSiteMode.Strict;
+    options.Cookie.HttpOnly = true;
+    options.Cookie.SecurePolicy = CookieSecurePolicy.SameAsRequest; // Geliþtirme için uygun
+    options.ExpireTimeSpan = TimeSpan.FromMinutes(30);
+    options.LoginPath = "/Account/Login/";
+    options.AccessDeniedPath = "/Auth/AccessDenied/";
+    options.SlidingExpiration = true;
 });
+
+
 
 builder.Services.AddScoped<IFileUploadService, FileUploadService>();
 

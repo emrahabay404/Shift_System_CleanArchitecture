@@ -18,7 +18,8 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowSpecificOrigins", builder =>
     {
-        builder.WithOrigins("http://localhost:7280", "https://localhost:7280") // Web uygulamanýzýn URL'sini buraya yazýn
+        //builder.WithOrigins("http://localhost:7280", "https://localhost:7280") // Web uygulamanýzýn URL'sini buraya yazýn
+        builder.WithOrigins("http://104.247.163.183:7081", "https://104.247.163.183:7081") // Web uygulamanýzýn URL'sini buraya yazýn
                .AllowAnyHeader()
                .AllowAnyMethod()
                .AllowCredentials(); // Kimlik bilgileri gönderimine izin ver
@@ -131,6 +132,15 @@ if (app.Environment.IsDevelopment())
     app.UseDeveloperExceptionPage();
     app.UseSwagger();
     app.UseSwaggerUI();
+}
+else
+{
+    app.UseSwagger();
+    app.UseSwaggerUI(c =>
+    {
+        app.UseSwagger();
+        app.UseSwaggerUI();
+    });
 }
 
 // Middleware sýralamasý

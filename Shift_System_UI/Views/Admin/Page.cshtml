@@ -4,60 +4,63 @@
 <h2> Admin<i class="fas fa-user-plus"></i>  </h2>
 <hr />
 
-<!-- Kullanıcılara Rol Atama Formu -->
-<form action="/Admin/AssignRole" method="post">
+
+
+<div class="container">
     <div class="row">
-        <!-- Kullanıcı Seçimi -->
-        <div class="col-md-3">
-            <label for="Username">Kullanıcı Seçin:</label>
-            <select name="Username" id="Username" class="form-control">
-                <option value="">Kullanıcı Seçin</option>
-                @foreach (var user in Model.Users)
-                {
-                    <option value="@user.UserName">@user.UserName</option>
-                }
-            </select>
+        <!-- Kullanıcılara Rol Atama Bölümü -->
+        <div class="col-md-6 border-end pe-4">
+            <h4>Kullanıcıya Rol Ata</h4>
+            <form action="/Admin/AssignRole" method="post">
+                <div class="mb-3">
+                    <label for="Username" class="form-label">Kullanıcı Seçin:</label>
+                    <select name="Username" id="Username" class="form-control" required>
+                        <option value="">Kullanıcı Seçin</option>
+                        @foreach (var user in Model.Users)
+                        {
+                            <option value="@user.UserName">@user.UserName</option>
+                        }
+                    </select>
+                </div>
+
+                <div class="mb-3">
+                    <label for="RoleName" class="form-label">Rol Seçin:</label>
+                    <select name="RoleName" id="RoleName" class="form-control" required>
+                        <option value="">Rol Seçin</option>
+                        @foreach (var role in Model.Roles)
+                        {
+                            <option value="@role.Name">@role.Name</option>
+                        }
+                    </select>
+                </div>
+
+                <button type="submit" class="btn btn-primary w-100">Rol Ata</button>
+            </form>
         </div>
 
-        <!-- Rol Seçimi -->
-        <div class="col-md-3">
-            <label for="RoleName">Rol Seçin:</label>
-            <select name="RoleName" id="RoleName" class="form-control">
-                <option value="">Rol Seçin</option>
-                @foreach (var role in Model.Roles)
-                {
-                    <option value="@role.Name">@role.Name</option>
-                }
-            </select>
-        </div>
+        <!-- Yeni Rol Ekleme Bölümü -->
+        <div class="col-md-6 ps-4">
+            <h4>Yeni Rol Oluştur</h4>
+            <form action="/Admin/CreateRole" method="post">
+                <div class="mb-3">
+                    <label for="roleName" class="form-label">Yeni Rol İsmi:</label>
+                    <input type="text" min="3" name="roleName" id="roleName"
+                           class="form-control" placeholder="Rol İsmi" required />
+                </div>
 
-        <!-- Submit Butonu -->
-        <div class="col-md-2 d-flex align-items-end">
-            <button type="submit" class="btn btn-primary">Rol Ata</button>
+                <button type="submit" class="btn btn-success w-100">Rol Oluştur</button>
+            </form>
         </div>
     </div>
-</form>
 
-<!-- Yeni Rol Ekleme Formu -->
-<form action="/Admin/CreateRole" method="post" class="mt-4">
-    <div class="row">
-        <!-- Yeni Rol İsmi -->
-        <div class="col-md-3">
-            <label for="roleName">Yeni Rol Oluştur:</label>
-            <input type="text" min="3" name="roleName" id="roleName" class="form-control" placeholder="Rol İsmi" required />
-        </div>
+    @if (TempData["Message"] != null)
+    {
+        <div class="alert alert-warning mt-4">@TempData["Message"]</div>
+    }
+</div>
 
-        <!-- Submit Butonu -->
-        <div class="col-md-2 d-flex align-items-end">
-            <button type="submit" class="btn btn-success">Rol Oluştur</button>
-        </div>
-    </div>
-</form>
 
-@if (TempData["Message"] != null)
-{
-    <div class="alert alert-warning mt-3 col-lg-6">@TempData["Message"]</div>
-}
+
 
 <!-- Kullanıcı ve Rollerin Tablosu -->
 <table class="table table-striped mt-4">
