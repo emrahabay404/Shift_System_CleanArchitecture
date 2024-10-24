@@ -7,16 +7,8 @@ namespace Shift_System.Application.Features.Shifts.Queries
     {
         public Guid Id { get; init; }
         public string Shift_Name { get; set; }
-        public string CreatedBy { get; set; }
         public DateTime CreatedDate { get; set; }
-        public string UpdatedBy { get; set; }
         public bool Status { get; set; }
         public bool IsDeleted { get; set; }
-        public DateTime UpdatedDate { get; set; }
-        //public string Url1 { get; set; }
-        //public string Url2 { get; set; }
-        //public string Url3 { get; set; }
-        //public string Url4 { get; set; }
-        //public string Url5 { get; set; }
     }
 }

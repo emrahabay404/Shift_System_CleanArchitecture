@@ -40,13 +40,9 @@ function renderTable(data) {
         tableBody.innerHTML = data.map(row => `
             <tr>
                 <td>${row.shift_Name}</td>
-                <td>${row.shift_Name}</td>
-                <td>${row.shift_Name}</td>
-                <td>${row.shift_Name}</td>
-                <td>${row.shift_Name}</td>
-                <td>${row.shift_Name}</td>
-                <td>${row.shift_Name}</td>
-                <td>${row.shift_Name}</td>
+                <td>${row.status}</td>
+                <td>${row.isDeleted}</td>
+             
                 <td>${new Date(row.createdDate).toLocaleDateString()}</td>
                 <td>
                     <div class="d-flex">
